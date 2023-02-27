@@ -7,7 +7,6 @@ public class FoodMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long restaurantID;
     private String foodMenu;
     private int price;
     private String foodType;

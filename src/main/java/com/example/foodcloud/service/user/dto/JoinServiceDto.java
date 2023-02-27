@@ -1,5 +1,8 @@
 package com.example.foodcloud.service.user.dto;
 
+import lombok.Getter;
+
+@Getter
 public class JoinServiceDto {
     private String name;
     private String password;

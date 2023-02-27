@@ -7,9 +7,6 @@ public class Hotspot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userID;
-    private Long restaurantID;
-    private Long foodMenuID;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

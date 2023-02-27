@@ -7,9 +7,6 @@ public class OrderHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userID;
-    private Long orderID;
-    private Long bankAccountID;
     private String location;
     private String menu;
     private int count;
@@ -20,7 +17,7 @@ public class OrderHistory {
     private User user;
     @ManyToOne()
     @JoinColumn(name = "order_id")
-    private Order order;
+    private OrderMenu orderMenu;
     @ManyToOne()
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;

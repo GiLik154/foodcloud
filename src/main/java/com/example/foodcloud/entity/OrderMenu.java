@@ -3,14 +3,10 @@ package com.example.foodcloud.entity;
 import javax.persistence.*;
 
 @Entity
-public class Order {
+public class OrderMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long userID;
-    private Long orderID;
-    private Long bankAccountID;
-    private Long restaurantID;
     private String location;
     private String time;
     private String result;
