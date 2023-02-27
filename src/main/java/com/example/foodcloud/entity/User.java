@@ -37,10 +37,8 @@ public class User {
         return passwordEncoder.matches(password, this.password);
     }
 
-    public void comparePassword(PasswordEncoder passwordEncoder, String password) {
-        if (!passwordEncoder.matches(password, this.password)) {
-            throw new BadCredentialsException("Invalid password");
-        }
+    public boolean comparePassword(PasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.matches(password, this.password);
     }
 
 }

@@ -2,6 +2,8 @@ package com.example.foodcloud.service.user;
 
 import com.example.foodcloud.entity.User;
 import com.example.foodcloud.entity.UserRepository;
+import com.example.foodcloud.exception.UserNameDuplicateException;
+import com.example.foodcloud.exception.PasswordEncodingFailedException;
 import com.example.foodcloud.service.user.dto.JoinServiceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +17,7 @@ public class UserJoinServiceImpl implements UserJoinService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
-    public void isJoin(JoinServiceDto joinServiceDto) {
+    public void join(JoinServiceDto joinServiceDto) {
         User user = new User(joinServiceDto.getName(), joinServiceDto.getPassword(), joinServiceDto.getPhone());
         checkDuplicate(joinServiceDto.getName());
         checkEncodingPw(user, joinServiceDto.getPassword());
@@ -24,13 +26,13 @@ public class UserJoinServiceImpl implements UserJoinService {
 
     private void checkDuplicate(String name) {
         if (userRepository.existsByName(name)) {
-            throw new IllegalStateException("Duplicate Name");
+            throw new UserNameDuplicateException();
         }
     }
 
     private void checkEncodingPw(User user, String password) {
         if (!user.isEncodePassword(bCryptPasswordEncoder, password)) {
-            throw new IllegalStateException("Pw Encoding Failed");
+            throw new PasswordEncodingFailedException();
         }
     }
 }

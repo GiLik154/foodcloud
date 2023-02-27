@@ -36,7 +36,7 @@ class PointJoinServiceImplTest {
     @Test
     void 포인트_가입_정상작동() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findUser("test").getId();
 
@@ -49,7 +49,7 @@ class PointJoinServiceImplTest {
     @Test
     void 포인트_가입_아이디_없음() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findUser("test").getId();
 
@@ -64,7 +64,7 @@ class PointJoinServiceImplTest {
     @Test
     void 포인트_가입_오버플로() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findUser("test").getId();
 

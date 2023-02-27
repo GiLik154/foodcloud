@@ -2,6 +2,7 @@ package com.example.foodcloud.service.user;
 
 import com.example.foodcloud.entity.User;
 import com.example.foodcloud.entity.UserRepository;
+import com.example.foodcloud.exception.UserNameDuplicateException;
 import com.example.foodcloud.service.user.dto.JoinServiceDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ class UserJoinServiceImplTest {
     void 회원가입_정상작동() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
 
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Optional<User> optional = userRepository.findByName("test");
 
@@ -51,12 +52,12 @@ class UserJoinServiceImplTest {
     void 회원가입_중복아이디() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
         JoinServiceDto joinServiceDto2 = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () ->
-                userJoinService.isJoin(joinServiceDto2)
+        UserNameDuplicateException e = assertThrows(UserNameDuplicateException.class, () ->
+                userJoinService.join(joinServiceDto2)
         );
 
-        assertEquals("Duplicate Name", e.getMessage());
+        assertEquals("Duplicate User Name", e.getMessage());
     }
 }

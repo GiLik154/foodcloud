@@ -35,7 +35,7 @@ class UserLoginServiceImplTest {
     void 로그인_정상작동() {
         //given
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         User user = userRepository.findByName("test").orElseThrow(() ->
                 new UsernameNotFoundException("Invalid name")
@@ -53,7 +53,7 @@ class UserLoginServiceImplTest {
     @Test
     void 로그인_아이디_다름() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 userLoginService.login("test123", "test")
@@ -65,7 +65,7 @@ class UserLoginServiceImplTest {
     @Test
     void 로그인_비밀번호_다름() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
                 userLoginService.login("test", "test123")
@@ -77,7 +77,7 @@ class UserLoginServiceImplTest {
     @Test
     void 로그인_아이디_비밀번호_다름() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 userLoginService.login("test123", "test123")

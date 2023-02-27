@@ -1,7 +1,9 @@
 package com.example.foodcloud.service.user;
 
+import com.example.foodcloud.entity.User;
 import com.example.foodcloud.entity.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +17,13 @@ public class UserDeleteServiceImpl implements UserDeleteService {
 
     @Override
     public void delete(Long id, String password) {
-        userRepository.findUser(id).comparePassword(bCryptPasswordEncoder, password);
-
+        if (!checkComparePw(userRepository.findUser(id), password)) {
+            throw new BadCredentialsException("Invalid password");
+        }
         userRepository.deleteById(id);
+    }
+
+    private boolean checkComparePw(User user, String password) {
+        return user.comparePassword(bCryptPasswordEncoder, password);
     }
 }

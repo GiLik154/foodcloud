@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByName(String name);
-
     boolean existsByName(String name);
 
     default User findUser(String name) {
@@ -26,4 +24,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 new UsernameNotFoundException("Invalid name")
         );
     }
+
+    Optional<User> findByName(String name);
 }

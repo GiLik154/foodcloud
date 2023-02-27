@@ -10,8 +10,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,7 +34,7 @@ class UserDeleteServiceImplTest {
     @Test
     void 삭제_정상작동() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findByName("test").get().getId();
 
@@ -51,7 +49,7 @@ class UserDeleteServiceImplTest {
     @Test
     void 삭제_id_다름() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findByName("test").get().getId();
 
@@ -66,7 +64,7 @@ class UserDeleteServiceImplTest {
     @Test
     void 삭제_pw_다름() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-        userJoinService.isJoin(joinServiceDto);
+        userJoinService.join(joinServiceDto);
 
         Long id = userRepository.findByName("test").get().getId();
 
