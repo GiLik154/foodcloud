@@ -1,7 +1,6 @@
 package com.example.foodcloud.entity;
 
 import lombok.Getter;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
@@ -40,6 +39,5 @@ public class User {
     public boolean comparePassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
-
 }
 

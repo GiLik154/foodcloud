@@ -14,8 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -33,7 +32,6 @@ class UserJoinServiceImplTest {
     @Test
     void 회원가입_정상작동() {
         JoinServiceDto joinServiceDto = new JoinServiceDto("test", "test", "test");
-
         userJoinService.join(joinServiceDto);
 
         Optional<User> optional = userRepository.findByName("test");
@@ -42,9 +40,10 @@ class UserJoinServiceImplTest {
                 new UsernameNotFoundException("Invalid name")
         );
 
+        assertTrue(optional.isPresent());
         assertThat(userRepository.existsByName("test")).isTrue();
-        assertThat(user.getName()).isEqualTo("test");
-        assertThat(user.getPassword()).isNotEqualTo("test");
+        assertEquals("test", user.getName());
+        assertNotEquals("test",user.getPassword());
         assertThat(user.getPhone()).isEqualTo("test");
     }
 

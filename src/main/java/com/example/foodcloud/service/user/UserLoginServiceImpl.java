@@ -19,14 +19,10 @@ public class UserLoginServiceImpl implements UserLoginService {
     public Long login(String name, String password) {
         User user = userRepository.findUser(name);
 
-        if (checkComparePw(user, password)) {
+        if (user.comparePassword(bCryptPasswordEncoder, password)) {
             return user.getId();
         }
 
         throw new BadCredentialsException("Invalid password");
-    }
-
-    private boolean checkComparePw(User user, String password) {
-        return user.comparePassword(bCryptPasswordEncoder, password);
     }
 }

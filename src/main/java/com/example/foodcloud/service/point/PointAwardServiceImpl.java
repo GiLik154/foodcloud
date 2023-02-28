@@ -10,13 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PointJoinServiceImpl implements PointJoinService {
+public class PointAwardServiceImpl implements PointAwardService {
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
     @Override
-    public void join(Long id, int point) {
-        Point pointJoin = new Point(Math.addExact(0, point), userRepository.findUser(id));
-        pointRepository.save(pointJoin);
+    public void award(Long userId, int point) {
+        Point awardPoint = new Point(userRepository.findUser(userId));
+
+        awardPoint.validatePoint(point);
+
+        pointRepository.save(awardPoint);
     }
 }

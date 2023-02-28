@@ -17,13 +17,10 @@ public class UserDeleteServiceImpl implements UserDeleteService {
 
     @Override
     public void delete(Long id, String password) {
-        if (!checkComparePw(userRepository.findUser(id), password)) {
+        User user = userRepository.findUser(id);
+        if (!user.comparePassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");
         }
         userRepository.deleteById(id);
-    }
-
-    private boolean checkComparePw(User user, String password) {
-        return user.comparePassword(bCryptPasswordEncoder, password);
     }
 }
