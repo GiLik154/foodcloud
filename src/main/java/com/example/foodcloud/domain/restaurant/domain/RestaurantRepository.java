@@ -1,6 +1,8 @@
 package com.example.foodcloud.domain.restaurant.domain;
 
 
+import com.example.foodcloud.domain.bank.domain.BankAccount;
+import com.example.foodcloud.exception.NotFoundRestaurantException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -11,5 +13,13 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     List<Restaurant> findByUserId(Long userID);
 
-    boolean existsByUserIdAndId(Long userId, Long restaurantId);
+    boolean existsById(Long restaurantId);
+
+    default Restaurant validateRestaurant(Long userId, Long restaurantId) {
+        Optional<Restaurant> restaurantOptional = findByUserIdAndId(userId, restaurantId);
+
+        return restaurantOptional.orElseThrow(() ->
+                new NotFoundRestaurantException()
+        );
+    }
 }

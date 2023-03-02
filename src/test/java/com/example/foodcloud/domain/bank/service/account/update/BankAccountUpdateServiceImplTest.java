@@ -38,7 +38,7 @@ class BankAccountUpdateServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
         boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateDto);
@@ -57,7 +57,7 @@ class BankAccountUpdateServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
         boolean isUpdate = bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateDto);
@@ -76,7 +76,7 @@ class BankAccountUpdateServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
         boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateDto);

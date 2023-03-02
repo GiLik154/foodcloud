@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RestaurantDeleteServiceImplTest {
+class FoodMenuDeleteServiceImplTest {
     private final RestaurantDeleteService restaurantDeleteService;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public RestaurantDeleteServiceImplTest(RestaurantDeleteService restaurantDeleteService, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+    public FoodMenuDeleteServiceImplTest(RestaurantDeleteService restaurantDeleteService, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
         this.restaurantDeleteService = restaurantDeleteService;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -57,9 +58,11 @@ class RestaurantDeleteServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        boolean isDelete = restaurantDeleteService.delete(userId + 1L, restaurantId, "test");
+        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
+                restaurantDeleteService.delete(userId + 1L, restaurantId, "test")
+        );
 
-        assertFalse(isDelete);
+        assertEquals("Invalid user", e.getMessage());
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 

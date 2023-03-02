@@ -11,7 +11,7 @@ public class KBBankPaymentServiceImpl implements BankPaymentService {
 
     @Override
     public String payment(Long userId, Long bankAccountId, int price) {
-        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
+        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId ,bankAccountId)) {
             return price + " price KB Bank payment succeed";
         }
         return "KB bank payment fail";

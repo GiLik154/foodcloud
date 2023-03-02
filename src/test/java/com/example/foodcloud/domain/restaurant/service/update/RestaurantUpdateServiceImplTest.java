@@ -36,7 +36,7 @@ class RestaurantUpdateServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
+        Long restaurantId = restaurant.getId();
 
         RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123", "test123");
         boolean isUpdate = restaurantUpdateService.update(userId, restaurantId, restaurantUpdateDto);
@@ -54,7 +54,7 @@ class RestaurantUpdateServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
+        Long restaurantId = restaurant.getId();
 
         RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123", "test123");
         boolean isUpdate = restaurantUpdateService.update(userId + 1L, restaurantId, restaurantUpdateDto);
@@ -73,7 +73,7 @@ class RestaurantUpdateServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
+        Long restaurantId = restaurant.getId();
 
         RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123","test123");
         boolean isUpdate = restaurantUpdateService.update(userId, restaurantId + 1L, restaurantUpdateDto);

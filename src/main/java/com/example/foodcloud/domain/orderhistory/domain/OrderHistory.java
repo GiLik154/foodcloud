@@ -20,7 +20,7 @@ public class OrderHistory {
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne()
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_menu_id")
     private OrderMenu orderMenu;
     @ManyToOne()
     @JoinColumn(name = "bank_account_id")

@@ -26,14 +26,26 @@ public class FoodMenu {
     public FoodMenu() {
     }
 
-    public FoodMenu(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables, String imagePath, Restaurant restaurant) {
+    public FoodMenu(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables, Restaurant restaurant) {
         this.foodMenuName = foodMenuName;
         this.price = price;
         this.foodType = foodType;
         this.temperature = temperature;
         this.meatType = meatType;
         this.vegetables = vegetables;
-        this.imagePath = imagePath;
         this.restaurant = restaurant;
+    }
+
+    public void update(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables) {
+        this.foodMenuName = foodMenuName;
+        this.price = price;
+        this.foodType = foodType;
+        this.temperature = temperature;
+        this.meatType = meatType;
+        this.vegetables = vegetables;
+    }
+
+    public void uploadImage(String imagePath) {
+        this.imagePath = imagePath;
     }
 }

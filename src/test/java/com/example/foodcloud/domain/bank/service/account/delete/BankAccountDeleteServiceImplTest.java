@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +58,7 @@ class BankAccountDeleteServiceImplTest {
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+
 
         boolean isDelete = bankAccountDeleteService.delete(userId + 1L, bankAccountId, "test");
 

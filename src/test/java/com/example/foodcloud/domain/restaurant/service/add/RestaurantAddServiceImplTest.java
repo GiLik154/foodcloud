@@ -36,14 +36,13 @@ class RestaurantAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test", 1, "test");
+        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test", "test");
         restaurantAddService.add(userId, restaurantAddDto);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
         assertEquals("test", restaurant.getName());
         assertEquals("test", restaurant.getLocation());
-        assertEquals(1, restaurant.getOrderCount());
         assertEquals("test", restaurant.getBusinessHours());
     }
 
@@ -53,7 +52,7 @@ class RestaurantAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test", 1, "test");
+        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test",  "test");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 restaurantAddService.add(userId + 1L, restaurantAddDto)
