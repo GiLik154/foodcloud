@@ -1,44 +1,52 @@
-package com.example.foodcloud.domain.order.service.add;
+package com.example.foodcloud.domain.ordermenu.service.add;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.domain.OrderMenu;
-import com.example.foodcloud.domain.order.service.dto.OrderMenuDto;
-import com.example.foodcloud.domain.restaurant.domain.Restaurant;
-import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
+import com.example.foodcloud.domain.ordermain.domain.OrderMain;
+import com.example.foodcloud.domain.ordermain.domain.OrderMainRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.ordermenu.service.dto.OrderMenuDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class OrderMenuAddServiceImpl implements OrderMenuAddService {
+    private final OrderMenuRepository orderMenuRepository;
+    private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
-    private final RestaurantRepository restaurantRepository;
     private final BankAccountRepository bankAccountRepository;
     private final FoodMenuRepository foodMenuRepository;
 
+    @Override
     public void add(Long userId, OrderMenuDto orderMenuDto) {
         User user = userRepository.validateUser(userId);
         BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMenuDto.getBankAccountId());
-        Restaurant restaurant = restaurantRepository.validateRestaurant(userId, orderMenuDto.getRestaurantId());
-        FoodMenu foodMenu = foodMenuRepository.validateFoodMenu(userId, orderMenuDto.getFoodMenuId());
+        FoodMenu foodMenu = foodMenuRepository.validateFoodMenu(orderMenuDto.getFoodMenuId());
+        OrderMain orderMain = orderMainRepository.validateOrderMain(userId, orderMenuDto.getOrderMainId());
 
-//        OrderMenu orderMenu = new OrderMenu(orderMenuDto.getLocation(),
-//
-//
-//                )
+        OrderMenu orderMenu = new OrderMenu(
+                orderMenuDto.getLocation(),
+                orderMenuDto.getCount(),
+                getTime(),
+                user,
+                bankAccount,
+                foodMenu,
+                orderMain
+        );
 
-
+        orderMenuRepository.save(orderMenu);
     }
 
     private String getTime() {

@@ -3,7 +3,6 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
-import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -139,6 +138,6 @@ class FoodMenuUpdateServiceImplTest {
                 foodMenuUpdateService.update(foodMenuId, restaurantId + 1L, foodMenuDto, file)
         );
 
-        assertEquals("Not found restaurant", e.getMessage());
+        assertEquals("Not found Restaurant", e.getMessage());
     }
 }

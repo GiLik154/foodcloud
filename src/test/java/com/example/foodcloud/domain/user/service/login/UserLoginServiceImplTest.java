@@ -12,8 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -33,15 +31,12 @@ class UserLoginServiceImplTest {
 
     @Test
     void 로그인_정상작동() {
-        //given
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
-        //when
+        Long userId = user.getId();
         Long loginId = userLoginService.login("test", "test");
 
-        //then
         assertEquals(loginId, userId);
     }
 

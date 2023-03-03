@@ -1,18 +1,18 @@
-package com.example.foodcloud.domain.order.service.dto;
+package com.example.foodcloud.domain.ordermain.service.dto;
 
 import lombok.Getter;
 
 @Getter
-public class OrderMenuDto {
+public class OrderMainDto {
     private String location;
     private Long bankAccountId;
     private Long restaurantId;
-    private Long foodMenuId;
+    private String result;
 
-    public OrderMenuDto(String location, Long bankAccountId, Long restaurantId, Long foodMenuId) {
+    public OrderMainDto(String location, Long bankAccountId, Long restaurantId, String result) {
         this.location = location;
         this.bankAccountId = bankAccountId;
         this.restaurantId = restaurantId;
-        this.foodMenuId = foodMenuId;
+        this.result = result;
     }
 }

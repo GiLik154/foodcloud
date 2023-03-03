@@ -1,5 +1,6 @@
 package com.example.foodcloud.domain.foodmenu.domain;
 
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.Getter;
 
@@ -22,6 +23,10 @@ public class FoodMenu {
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
+
+    @ManyToOne
+    @JoinColumn(name = "order_history_id")
+    private OrderMenu orderMenu;
 
     public FoodMenu() {
     }
