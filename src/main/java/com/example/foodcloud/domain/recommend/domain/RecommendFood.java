@@ -20,5 +20,5 @@ public class RecommendFood {
     @ManyToOne
     @JoinColumn(name = "food_menu_id")
     private FoodMenu foodMenu;
-
+//todo 이거 어칼지 정해야함.
 }

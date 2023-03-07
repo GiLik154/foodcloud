@@ -1,10 +1,12 @@
 package com.example.foodcloud.domain.foodmenu.domain;
 
-import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -24,9 +26,9 @@ public class FoodMenu {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "order_history_id")
-    private OrderMenu orderMenu;
+    private List<OrderMenu> orderMenu;
 
     public FoodMenu() {
     }
@@ -50,7 +52,31 @@ public class FoodMenu {
         this.vegetables = vegetables;
     }
 
+    public void updateOrderMenu(OrderMenu orderMenu) {
+        restaurant.updateOrderCount();
+
+        this.orderCount++;
+        this.orderMenu.add(orderMenu);
+    }
+
     public void uploadImage(String imagePath) {
         this.imagePath = imagePath;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        FoodMenu foodMenu = (FoodMenu) obj;
+        return Objects.equals(id, foodMenu.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

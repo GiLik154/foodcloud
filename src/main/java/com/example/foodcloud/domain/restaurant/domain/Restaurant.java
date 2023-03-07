@@ -39,4 +39,7 @@ public class Restaurant {
         this.location = location;
         this.businessHours = businessHours;
     }
+    public void updateOrderCount(){
+        this.orderCount++;
+    }
 }
