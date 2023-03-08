@@ -12,9 +12,7 @@ public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
 
     boolean existsById(Long foodMenuId);
 
-    List<FoodMenu> findByVegetablesAndRestaurant_Location(String vegetables ,String location);
-    List<FoodMenu> findByMeatTypeAndRestaurant_Location(String meatType ,String location);
-    List<FoodMenu> findByTemperatureAndRestaurant_Location(String temperature ,String location);
+    List<FoodMenu> findByFoodTypeAndRestaurantLocation(String vegetables , String location);
 
     Optional<FoodMenu> findById(Long foodMenuId);
 

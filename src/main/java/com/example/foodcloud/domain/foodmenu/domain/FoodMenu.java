@@ -5,6 +5,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,7 @@ public class FoodMenu {
         this.meatType = meatType;
         this.vegetables = vegetables;
         this.restaurant = restaurant;
+        this.orderMenu = new ArrayList<>();
     }
 
     public void update(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables) {

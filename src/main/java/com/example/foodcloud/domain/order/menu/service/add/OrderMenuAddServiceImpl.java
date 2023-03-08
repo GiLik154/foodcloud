@@ -4,6 +4,7 @@ import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 @Transactional
 @RequiredArgsConstructor
 public class OrderMenuAddServiceImpl implements OrderMenuAddService {
+    private final FoodMenuUpdateService foodMenuUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
@@ -46,18 +48,14 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
                 orderMain
         );
 
-        updateFoodMenuOrderCount(foodMenu, orderMenu);
-
         orderMenuRepository.save(orderMenu);
+        
+        foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu, orderMenu);
     }
 
     private String getTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
 
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-mm-dd-HH:mm:ss"));
-    }
-
-    private void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu) {
-        foodMenu.updateOrderMenu(orderMenu);
     }
 }

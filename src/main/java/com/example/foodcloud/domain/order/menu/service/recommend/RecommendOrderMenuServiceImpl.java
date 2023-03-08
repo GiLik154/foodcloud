@@ -3,13 +3,16 @@ package com.example.foodcloud.domain.order.menu.service.recommend;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.JpaSort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -22,36 +25,35 @@ public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService 
 
     @Override
     public List<FoodMenu> recommend(Long userId, String location) {
-        List<FoodMenu> recommendList = new ArrayList<>();
+        FoodMenu foodMenu = getRandomFoodMenu(userId);
 
-        for (int i = 0; i < 5; i++) {
-            FoodMenu foodMenu = getRandomFoodMenu(userId);
-            Restaurant restaurant = foodMenu.getRestaurant();
-            List<FoodMenu> foodMenuList = foodMenuRepository.findByVegetablesAndRestaurant_Location(foodMenu.getVegetables(), restaurant.getLocation());
-            recommendList.add(
-                    foodMenuList.get(
-                            getRandomListSize(foodMenuList.size())
-                    ));
-        } //todo
+        List<FoodMenu> foodMenus = foodMenuRepository.findByFoodTypeAndRestaurantLocation(foodMenu.getFoodType(), location);
 
-        return recommendList;
+        Collections.shuffle(foodMenus);
+
+        return foodMenus.subList(0, validateLimit(foodMenus.size()));
     }
 
-    private int getRandomInt() {
+    private int getRandomInt(int limit) {
         Random random = new SecureRandom();
 
-        return random.nextInt(5);
+        return random.nextInt(limit);
     }
 
     private FoodMenu getRandomFoodMenu(Long userId) {
-        List<FoodMenu> list = orderMenuRepository.countByFoodMenuByUserId(userId);
+        Pageable pageable = PageRequest.of(0, 5, JpaSort.unsafe("COUNT(f)").descending());
 
-        return list.get(getRandomInt());
+        List<FoodMenu> foodMenus = orderMenuRepository.countByFoodMenuByUserId(userId, pageable);
+
+        return foodMenus.get(getRandomInt(validateLimit(foodMenus.size())));
     }
 
-    private int getRandomListSize(int listSize) {
-        Random random = new SecureRandom();
-
-        return random.nextInt(listSize);
+    private int validateLimit(int limit) {
+        if (limit > 5) {
+            limit = 5;
+        } else if (limit == 0) {
+            throw new UsernameNotFoundException("Invalid user");
+        }
+        return limit;
     }
 }

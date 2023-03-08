@@ -4,6 +4,7 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.image.ImageUploadService;
 import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,4 +41,11 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
         }
         return false;
     }
+
+    @Override
+    public void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu) {
+        foodMenu.updateOrderMenu(orderMenu);
+    }
+
+
 }
