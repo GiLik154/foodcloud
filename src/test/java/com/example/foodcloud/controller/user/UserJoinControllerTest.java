@@ -49,7 +49,7 @@ class UserJoinControllerTest {
 
     @Test
     void 유저_회원가입_기본페이지() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/join");
+        MockHttpServletRequestBuilder builder = get("/user/join");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -58,7 +58,7 @@ class UserJoinControllerTest {
 
     @Test
     void 유저_회원가입_정상작동() throws Exception {
-        MockHttpServletRequestBuilder builder = post("/join")
+        MockHttpServletRequestBuilder builder = post("/user/join")
                 .param("joinName", "testName")
                 .param("joinPassword", "testPassword")
                 .param("joinPhone", "testPhone");
@@ -81,7 +81,7 @@ class UserJoinControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        MockHttpServletRequestBuilder builder = post("/join")
+        MockHttpServletRequestBuilder builder = post("/user/join")
                 .param("joinName", "testName")
                 .param("joinPassword", "testPassword")
                 .param("joinPhone", "testPhone");

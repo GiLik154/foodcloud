@@ -4,13 +4,14 @@ import com.example.foodcloud.controller.user.dto.UserJoinControllerDto;
 import com.example.foodcloud.domain.user.service.join.UserJoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/join")
+@RequestMapping(value = "/user/join")
 public class UserJoinController {
     private final UserJoinService userJoinService;
 
@@ -20,10 +21,12 @@ public class UserJoinController {
     }
 
     @PostMapping("")
-    public String check(@Valid UserJoinControllerDto userJoinControllerDto) {
+    public String check(@Valid UserJoinControllerDto userJoinControllerDto, Model model) {
 
         userJoinService.join(userJoinControllerDto.convertDto());
 
-        return "thymeleaf/user/login";
+        model.addAttribute("isJoin", true);
+
+        return "thymeleaf/user/join-check";
     }
 }

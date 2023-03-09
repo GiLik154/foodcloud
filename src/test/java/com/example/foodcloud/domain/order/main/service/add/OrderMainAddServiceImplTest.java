@@ -78,7 +78,7 @@ class OrderMainAddServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -100,7 +100,7 @@ class OrderMainAddServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -123,7 +123,7 @@ class OrderMainAddServiceImplTest {
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findBankAccountByUserId(userId).get(0).getId();
+        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);

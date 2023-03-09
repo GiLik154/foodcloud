@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/update")
+@RequestMapping(value = "/user/update")
 public class UserUpdateController {
     private final UserUpdateService userUpdateService;
 

@@ -46,7 +46,7 @@ class UserUpdateControllerTest {
 
     @Test
     void 유저_수정_기본화면() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/update");
+        MockHttpServletRequestBuilder builder = get("/user/update");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -61,7 +61,7 @@ class UserUpdateControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/update")
+        MockHttpServletRequestBuilder builder = post("/user/update")
                 .session(session)
                 .param("phone", "updatePhone");
 
@@ -80,7 +80,7 @@ class UserUpdateControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
 
-        MockHttpServletRequestBuilder builder = post("/update")
+        MockHttpServletRequestBuilder builder = post("/user/update")
                 .session(session)
                 .param("phone", "updatePhone");
 

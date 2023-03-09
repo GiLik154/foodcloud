@@ -48,7 +48,7 @@ class UserDeleteControllerTest {
 
     @Test
     void 유저_삭제_기본페이지() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/delete");
+        MockHttpServletRequestBuilder builder = get("/user/delete");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -63,7 +63,7 @@ class UserDeleteControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/delete")
+        MockHttpServletRequestBuilder builder = post("/user/delete")
                 .session(session)
                 .param("name", "testName")
                 .param("password", "testPassword");
@@ -83,7 +83,7 @@ class UserDeleteControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
 
-        MockHttpServletRequestBuilder builder = post("/delete")
+        MockHttpServletRequestBuilder builder = post("/user/delete")
                 .session(session)
                 .param("password", "testPassword");
 
@@ -103,7 +103,7 @@ class UserDeleteControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/delete")
+        MockHttpServletRequestBuilder builder = post("/user/delete")
                 .session(session)
                 .param("name", "wrongName")
                 .param("password", "testPassword");
@@ -124,7 +124,7 @@ class UserDeleteControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/delete")
+        MockHttpServletRequestBuilder builder = post("/user/delete")
                 .session(session)
                 .param("name", "testName")
                 .param("password", "wrongPassword");

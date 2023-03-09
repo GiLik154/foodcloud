@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
-    List<BankAccount> findBankAccountByUserId(Long userId);
+    List<BankAccount> findByUserId(Long userId);
 
     boolean existsBankAccountByUserIdAndId(Long userId, Long bankAccountId);
 

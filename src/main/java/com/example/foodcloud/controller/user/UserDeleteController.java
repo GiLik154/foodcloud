@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/delete")
+@RequestMapping(value = "/user/delete")
 public class UserDeleteController {
     private final UserDeleteService userDeleteService;
 
@@ -23,6 +23,6 @@ public class UserDeleteController {
     public String check(@SessionAttribute("userId") Long userId, String name, String password) {
         userDeleteService.delete(userId, name, password);
 
-        return "thymeleaf/user/delete";
+        return "thymeleaf/user/login";
     }
 }

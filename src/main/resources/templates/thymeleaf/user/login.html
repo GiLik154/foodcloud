@@ -1,9 +1,17 @@
 <link th:href="@{/css/user/login.css}" type="text/css" rel="stylesheet"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script type="text/javascript" th:src="@{/js/user/login.js}" rel="stylesheet"></script>
+
+<span th:if="${session.isNotLogin == true}">
+	    <script type="text/javascript">
+            const text = "로그인 후 이용해주세요.";
+            top.alert(text);
+        </script>
+    </span>
+
 <div class="materialContainer">
 
-    <form method="post" th:action="@{/login}">
+    <form method="post" th:action="@{/user/login}">
     <div class="box">
 
         <div class="title">로그인</div>
@@ -15,8 +23,8 @@
         </div>
 
         <div class="input">
-            <label for="pass">비밀번호</label>
-            <input type="password" name="pass" id="pass">
+            <label for="password">비밀번호</label>
+            <input type="password" name="password" id="password">
             <span class="spin"></span>
         </div>
 
@@ -29,7 +37,7 @@
     </div>
     </form>
 
-    <form method="post" th:action="@{/join}">
+    <form method="post" th:action="@{/user/join}">
     <div class="overbox">
         <div class="material-button alt-2"><span class="shape"></span></div>
 

@@ -13,14 +13,15 @@ import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/my-page")
+@RequestMapping(value = "/user/my-page")
 public class UserMyPageController {
     private final UserRepository userRepository;
 
     @GetMapping("")
-    public String outputMyPage(@SessionAttribute("userId") Long userId, Model model) {
+    public String getUserList(@SessionAttribute("userId") Long userId, Model model) {
+        System.out.println(userId + "asdfasdfsdfafsdfdsfaf");
         Optional<User> user = userRepository.findById(userId);
         user.ifPresent(value -> model.addAttribute("userInfo", value));
         return "thymeleaf/user/my-page";
-    } //todo test 코드 만들어야 함.
+    }
 }
