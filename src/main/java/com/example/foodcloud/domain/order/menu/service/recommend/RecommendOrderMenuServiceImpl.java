@@ -35,6 +35,10 @@ public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService 
     }
 
     private int getRandomInt(int limit) {
+        if (limit == 0) {
+            throw new UsernameNotFoundException("Invalid user");
+        }
+
         Random random = new SecureRandom();
 
         return random.nextInt(limit);
@@ -45,15 +49,14 @@ public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService 
 
         List<FoodMenu> foodMenus = orderMenuRepository.countByFoodMenuByUserId(userId, pageable);
 
-        return foodMenus.get(getRandomInt(validateLimit(foodMenus.size())));
+        return foodMenus.get(getRandomInt(foodMenus.size()));
     }
 
     private int validateLimit(int limit) {
         if (limit > 5) {
             limit = 5;
-        } else if (limit == 0) {
-            throw new UsernameNotFoundException("Invalid user");
         }
+
         return limit;
     }
 }

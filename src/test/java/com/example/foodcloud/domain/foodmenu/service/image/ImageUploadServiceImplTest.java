@@ -14,6 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -34,7 +40,43 @@ class ImageUploadServiceImplTest {
     }
 
     @Test
-    void upload() {
+    void 이미지_업로드_정상작동() {
+        byte[] imageBytes = "test-image".getBytes();
+        String imageName = "test-image.jpg";
+        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+
+        User user = new User("test", "test", "test");
+        userRepository.save(user);
+
+        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        restaurantRepository.save(restaurant);
+        Long restaurantId = restaurant.getId();
+
+        FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
+        foodMenuRepository.save(foodMenu);
+
+        imageUploadService.upload(restaurantId, file, foodMenu);
+
+        assertNotNull(foodMenu.getImagePath());
+    }
+
+    @Test
+    void 이미지_업로드_정상작동_디렉토리없음() throws IOException {
+        String path = "food-menu-images/test/";
+        File folder = new File(path);
+
+        Path uploadPath = Paths.get(path);
+
+        Files.createDirectories(uploadPath);
+
+        File[] deleteFolderList = folder.listFiles();
+
+        for (File f : deleteFolderList) {
+            f.delete();
+        }
+
+        folder.delete();
+
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
         MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);

@@ -1,0 +1,29 @@
+.border {
+  border: 3px solid black;
+  width: 150px;
+  height: 30px;
+  float: left;
+  display : flex;
+  font-weight: bold;
+  justify-content : center;
+  align-items : center;
+}
+
+.border_clear {
+  border: 3px solid black;
+  width: 150px;
+  height: 30px;
+  clear: both;
+  float: left;
+  display : flex;
+  font-weight: bold;
+  justify-content : center;
+  align-items : center;
+}
+
+.reset {
+  clear: both;
+  float: left;
+  margin-top: 5px;
+  margin-left: 85px;
+}

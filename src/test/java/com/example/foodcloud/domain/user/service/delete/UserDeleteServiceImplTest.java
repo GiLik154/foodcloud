@@ -34,11 +34,11 @@ class UserDeleteServiceImplTest {
 
     @Test
     void 유저_삭제_정상작동() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
         userRepository.save(user);
         Long userId = user.getId();
 
-        userDeleteService.delete(userId, "test");
+        userDeleteService.delete(userId, "testName", "test");
 
         assertFalse(userRepository.existsById(userId));
         assertThrows(UsernameNotFoundException.class, () ->
@@ -48,12 +48,12 @@ class UserDeleteServiceImplTest {
 
     @Test
     void 유저_삭제_id_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
         userRepository.save(user);
         Long userId = user.getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                userDeleteService.delete(userId + 1L, "test")
+                userDeleteService.delete(userId, "wrongName", "test")
         );
 
         assertTrue(userRepository.existsById(userId));
@@ -62,12 +62,12 @@ class UserDeleteServiceImplTest {
 
     @Test
     void 유저_삭제_pw_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
         userRepository.save(user);
         Long userId = user.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                userDeleteService.delete(userId, "test123")
+                userDeleteService.delete(userId, "testName","wrongPassword")
         );
 
         assertTrue(userRepository.existsById(userId));

@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.bank.service.account.update;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountUpdateDto;
+import com.example.foodcloud.domain.bank.service.account.update.dto.BankAccountUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,0 +1,7 @@
+<span th:if="${errorMsg != null}">
+	    <script type="text/javascript">
+            const text = "[[${errorMsg}]]";
+            top.alert(text);
+            window.history.back();
+        </script>
+    </span>

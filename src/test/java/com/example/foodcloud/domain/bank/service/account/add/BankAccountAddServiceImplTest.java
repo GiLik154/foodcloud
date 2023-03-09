@@ -2,10 +2,9 @@ package com.example.foodcloud.domain.bank.service.account.add;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.add.BankAccountAddService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountUpdateDto;
+import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountAddDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -38,7 +37,7 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountUpdateDto bankAccountAddDto = new BankAccountUpdateDto("test", "test", "001");
+        BankAccountAddDto bankAccountAddDto = new BankAccountAddDto("test", "test", "001");
         bankAccountAddService.add(userId, bankAccountAddDto);
 
         BankAccount bankAccount = bankAccountRepository.findBankAccountByUserId(userId).get(0);
@@ -55,7 +54,7 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountUpdateDto bankAccountAddDto = new BankAccountUpdateDto("test", "test", "001");
+        BankAccountAddDto bankAccountAddDto = new BankAccountAddDto("test", "test", "001");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 bankAccountAddService.add(userId +1L, bankAccountAddDto)

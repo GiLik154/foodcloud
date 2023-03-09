@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.bank.service.account.add;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountUpdateDto;
+import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountAddDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class BankAccountAddServiceImpl implements BankAccountAddService {
     private final UserRepository userRepository;
 
     @Override
-    public void add(Long userId, BankAccountUpdateDto bankAccountAddDto) {
+    public void add(Long userId, BankAccountAddDto bankAccountAddDto) {
         User user = userRepository.validateUser(userId);
 
         BankAccount bankAccount = new BankAccount(bankAccountAddDto.getName(),

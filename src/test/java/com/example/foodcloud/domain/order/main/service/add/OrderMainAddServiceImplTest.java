@@ -4,7 +4,7 @@ import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.main.service.dto.OrderMainDto;
+import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -18,8 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -59,8 +58,8 @@ class OrderMainAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        OrderMainDto OrderMainDto = new OrderMainDto("test", bankAccountId, restaurantId, "RECEIVED");
-        orderMainAddService.add(userId, OrderMainDto);
+        OrderMainAddDto OrderMainAddDto = new OrderMainAddDto("test", bankAccountId, restaurantId, "RECEIVED");
+        orderMainAddService.add(userId, OrderMainAddDto);
         OrderMain orderMain = orderMainRepository.findByUserId(userId).get(0);
 
         assertEquals("test", orderMain.getLocation());
@@ -68,6 +67,7 @@ class OrderMainAddServiceImplTest {
         assertEquals(user, orderMain.getUser());
         assertEquals(bankAccount, orderMain.getBankAccount());
         assertEquals(restaurant, orderMain.getRestaurant());
+        assertNotNull(orderMain.getTime());
     }
 
     @Test
@@ -84,10 +84,10 @@ class OrderMainAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderMainDto OrderMainDto = new OrderMainDto("test", bankAccountId, restaurantId, "RECEIVED");
+        OrderMainAddDto OrderMainAddDto = new OrderMainAddDto("test", bankAccountId, restaurantId, "RECEIVED");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                orderMainAddService.add(userId + 1L, OrderMainDto)
+                orderMainAddService.add(userId + 1L, OrderMainAddDto)
         );
 
     }
@@ -106,10 +106,10 @@ class OrderMainAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderMainDto OrderMainDto = new OrderMainDto("test", bankAccountId + 1L, restaurantId, "RECEIVED");
+        OrderMainAddDto OrderMainAddDto = new OrderMainAddDto("test", bankAccountId + 1L, restaurantId, "RECEIVED");
 
         NotFoundBankAccountException e = assertThrows(NotFoundBankAccountException.class, () ->
-                orderMainAddService.add(userId, OrderMainDto)
+                orderMainAddService.add(userId, OrderMainAddDto)
         );
 
         assertEquals("Not found BankAccount", e.getMessage());
@@ -129,10 +129,10 @@ class OrderMainAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderMainDto OrderMainDto = new OrderMainDto("test", bankAccountId, restaurantId + 1L, "RECEIVED");
+        OrderMainAddDto OrderMainAddDto = new OrderMainAddDto("test", bankAccountId, restaurantId + 1L, "RECEIVED");
 
         NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
-                orderMainAddService.add(userId, OrderMainDto)
+                orderMainAddService.add(userId, OrderMainAddDto)
         );
 
         assertEquals("Not found Restaurant", e.getMessage());

@@ -44,6 +44,7 @@ class RestaurantAddServiceImplTest {
         assertEquals("test", restaurant.getName());
         assertEquals("test", restaurant.getLocation());
         assertEquals("test", restaurant.getBusinessHours());
+        assertEquals(user, restaurant.getUser());
     }
 
     @Test

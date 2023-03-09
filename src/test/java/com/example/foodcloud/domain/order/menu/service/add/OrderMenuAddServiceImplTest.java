@@ -23,8 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -82,10 +81,12 @@ class OrderMenuAddServiceImplTest {
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(25000, orderMenu.getPrice());
         assertEquals("Received", orderMenu.getResult());
+        assertNotNull(orderMenu.getTime());
 
         /** 음식 메뉴에서 주문 추가 기능 테스트 **/
         assertEquals(orderMenu, foodMenu.getOrderMenu().get(0));
         assertEquals(1, foodMenu.getOrderCount());
+        assertEquals(1, foodMenu.getRestaurant().getOrderCount());
     }
 
     @Test

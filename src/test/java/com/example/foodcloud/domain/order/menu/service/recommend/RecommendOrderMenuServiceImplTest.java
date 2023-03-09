@@ -82,6 +82,48 @@ class RecommendOrderMenuServiceImplTest {
     }
 
     @Test
+    void 추천메뉴_정상_작동_5개이상() {
+        User user = new User("test", "test", "test");
+        userRepository.save(user);
+        Long userId = user.getId();
+
+        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        bankAccountRepository.save(bankAccount);
+
+        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        restaurantRepository.save(restaurant);
+
+        FoodMenu foodMenu1 = new FoodMenu("1", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu2 = new FoodMenu("2", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu3 = new FoodMenu("3", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu4 = new FoodMenu("4", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu5 = new FoodMenu("5", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu6 = new FoodMenu("6", 5000, "test", "test", "test", "test", restaurant);
+        foodMenuRepository.save(foodMenu1);
+        foodMenuRepository.save(foodMenu2);
+        foodMenuRepository.save(foodMenu3);
+        foodMenuRepository.save(foodMenu4);
+        foodMenuRepository.save(foodMenu5);
+        foodMenuRepository.save(foodMenu6);
+
+        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        orderMainRepository.save(orderMain);
+
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
+        orderMenuRepository.save(orderMenu);
+
+        List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test");
+
+        assertNotNull(list);
+        assertEquals(5, list.size());
+        assertThat(list.get(0).getFoodMenuName()).isBetween("1", "6");
+        assertThat(list.get(1).getFoodMenuName()).isBetween("1", "6");
+        assertThat(list.get(2).getFoodMenuName()).isBetween("1", "6");
+        assertThat(list.get(3).getFoodMenuName()).isBetween("1", "6");
+        assertThat(list.get(4).getFoodMenuName()).isBetween("1", "6");
+    }
+
+    @Test
     void 추천메뉴_유저_고유번호_다름() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -138,10 +180,8 @@ class RecommendOrderMenuServiceImplTest {
         OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                recommendOrderMenuService.recommend(userId, "test123")
-        ); //todo 여기 예외처리 바꿔야 함. usernameNotFound인데 장소를 못차즌 오류로 바꿔야함.
+        List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test123");
 
-        assertEquals("Invalid user", e.getMessage());
+        assertTrue(list.isEmpty());
     }
 }

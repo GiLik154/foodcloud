@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,11 +31,10 @@ class UserUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        boolean isUpdate = userUpdateService.update(userId, "test123");
+        userUpdateService.update(userId, "test123");
 
         User updateTest = userRepository.findById(userId).get();
 
-        assertTrue(isUpdate);
         assertEquals("test", updateTest.getName());
         assertEquals("test", updateTest.getPassword());
         assertEquals("test123", updateTest.getPhone());
@@ -46,11 +46,12 @@ class UserUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        boolean isUpdate = userUpdateService.update(userId + 1, "test123");
+        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
+                userUpdateService.update(userId + 1, "test123")
+        );
 
         User updateTest = userRepository.findById(userId).get();
 
-        assertFalse(isUpdate);
         assertEquals("test", updateTest.getName());
         assertEquals("test", updateTest.getPassword());
         assertNotEquals("test123", updateTest.getPhone());

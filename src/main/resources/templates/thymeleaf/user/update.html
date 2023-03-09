@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<link th:href="@{/css/info-revise.css}" type="text/css" rel="stylesheet"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="form" id="form" role="form" method="post"
+      th:action='@{/update}'>
+
+    <div class="border_clear">아이디</div>
+    <div class="border">
+        <td th:text="${userInfo.id}"></td>
+    </div>
+
+
+    <div class="border_clear">휴대폰 번호를 입력해주세요</div>
+
+    <div class="border">
+        <input type="password" class="form-control" name="password" id="password" th:placeholder="${userInfo.phone}">
+    </div>
+
+    <br>
+
+
+    <div class="reset">
+        <input type='submit' value='수정'>
+        <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+    </div>
+</form>
+</body>
+</html>
