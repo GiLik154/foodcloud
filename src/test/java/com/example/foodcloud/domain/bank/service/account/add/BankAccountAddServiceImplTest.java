@@ -4,7 +4,7 @@ import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountAddDto;
+import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountAddServiceDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -37,10 +37,10 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountAddDto bankAccountAddDto = new BankAccountAddDto("test", "test", "001");
-        bankAccountAddService.add(userId, bankAccountAddDto);
+        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("test", "test", "001");
+        bankAccountAddService.add(userId, bankAccountAddServiceDto);
 
-        BankAccount bankAccount = bankAccountRepository.findBankAccountByUserId(userId).get(0);
+        BankAccount bankAccount = bankAccountRepository.findByUserId(userId).get(0);
 
         assertThat(bankAccount.getUser()).isEqualTo(user);
         assertThat(bankAccount.getName()).isEqualTo("test");
@@ -54,10 +54,10 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountAddDto bankAccountAddDto = new BankAccountAddDto("test", "test", "001");
+        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("test", "test", "001");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                bankAccountAddService.add(userId +1L, bankAccountAddDto)
+                bankAccountAddService.add(userId +1L, bankAccountAddServiceDto)
         );
         assertEquals("Invalid user", e.getMessage());
     }

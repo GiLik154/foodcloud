@@ -12,7 +12,7 @@ import org.springframework.web.bind.support.SessionStatus;
 @Transactional
 @RequiredArgsConstructor
 @SessionAttributes("userId")
-@RequestMapping("/login")
+@RequestMapping("/user/login")
 public class UserLoginController {
     private final UserLoginService userLoginService;
 
@@ -24,8 +24,8 @@ public class UserLoginController {
 
     @PostMapping("")
     public String check(String name, String password, Model model) {
+        System.out.println(password + "Asdfasdfasfasf");
         model.addAttribute("userId", userLoginService.login(name, password));
-
-        return "thymeleaf/user/login";
+        return "redirect:/user/my-page";
     }
 }

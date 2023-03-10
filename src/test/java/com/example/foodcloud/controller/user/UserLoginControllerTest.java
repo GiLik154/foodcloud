@@ -46,7 +46,7 @@ class UserLoginControllerTest {
 
     @Test
     void 유저_로그인_기본페이지() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/login");
+        MockHttpServletRequestBuilder builder = get("/user/login");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -58,7 +58,7 @@ class UserLoginControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        MockHttpServletRequestBuilder builder = post("/login")
+        MockHttpServletRequestBuilder builder = post("/user/login")
                 .param("name", "testName")
                 .param("password", "testPassword");
 
@@ -70,26 +70,42 @@ class UserLoginControllerTest {
 
     @Test
     void 유저_로그인_아이디_다름() throws Exception {
-        invalidUserLoginTest("wrongName", "testPassword");
+        User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
+        userRepository.save(user);
+
+        MockHttpServletRequestBuilder builder = post("/user/login")
+                .param("name", "wrongName")
+                .param("password", "testPassword");
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
     }
 
     @Test
     void 유저_로그인_비밀번호_다름() throws Exception {
-        invalidUserLoginTest("testName", "wrongPassword");
+        User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
+        userRepository.save(user);
+
+        MockHttpServletRequestBuilder builder = post("/user/login")
+                .param("name", "testName")
+                .param("password", "wrongPassword");
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
     }
 
     @Test
     void 유저_로그인_아이디비밀번호_다름() throws Exception {
-        invalidUserLoginTest("wrongName", "wrongPassword");
-    }
-
-    public void invalidUserLoginTest(String name, String password) throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        MockHttpServletRequestBuilder builder = post("/login")
-                .param("name", name)
-                .param("password", password);
+        MockHttpServletRequestBuilder builder = post("/user/login")
+                .param("name", "wrongName")
+                .param("password", "wrongPassword");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
