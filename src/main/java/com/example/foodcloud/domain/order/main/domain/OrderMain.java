@@ -4,6 +4,7 @@ import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.user.domain.User;
 import lombok.Getter;
+import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;
 

@@ -16,12 +16,20 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import com.example.foodcloud.exception.NotFoundOrderMainException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,8 +57,22 @@ class OrderMenuAddServiceImplTest {
         this.orderMainRepository = orderMainRepository;
     }
 
+    private ExecutorService executorService;
+    private CountDownLatch latch;
+
+    @BeforeEach
+    public void setUp() {
+        executorService = Executors.newFixedThreadPool(2);
+        latch = new CountDownLatch(2);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        executorService.shutdown();
+    }
+
     @Test
-    void 주문메뉴_추가_정상작동() {
+    void 주문메뉴_추가_정상작동() throws InterruptedException {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
@@ -68,6 +90,7 @@ class OrderMenuAddServiceImplTest {
         orderMainRepository.save(orderMain);
 
         OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
+
         orderMenuAddService.add(userId, orderMenuDto);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);

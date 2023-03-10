@@ -7,5 +7,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FoodMenuUpdateService {
     boolean update(Long foodMenuId, Long restaurantId, FoodMenuDto foodMenuDto, MultipartFile file);
-    void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu);
+    void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu, Long id);
 }

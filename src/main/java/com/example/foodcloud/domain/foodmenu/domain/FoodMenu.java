@@ -3,6 +3,7 @@ package com.example.foodcloud.domain.foodmenu.domain;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.Getter;
+import org.springframework.data.jpa.repository.Lock;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -58,6 +59,9 @@ public class FoodMenu {
         restaurant.updateOrderCount();
 
         this.orderCount++;
+
+        System.out.println(orderCount + "@@@@@@@@@");
+
         this.orderMenu.add(orderMenu);
     }
 

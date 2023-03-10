@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     }
 
     default User validateUser(Long userId) {
+
         Optional<User> optionalUser = findById(userId);
 
         return optionalUser.orElseThrow(() ->

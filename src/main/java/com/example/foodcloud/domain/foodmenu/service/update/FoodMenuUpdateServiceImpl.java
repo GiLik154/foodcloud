@@ -6,10 +6,13 @@ import com.example.foodcloud.domain.foodmenu.service.image.ImageUploadService;
 import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.LockModeType;
 import java.util.Optional;
 
 @Service
@@ -43,8 +46,9 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     }
 
     @Override
-    public void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu) {
-        foodMenu.updateOrderMenu(orderMenu);
+    public void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu, Long id) {
+        FoodMenu foodMenu1 = foodMenuRepository.findByIdForUpdate(id);
+        foodMenu1.updateOrderMenu(orderMenu);
     }
 
 
