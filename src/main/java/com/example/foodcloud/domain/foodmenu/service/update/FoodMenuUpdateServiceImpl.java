@@ -46,9 +46,9 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     }
 
     @Override
-    public void updateFoodMenuOrderCount(FoodMenu foodMenu, OrderMenu orderMenu, Long id) {
-        FoodMenu foodMenu1 = foodMenuRepository.findByIdForUpdate(id);
-        foodMenu1.updateOrderMenu(orderMenu);
+    public void updateFoodMenuOrderCount(Long foodMenuId, OrderMenu orderMenu) {
+        FoodMenu foodMenu = foodMenuRepository.findByIdForUpdate(foodMenuId);
+        foodMenu.updateOrderMenu(orderMenu);
     }
 
 

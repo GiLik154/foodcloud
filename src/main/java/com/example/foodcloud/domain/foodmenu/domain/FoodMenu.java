@@ -59,9 +59,6 @@ public class FoodMenu {
         restaurant.updateOrderCount();
 
         this.orderCount++;
-
-        System.out.println(orderCount + "@@@@@@@@@");
-
         this.orderMenu.add(orderMenu);
     }
 

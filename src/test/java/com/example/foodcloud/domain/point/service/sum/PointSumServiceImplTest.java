@@ -107,4 +107,27 @@ class PointSumServiceImplTest {
         assertThrows(OutOfBoundsPointException.class, () -> pointSumService.sum(userId, Integer.MIN_VALUE));
     }
 
+    @Test
+    void 포인트_추가_버전_정상작동() {
+        User user = new User("test", "test", "test");
+        userRepository.save(user);
+        Long userId = user.getId();
+
+        Point point = new Point(5000, 5000, user);
+        pointRepository.save(point);
+
+        boolean isSum = false;
+
+        for (int i = 0; i < 5; i++) {
+            isSum = pointSumService.sum(userId, 5000);
+        }
+        Point pointSum = pointRepository.findByUserIdOrderByIdDesc(userId);
+
+        assertTrue(isSum);
+        assertEquals(5, pointSum.getVersion());
+        assertEquals(user, pointSum.getUser());
+        assertEquals(5000, pointSum.getCalculationPoints());
+        assertEquals(30000, pointSum.getTotalPoint());
+    }
+
 }

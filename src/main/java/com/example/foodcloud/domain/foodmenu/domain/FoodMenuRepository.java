@@ -19,7 +19,7 @@ public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
     List<FoodMenu> findByFoodTypeAndRestaurantLocation(String vegetables , String location);
 
     Optional<FoodMenu> findById(Long foodMenuId);
-//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT f FROM FoodMenu f WHERE f.id = :id")
     FoodMenu findByIdForUpdate(@Param("id") Long foodMenuId);
 

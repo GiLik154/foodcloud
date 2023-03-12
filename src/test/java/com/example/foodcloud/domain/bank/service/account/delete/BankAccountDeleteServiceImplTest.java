@@ -35,66 +35,57 @@ class BankAccountDeleteServiceImplTest {
     void 계좌_삭제_정상작동() {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
-        boolean isDelete = bankAccountDeleteService.delete(userId, bankAccountId, "test");
+        boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test");
 
         assertTrue(isDelete);
-        assertFalse(bankAccountRepository.existsById(bankAccountId));
+        assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
-    void 계좌_삭제_유저고유번호_다름() {
+    void 계좌_삭제_유저고유번호_다름() { //todo 여기 익센셥 터져야 하는데 안터지는데? 왜?
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
-
-        boolean isDelete = bankAccountDeleteService.delete(userId + 1L, bankAccountId, "test");
+        boolean isDelete = bankAccountDeleteService.delete(user.getId() + 1L, bankAccount.getId(), "test");
 
         assertFalse(isDelete);
-        assertTrue(bankAccountRepository.existsById(bankAccountId));
+        assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
     void 계좌_삭제_계좌고유번호_다름() {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
-        boolean isDelete = bankAccountDeleteService.delete(userId, bankAccountId + 1L, "test");
+        boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId() + 1L, "test");
 
         assertFalse(isDelete);
-        assertTrue(bankAccountRepository.existsById(bankAccountId));
+        assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
     void 계좌_삭제_비밀번호_다름() {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                bankAccountDeleteService.delete(userId, bankAccountId, "test123")
+                bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test123")
         );
 
-        assertTrue(bankAccountRepository.existsById(bankAccountId));
+        assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
         assertEquals("Invalid password", e.getMessage());
     }
 }

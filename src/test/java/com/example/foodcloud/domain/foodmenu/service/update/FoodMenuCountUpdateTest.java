@@ -12,6 +12,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -47,7 +48,7 @@ class FoodMenuCountUpdateTest {
     }
 
     @Test
-    void name() throws InterruptedException {
+    void 푸드메뉴_업데이트_동시성_테스트() throws InterruptedException {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -71,13 +72,19 @@ class FoodMenuCountUpdateTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu, orderMenu, 87L);
+                foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu.getId(), orderMenu);
                 countDownLatch.countDown();
             });
         }
         countDownLatch.await();
 
-        assertEquals(100, foodMenuRepository.findById(87L).get().getOrderCount());
+        assertEquals(1000, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
 
+        orderMenuRepository.delete(orderMenu);
+        orderMainRepository.delete(orderMain);
+        foodMenuRepository.delete(foodMenu);
+        restaurantRepository.delete(restaurant);
+        bankAccountRepository.delete(bankAccount);
+        userRepository.delete(user);
     }
 }

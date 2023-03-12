@@ -50,7 +50,7 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
         orderMenuRepository.save(orderMenu);
         
-        foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu, orderMenu, foodMenu.getId());
+        foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu.getId(), orderMenu);
     }
 
     private String getTime() {

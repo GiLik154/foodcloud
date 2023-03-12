@@ -16,6 +16,8 @@ public class Point {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Version
+    private Long version;
 
     @Min(value = MIN_POINT, message = "Out of bounds for min point")
     @Max(value = MAX_POINT, message = "Out of bounds for max point")
