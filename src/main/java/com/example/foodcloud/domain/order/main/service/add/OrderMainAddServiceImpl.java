@@ -28,7 +28,7 @@ public class OrderMainAddServiceImpl implements OrderMainAddService {
     public void add(Long userId, OrderMainAddDto orderMainAddDto) {
         User user = userRepository.validateUser(userId);
         BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMainAddDto.getBankAccountId());
-        Restaurant restaurant = restaurantRepository.validateRestaurant(userId, orderMainAddDto.getRestaurantId());
+        Restaurant restaurant = restaurantRepository.validateRestaurant(orderMainAddDto.getRestaurantId());
 
         OrderMain orderMain = new OrderMain(orderMainAddDto.getLocation(),
                 getTime(),
@@ -43,6 +43,6 @@ public class OrderMainAddServiceImpl implements OrderMainAddService {
     private String getTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-mm-dd-HH:mm:ss"));
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss"));
     }
 }

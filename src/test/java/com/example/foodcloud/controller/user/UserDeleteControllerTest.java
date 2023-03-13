@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.user;
 
-import com.example.foodcloud.controller.advice.KoreanErrorCode;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
@@ -70,7 +70,7 @@ class UserDeleteControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/delete"));
+                .andExpect(forwardedUrl("thymeleaf/user/login"));
 
         assertFalse(userRepository.findByName("testName").isPresent());
     }
@@ -90,7 +90,7 @@ class UserDeleteControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
         assertTrue(userRepository.findByName("testName").isPresent());
     }
@@ -111,7 +111,7 @@ class UserDeleteControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
         assertTrue(userRepository.findByName("testName").isPresent());
     }
@@ -132,7 +132,7 @@ class UserDeleteControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
         assertTrue(userRepository.findByName("testName").isPresent());
     }

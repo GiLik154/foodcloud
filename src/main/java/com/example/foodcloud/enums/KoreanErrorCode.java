@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.advice;
+package com.example.foodcloud.enums;
 
 public enum KoreanErrorCode {
     NOT_FOUND_BANK("은행 정보를 확인해주세요."),

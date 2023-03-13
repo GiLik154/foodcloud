@@ -1,18 +1,13 @@
 package com.example.foodcloud.controller.bank;
 
-import com.example.foodcloud.controller.bank.dto.BankAccountAddControllerDto;
+import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.add.BankAccountAddService;
 import com.example.foodcloud.domain.bank.service.account.delete.BankAccountDeleteService;
+import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,14 +17,17 @@ public class BankDeleteController {
     private final BankAccountRepository bankAccountRepository;
 
     @GetMapping("")
-    public String delete(@SessionAttribute("userId") Long userId, Model model) {
-        model.addAttribute("bankList", bankAccountRepository.findByUserId(userId));
+    public String get(@RequestParam Long bankAccountId, Model model) {
+        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
+                .orElseThrow(NotFoundBankAccountException::new);
+
+        model.addAttribute("bankAccountInfo", bankAccount);
         return "thymeleaf/bank/delete";
     }
 
     @PostMapping("")
-    public String check(@SessionAttribute("userId") Long userId, Long bankAccountId, String password) {
-        bankAccountDeleteService.delete(userId, bankAccountId, password);
+    public String post(@SessionAttribute("userId") Long userId, Long bankAccountId, String password, Model model) {
+        model.addAttribute("isDelete", bankAccountDeleteService.delete(userId, bankAccountId, password));
 
         return "thymeleaf/bank/delete";
     }

@@ -20,7 +20,7 @@ public class ValidateUserServiceImpl implements ValidateUserService {
     public void validate(String name, String password) {
         User user = userRepository.validateUser(name);
 
-        if (!user.isCheckPassword(bCryptPasswordEncoder, password)) {
+        if (!user.isValidPassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");
         }
     }
@@ -29,7 +29,7 @@ public class ValidateUserServiceImpl implements ValidateUserService {
     public void validate(Long userId, String password) {
         User user = userRepository.validateUser(userId);
 
-        if (!user.isCheckPassword(bCryptPasswordEncoder, password)) {
+        if (!user.isValidPassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");
         }
     }

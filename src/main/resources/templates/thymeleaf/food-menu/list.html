@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div class="border_num">번호</q></div>
+<div class="border_kinds">입/출금</div>
+<div class="border_date">날짜</div>
+<div class="border_content_title">내용</div>
+<div class="border_price_title">금액</div>
+
+
+<tr th:each="account : ${bankAccountList}">
+    <th:block th:with="code=${account.bank}">
+        <td class="border_num" th:text="${account.name}"></td>
+        <td class="border_kinds" th:text="${account.accountNumber}"></td>
+        <td class="border_content" th:text="${BankCode.returnName(code)}"></td>
+        <td><button type="button" th:onclick="|location.href='@{/bank/delete(bankAccountId=${account.id})}'|">삭제하기</button></td>
+        <td><button type="button" th:onclick="|location.href='@{/bank/update(bankAccountId=${account.id})}'|">수정하기</button></td>
+    </th:block>
+</tr>
+
+<div class="ui-button">
+    <button type="button" th:onclick="|location.href='@{/calendar/details/add(date = ${param.date})}'|">추가하기</button>
+    <button type="button" th:onclick="|location.href='@{/main(date = ${param.date})}'|">메인가기</button>
+</div>
+</body>
+</html>

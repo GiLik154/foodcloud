@@ -18,8 +18,7 @@ public class UserMyPageController {
     private final UserRepository userRepository;
 
     @GetMapping("")
-    public String getUserList(@SessionAttribute("userId") Long userId, Model model) {
-        System.out.println(userId + "asdfasdfsdfafsdfdsfaf");
+    public String get(@SessionAttribute("userId") Long userId, Model model) {
         Optional<User> user = userRepository.findById(userId);
         user.ifPresent(value -> model.addAttribute("userInfo", value));
         return "thymeleaf/user/my-page";

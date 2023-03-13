@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class UserJoinServiceDto {
-    private String name;
-    private String password;
-    private String phone;
+    private final String name;
+    private final String password;
+    private final String phone;
 
     public UserJoinServiceDto(String name, String password, String phone) {
         this.name = name;

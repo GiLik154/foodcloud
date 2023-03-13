@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.bank;
 
-import com.example.foodcloud.controller.advice.KoreanErrorCode;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.bank.domain.BankAccount;
@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BankDeleteControllerTest {
+class BankDeletePostControllerTest {
     private final BankDeleteController bankDeleteController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final LoginInterceptor loginInterceptor;
@@ -36,7 +36,7 @@ class BankDeleteControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public BankDeleteControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder) {
+    public BankDeletePostControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder) {
         this.bankDeleteController = bankDeleteController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
@@ -71,7 +71,8 @@ class BankDeleteControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/delete"));
+                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(model().attribute("isDelete", true));
 
         assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
     }
@@ -115,8 +116,8 @@ class BankDeleteControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(model().attribute("isDelete", false));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
@@ -140,7 +141,7 @@ class BankDeleteControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
@@ -163,8 +164,8 @@ class BankDeleteControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_BANK));
+                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(model().attribute("isDelete", false));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }

@@ -2,7 +2,6 @@ package com.example.foodcloud.domain.foodmenu.service.image;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -50,12 +49,11 @@ class ImageUploadServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.upload(restaurantId, file, foodMenu);
+        imageUploadService.upload(restaurant.getName(), file, foodMenu);
 
         assertNotNull(foodMenu.getImagePath());
     }
@@ -86,12 +84,11 @@ class ImageUploadServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.upload(restaurantId, file, foodMenu);
+        imageUploadService.upload(restaurant.getName(), file, foodMenu);
 
         assertNotNull(foodMenu.getImagePath());
     }

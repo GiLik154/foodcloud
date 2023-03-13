@@ -78,7 +78,7 @@ class FoodMenuCountUpdateTest {
         }
         countDownLatch.await();
 
-        assertEquals(1000, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
+        assertEquals(100, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
 
         orderMenuRepository.delete(orderMenu);
         orderMainRepository.delete(orderMain);

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<link th:href="@{/css/bank.css}" type="text/css" rel="stylesheet"/>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form name="form" id="form" role="form" method="post"
+      th:action='@{/bank/update}'>
+
+
+  <div class="border_clear">계좌 이름을 입력해주세요.</div>
+  <div class="border">
+    <input type="text" class="form-control" name="name" id="name" th:placeholder="${bankAccountInfo.name}">
+  </div>
+
+  <div class="border_clear">계좌 번호를 입력해주세요.</div>
+  <div class="border">
+    <input type="text" class="form-control" name="accountNumber" id="accountNumber" th:placeholder="${bankAccountInfo.accountNumber}">
+  </div>
+
+  <div class="border_clear">은행을 선택해주세요.</div>
+  <th:block th:with="code=${bankAccountInfo.bank}">
+    <div>기존 은행 : <span th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></span></div>
+    <div class="border">
+      <label><input type="radio" name="bank" th:value="004" th:checked="${bankAccountInfo.bank == '004'}">농협</label>
+      <label><input type="radio" name="bank" th:value="011" th:checked="${bankAccountInfo.bank == '011'}">국민</label>
+      <label><input type="radio" name="bank" th:value="088" th:checked="${bankAccountInfo.bank == '088'}">신한</label>
+    </div>
+  </th:block>
+
+  <br>
+
+
+  <div class="reset">
+    <input type='submit' value='수정'>
+    <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+  </div>
+</form>
+</body>
+</html>

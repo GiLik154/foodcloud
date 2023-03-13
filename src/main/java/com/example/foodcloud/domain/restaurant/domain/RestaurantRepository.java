@@ -14,8 +14,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     boolean existsById(Long restaurantId);
 
-    default Restaurant validateRestaurant(Long userId, Long restaurantId) {
-        Optional<Restaurant> restaurantOptional = findByUserIdAndId(userId, restaurantId);
+    default Restaurant validateRestaurant(Long restaurantId) {
+        Optional<Restaurant> restaurantOptional = findById(restaurantId);
 
         return restaurantOptional.orElseThrow(NotFoundRestaurantException::new);
     }

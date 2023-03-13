@@ -16,7 +16,7 @@ public class BankAccountDeleteServiceImpl implements BankAccountDeleteService {
 
     @Override
     public boolean delete(Long userId, Long bankAccountId, String password) {
-        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) { //todo 원인 : 여기서 아이디까지 검증해버려서 그럼. 수정해야함
+        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
 
             validateUserService.validate(userId, password);
 

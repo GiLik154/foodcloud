@@ -8,11 +8,11 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class BankAccountAddControllerDto {
     @NotEmpty
-    private String name;
+    private final String name;
     @NotEmpty
-    private String accountNumber;
+    private final String accountNumber;
     @NotEmpty
-    private String bank;
+    private final String bank;
 
     public BankAccountAddControllerDto(String name, String accountNumber, String bank) {
         this.name = name;

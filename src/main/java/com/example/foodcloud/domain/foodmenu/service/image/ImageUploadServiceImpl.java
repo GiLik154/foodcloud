@@ -22,12 +22,10 @@ import java.util.Optional;
 @Component
 @RequiredArgsConstructor
 public class ImageUploadServiceImpl implements ImageUploadService {
-    private final RestaurantRepository restaurantRepository;
-
     @Override
-    public void upload(Long restaurantId, MultipartFile file, FoodMenu foodMenu) {
+    public void upload(String restaurantName, MultipartFile file, FoodMenu foodMenu) {
         String fileName = StringUtils.cleanPath(creatFileName());
-        String uploadDir = "food-menu-images/" + getRestaurantName(restaurantId) + "/";
+        String uploadDir = "food-menu-images/" + restaurantName + "/";
         Path uploadPath = Paths.get(uploadDir);
 
         checkDirectories(uploadPath);
@@ -41,16 +39,6 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSSSSSSS");
         return now.format(formatter);
-    }
-
-    private String getRestaurantName(Long restaurantId) {
-        Optional<Restaurant> restaurantOptional = restaurantRepository.findById(restaurantId);
-
-        if (restaurantOptional.isPresent()) {
-            return restaurantOptional.get().getName();
-        }
-
-        throw new NotFoundRestaurantException();
     }
 
     private void checkDirectories(Path uploadPath) {

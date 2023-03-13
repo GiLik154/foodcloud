@@ -21,8 +21,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
         Optional<User> optionalUser = findById(userId);
 
-        System.out.println(optionalUser.isPresent() + "이게 트루라고?");
-
         return optionalUser.orElseThrow(() ->
                 new UsernameNotFoundException("Invalid user")
         );

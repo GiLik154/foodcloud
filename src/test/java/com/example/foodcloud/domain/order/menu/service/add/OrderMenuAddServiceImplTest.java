@@ -8,7 +8,7 @@ import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.service.dto.OrderMenuDto;
+import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -18,7 +18,6 @@ import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import com.example.foodcloud.exception.NotFoundOrderMainException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -89,16 +87,16 @@ class OrderMenuAddServiceImplTest {
         OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
 
-        orderMenuAddService.add(userId, orderMenuDto);
+        orderMenuAddService.add(userId, orderMenuAddServiceDto);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);
 
         /** 정보 입력 확인 테스트 **/
         assertEquals("test", orderMenu.getLocation());
         assertEquals(5, orderMenu.getCount());
-        assertEquals(user, orderMenu.getUser());
+        assertEquals(user, orderMenu.getUser()); //todo 띠옹스?
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
         assertEquals(orderMain, orderMenu.getOrderMain());
@@ -130,11 +128,11 @@ class OrderMenuAddServiceImplTest {
         OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
-        orderMenuAddService.add(user.getId(), orderMenuDto);
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
+        orderMenuAddService.add(user.getId(), orderMenuAddServiceDto);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                orderMenuAddService.add(userId + 1L, orderMenuDto)
+                orderMenuAddService.add(userId + 1L, orderMenuAddServiceDto)
         );
 
     }
@@ -157,10 +155,10 @@ class OrderMenuAddServiceImplTest {
         OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId() + 1L, foodMenu.getId(), orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId() + 1L, foodMenu.getId(), orderMain.getId());
 
         NotFoundBankAccountException e = assertThrows(NotFoundBankAccountException.class, () ->
-                orderMenuAddService.add(userId, orderMenuDto)
+                orderMenuAddService.add(userId, orderMenuAddServiceDto)
         );
 
         assertEquals("Not found BankAccount", e.getMessage());
@@ -184,10 +182,10 @@ class OrderMenuAddServiceImplTest {
         OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId(), foodMenu.getId() + 1L, orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId(), foodMenu.getId() + 1L, orderMain.getId());
 
         NotFoundFoodMenuException e = assertThrows(NotFoundFoodMenuException.class, () ->
-                orderMenuAddService.add(userId, orderMenuDto)
+                orderMenuAddService.add(userId, orderMenuAddServiceDto)
         );
 
         assertEquals("Not found FoodMenu", e.getMessage());
@@ -211,10 +209,10 @@ class OrderMenuAddServiceImplTest {
         OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenuDto orderMenuDto = new OrderMenuDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId() + 1L);
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId() + 1L);
 
         NotFoundOrderMainException e = assertThrows(NotFoundOrderMainException.class, () ->
-                orderMenuAddService.add(userId, orderMenuDto)
+                orderMenuAddService.add(userId, orderMenuAddServiceDto)
         );
 
         assertEquals("Not found OrderMain", e.getMessage());

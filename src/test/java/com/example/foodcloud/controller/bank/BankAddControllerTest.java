@@ -88,6 +88,6 @@ class BankAddControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/login"));
+                .andExpect(redirectedUrl("/user/login"));
     }
 }

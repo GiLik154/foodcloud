@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
-    List<FoodMenu> findByRestaurantId(Long foodMenuId);
+    List<FoodMenu> findByRestaurantId(Long restaurantId);
 
     boolean existsById(Long foodMenuId);
 

@@ -2,8 +2,7 @@ package com.example.foodcloud.domain.foodmenu.service.add;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.add.FoodMenuAddService;
-import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
+import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -48,8 +47,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test", 5000, "test", "test", "test", "test");
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuDto, file);
+        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, "test", "test", "test", "test");
+        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
         assertTrue(isAdd);
@@ -74,8 +73,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test", 5000, "test", "test", "test", "test");
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuDto, file);
+        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, "test", "test", "test", "test");
+        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
         assertTrue(isAdd);
@@ -102,8 +101,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test", 5000, "test", "test", "test", "test");
-        boolean isAdd = foodMenuAddService.add(userId + 1L, restaurantId, foodMenuDto, file);
+        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, "test", "test", "test", "test");
+        boolean isAdd = foodMenuAddService.add(userId + 1L, restaurantId, foodMenuAddServiceDto, file);
 
         assertFalse(isAdd);
     }
@@ -122,8 +121,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test", 5000, "test", "test", "test", "test");
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId + 1L, foodMenuDto, file);
+        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, "test", "test", "test", "test");
+        boolean isAdd = foodMenuAddService.add(userId, restaurantId + 1L, foodMenuAddServiceDto, file);
 
         assertFalse(isAdd);
     }

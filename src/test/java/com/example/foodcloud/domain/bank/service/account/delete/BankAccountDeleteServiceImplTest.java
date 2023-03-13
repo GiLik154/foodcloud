@@ -46,7 +46,7 @@ class BankAccountDeleteServiceImplTest {
     }
 
     @Test
-    void 계좌_삭제_유저고유번호_다름() { //todo 여기 익센셥 터져야 하는데 안터지는데? 왜?
+    void 계좌_삭제_유저고유번호_다름() { //
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
@@ -77,12 +77,14 @@ class BankAccountDeleteServiceImplTest {
     void 계좌_삭제_비밀번호_다름() {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
+        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
+        Long bankAccountId = bankAccount.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test123")
+                bankAccountDeleteService.delete(userId, bankAccountId, "test123")
         );
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));

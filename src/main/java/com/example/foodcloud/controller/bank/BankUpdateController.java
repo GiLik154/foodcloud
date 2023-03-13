@@ -1,13 +1,14 @@
 package com.example.foodcloud.controller.bank;
 
-import com.example.foodcloud.controller.bank.dto.BankAccountAddControllerDto;
-import com.example.foodcloud.domain.bank.service.account.add.BankAccountAddService;
+import com.example.foodcloud.controller.bank.dto.BankAccountUpdateControllerDto;
+import com.example.foodcloud.domain.bank.domain.BankAccount;
+import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.bank.service.account.update.BankAccountUpdateService;
+import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -15,18 +16,28 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/bank/update")
 public class BankUpdateController {
-    private final BankAccountAddService bankAccountAddService;
+    private final BankAccountUpdateService bankAccountUpdateService;
+    private final BankAccountRepository bankAccountRepository;
 
     @GetMapping("")
-    public String add() {
-        return "add";
+    public String get(@RequestParam Long bankAccountId, Model model) {
+        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
+                .orElseThrow(NotFoundBankAccountException::new);
+
+        model.addAttribute("bankAccountInfo", bankAccount);
+        return "thymeleaf/bank/update";
     }
 
     @PostMapping("")
-    public String check(@SessionAttribute("userId") Long userId, @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
+    public String post(@SessionAttribute("userId") Long userId,
+                        Long bankAccountId,
+                        @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto,
+                        Model model) {
 
-        bankAccountAddService.add(userId, bankAccountAddControllerDto.convert());
+        model.addAttribute("isUpdate", bankAccountUpdateService.update(userId,
+                bankAccountId,
+                bankAccountUpdateControllerDto.convert()));
 
-        return "add";
+        return "thymeleaf/bank/update";
     }
 }

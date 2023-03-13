@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank.css}" type="text/css" rel="stylesheet"/>
+<link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div class="border_num">이름</q></div>
+<div class="border_kinds">계좌번호</div>
+<div class="border_date">은행</div>
+
 <form name="form" id="form" role="form" method="post"
       th:action='@{/bank/delete}'>
 
-    <tr th:each="bankList : ${bankList}">
-        <div class="border_check"><input type="radio" name="num" th:value="${bankList.id}"></div>
-        <div class="border_num"><td th:text="${bankList.name}"></td></div>
-        <div class="border_kinds"><td th:text="${bankList.accountNumber}"></td></div>
-        <div class="border_content"><td th:text="${bankList.getBank()}"></td></div>
-    </tr>
+        <th:block th:with="code=${bankAccountInfo.bank}">
+            <div class="border_num"><td th:text="${bankAccountInfo.name}"></td></div>
+            <div class="border_kinds"><td th:text="${bankAccountInfo.accountNumber}"></td></div>
+            <div class="border_date"><td th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></td></div>
+        </th:block>
 
     <div class="border_clear">비밀번호를 입력해주세요.</div>
 

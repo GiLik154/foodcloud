@@ -15,12 +15,12 @@ public class UserUpdateController {
     private final UserUpdateService userUpdateService;
 
     @GetMapping("")
-    public String update() {
+    public String get() {
         return "thymeleaf/user/update";
     }
 
     @PostMapping("")
-    public String check(@SessionAttribute("userId") Long userId, String phone) {
+    public String post(@SessionAttribute("userId") Long userId, String phone) {
         userUpdateService.update(userId, phone);
 
         return "thymeleaf/user/update";

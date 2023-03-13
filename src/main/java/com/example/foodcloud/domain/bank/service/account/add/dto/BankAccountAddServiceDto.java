@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public class BankAccountAddServiceDto {
-    private String name;
-    private String accountNumber;
-    private String bank;
+    private final String name;
+    private final String accountNumber;
+    private final String bank;
 
     public BankAccountAddServiceDto(String name, String accountNumber, String bank) {
         this.name = name;

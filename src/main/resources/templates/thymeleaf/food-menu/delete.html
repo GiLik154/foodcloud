@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<link th:href="@{/css/bank.css}" type="text/css" rel="stylesheet"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form name="form" id="form" role="form" method="post"
+      th:action='@{/bank/delete}'>
+
+    <tr th:each="foodMenu : ${bankAccountList}">
+        <td class="border_num" th:text="${bankList.name}"></td>
+        <td class="border_kinds" th:text="${bankList.accountNumber}"></td>
+        <td class="border_content" th:text="${bankList.getBank()}"></td>
+    </tr>
+
+    <div class="border_clear">비밀번호를 입력해주세요.</div>
+
+    <div class="border">
+        <input type="password" class="form-control" name="password" id="password">
+    </div>
+
+    <br>
+
+
+    <div class="reset">
+        <input type='submit' value='삭제'>
+        <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+    </div>
+</form>
+</body>
+</html>

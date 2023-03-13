@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.user;
 
-import com.example.foodcloud.controller.advice.KoreanErrorCode;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
@@ -63,7 +63,7 @@ class UserLoginControllerTest {
                 .param("password", "testPassword");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(forwardedUrl("thymeleaf/user/login"))
                 .andExpect(model().attribute("userId", user.getId()));
     }
@@ -80,7 +80,7 @@ class UserLoginControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
     }
 
     @Test
@@ -95,7 +95,7 @@ class UserLoginControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
     }
 
     @Test
@@ -110,6 +110,6 @@ class UserLoginControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
     }
 }

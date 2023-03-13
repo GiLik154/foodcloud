@@ -3,16 +3,15 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.image.ImageUploadService;
-import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
+import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.restaurant.domain.Restaurant;
+import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.LockModeType;
 import java.util.Optional;
 
 @Service
@@ -21,24 +20,27 @@ import java.util.Optional;
 public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     private final ImageUploadService imageUploadService;
     private final FoodMenuRepository foodMenuRepository;
+    private final RestaurantRepository restaurantRepository;
 
     @Override
-    public boolean update(Long foodMenuId, Long restaurantId, FoodMenuDto foodMenuDto, MultipartFile file) {
+    public boolean update(Long foodMenuId, Long restaurantId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, MultipartFile file) {
         Optional<FoodMenu> foodMenuOptional = foodMenuRepository.findById(foodMenuId);
+        Restaurant restaurant = restaurantRepository.validateRestaurant(restaurantId);
         if (foodMenuOptional.isPresent()) {
             FoodMenu foodMenu = foodMenuOptional.get();
 
-            foodMenu.update(foodMenuDto.getFoodMenu(),
-                    foodMenuDto.getPrice(),
-                    foodMenuDto.getFoodType(),
-                    foodMenuDto.getTemperature(),
-                    foodMenuDto.getMeatType(),
-                    foodMenuDto.getVegetables()
+            if (file != null) {
+                imageUploadService.upload(restaurant.getName(), file, foodMenu);
+            }
+
+            foodMenu.update(foodMenuUpdateServiceDto.getFoodMenu(),
+                    foodMenuUpdateServiceDto.getPrice(),
+                    foodMenuUpdateServiceDto.getFoodType(),
+                    foodMenuUpdateServiceDto.getTemperature(),
+                    foodMenuUpdateServiceDto.getMeatType(),
+                    foodMenuUpdateServiceDto.getVegetables()
             );
 
-            if (file != null) {
-                imageUploadService.upload(restaurantId, file, foodMenu);
-            }
 
             return true;
         }

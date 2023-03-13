@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.dto.FoodMenuDto;
+import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -51,8 +51,8 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test123", 3000, "test123", "test123", "test123", "test123");
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuDto, file);
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, "test123", "test123", "test123", "test123");
+        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuUpdateServiceDto, file);
 
         assertTrue(isUpdate);
         assertEquals("test123", foodMenu.getFoodMenuName());
@@ -79,8 +79,8 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test123", 3000, "test123", "test123", "test123", "test123");
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuDto, file);
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, "test123", "test123", "test123", "test123");
+        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuUpdateServiceDto, file);
 
         assertTrue(isUpdate);
         assertEquals("test123", foodMenu.getFoodMenuName());
@@ -109,8 +109,8 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test123", 3000, "test123", "test123", "test123", "test123");
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId + 1L, restaurantId, foodMenuDto, file);
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, "test123", "test123", "test123", "test123");
+        boolean isUpdate = foodMenuUpdateService.update(foodMenuId + 1L, restaurantId, foodMenuUpdateServiceDto, file);
 
         assertFalse(isUpdate);
     }
@@ -132,10 +132,10 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuDto foodMenuDto = new FoodMenuDto("test123", 3000, "test123", "test123", "test123", "test123");
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, "test123", "test123", "test123", "test123");
 
         NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
-                foodMenuUpdateService.update(foodMenuId, restaurantId + 1L, foodMenuDto, file)
+                foodMenuUpdateService.update(foodMenuId, restaurantId + 1L, foodMenuUpdateServiceDto, file)
         );
 
         assertEquals("Not found Restaurant", e.getMessage());

@@ -18,14 +18,13 @@ public class BankAddController {
     private final BankAccountAddService bankAccountAddService;
 
     @GetMapping("")
-    public String add() {
+    public String get() {
         return "thymeleaf/bank/add";
     }
 
     @PostMapping("")
-    public String check(@SessionAttribute("userId") Long userId, @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
-
-        bankAccountAddService.add(userId, bankAccountAddControllerDto.convert());
+    public String post(@SessionAttribute("userId") Long userId, @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
+         bankAccountAddService.add(userId, bankAccountAddControllerDto.convert());
 
         return "thymeleaf/bank/add";
     }

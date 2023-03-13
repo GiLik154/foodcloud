@@ -9,7 +9,7 @@ import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.menu.service.dto.OrderMenuDto;
+import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,15 +32,15 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private final FoodMenuRepository foodMenuRepository;
 
     @Override
-    public void add(Long userId, OrderMenuDto orderMenuDto) {
+    public void add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
         User user = userRepository.validateUser(userId);
-        BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMenuDto.getBankAccountId());
-        FoodMenu foodMenu = foodMenuRepository.validateFoodMenu(orderMenuDto.getFoodMenuId());
-        OrderMain orderMain = orderMainRepository.validateOrderMain(userId, orderMenuDto.getOrderMainId());
+        BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMenuAddServiceDto.getBankAccountId());
+        FoodMenu foodMenu = foodMenuRepository.validateFoodMenu(orderMenuAddServiceDto.getFoodMenuId());
+        OrderMain orderMain = orderMainRepository.validateOrderMain(userId, orderMenuAddServiceDto.getOrderMainId());
 
         OrderMenu orderMenu = new OrderMenu(
-                orderMenuDto.getLocation(),
-                orderMenuDto.getCount(),
+                orderMenuAddServiceDto.getLocation(),
+                orderMenuAddServiceDto.getCount(),
                 getTime(),
                 user,
                 bankAccount,
@@ -56,6 +56,6 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private String getTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
 
-        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-mm-dd-HH:mm:ss"));
+        return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss"));
     }
 }

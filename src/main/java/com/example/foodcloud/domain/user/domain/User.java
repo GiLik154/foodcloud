@@ -27,17 +27,17 @@ public class User {
         this.phone = phone;
     }
 
-    public void update(String phone) {
-        this.phone = phone;
-    }
-
     public boolean isEncodePassword(PasswordEncoder passwordEncoder, String password) {
         this.password = passwordEncoder.encode(password);
         return passwordEncoder.matches(password, this.password);
     }
 
-    public boolean isCheckPassword(PasswordEncoder passwordEncoder, String password) {
+    public void update(String phone) {
+        this.phone = phone;
+    }
+
+
+    public boolean isValidPassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);
     }
 }
-

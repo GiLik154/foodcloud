@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class OrderMainAddDto {
-    private String location;
-    private Long bankAccountId;
-    private Long restaurantId;
-    private String result;
+    private final String location;
+    private final Long bankAccountId;
+    private final Long restaurantId;
+    private final String result;
 
     public OrderMainAddDto(String location, Long bankAccountId, Long restaurantId, String result) {
         this.location = location;

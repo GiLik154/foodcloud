@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.bank.service.account.update;
 
-import com.example.foodcloud.domain.bank.service.account.update.dto.BankAccountUpdateDto;
+import com.example.foodcloud.domain.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 
 public interface BankAccountUpdateService {
-    boolean update(Long userId, Long bankAccountId, BankAccountUpdateDto bankAccountUpdateDto);
+    boolean update(Long userId, Long bankAccountId, BankAccountUpdateServiceDto bankAccountUpdateServiceDto);
 }

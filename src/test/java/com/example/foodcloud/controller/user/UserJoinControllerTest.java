@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.user;
 
-import com.example.foodcloud.controller.advice.KoreanErrorCode;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
@@ -66,7 +66,7 @@ class UserJoinControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/login"));
+                .andExpect(forwardedUrl("thymeleaf/user/join-check"));
 
         User user = userRepository.findByName("testName").get();
 
@@ -89,6 +89,6 @@ class UserJoinControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_NAME_DUPLICATE));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_NAME_DUPLICATE.getResult()));
     }
 }

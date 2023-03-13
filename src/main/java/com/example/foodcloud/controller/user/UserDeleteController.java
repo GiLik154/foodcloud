@@ -15,12 +15,12 @@ public class UserDeleteController {
     private final UserDeleteService userDeleteService;
 
     @GetMapping("")
-    public String delete() {
+    public String get() {
         return "thymeleaf/user/delete";
     }
 
     @PostMapping("")
-    public String check(@SessionAttribute("userId") Long userId, String name, String password) {
+    public String post(@SessionAttribute("userId") Long userId, String name, String password) {
         userDeleteService.delete(userId, name, password);
 
         return "thymeleaf/user/login";

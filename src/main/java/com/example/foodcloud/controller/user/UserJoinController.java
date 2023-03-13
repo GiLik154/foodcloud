@@ -16,12 +16,12 @@ public class UserJoinController {
     private final UserJoinService userJoinService;
 
     @GetMapping("")
-    public String join() {
+    public String get() {
         return "thymeleaf/user/login";
     }
 
     @PostMapping("")
-    public String check(@Valid UserJoinControllerDto userJoinControllerDto, Model model) {
+    public String post(@Valid UserJoinControllerDto userJoinControllerDto, Model model) {
 
         userJoinService.join(userJoinControllerDto.convertDto());
 

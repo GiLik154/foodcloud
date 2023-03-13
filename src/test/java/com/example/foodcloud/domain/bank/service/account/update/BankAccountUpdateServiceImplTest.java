@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.bank.service.account.update;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.update.dto.BankAccountUpdateDto;
+import com.example.foodcloud.domain.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -39,8 +39,8 @@ class BankAccountUpdateServiceImplTest {
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
-        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateDto);
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateServiceDto);
 
         assertTrue(isUpdate);
         assertEquals("test123", bankAccount.getName());
@@ -58,8 +58,8 @@ class BankAccountUpdateServiceImplTest {
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
-        boolean isUpdate = bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateDto);
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        boolean isUpdate = bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateServiceDto);
 
         assertFalse(isUpdate);
         assertEquals("test", bankAccount.getName());
@@ -77,8 +77,8 @@ class BankAccountUpdateServiceImplTest {
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateDto bankAccountUpdateDto = new BankAccountUpdateDto("test123", "test123", "011");
-        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateDto);
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateServiceDto);
 
         assertFalse(isUpdate);
         assertEquals("test", bankAccount.getName());

@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.order;
+package com.example.foodcloud.enums;
 
 public enum OrderResult {
     RECEIVED("Received"),

@@ -17,14 +17,13 @@ public class UserLoginController {
     private final UserLoginService userLoginService;
 
     @GetMapping("")
-    public String login(SessionStatus sessionStatus) {
+    public String get(SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         return "thymeleaf/user/login";
     }
 
     @PostMapping("")
-    public String check(String name, String password, Model model) {
-        System.out.println(password + "Asdfasdfasfasf");
+    public String post(String name, String password, Model model) {
         model.addAttribute("userId", userLoginService.login(name, password));
         return "redirect:/user/my-page";
     }
