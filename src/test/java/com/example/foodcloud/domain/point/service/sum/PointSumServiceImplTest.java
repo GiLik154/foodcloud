@@ -1,6 +1,5 @@
 package com.example.foodcloud.domain.point.service.sum;
 
-import com.example.foodcloud.domain.point.service.sum.PointSumService;
 import com.example.foodcloud.domain.point.domain.Point;
 import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -40,7 +39,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, 5000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDesc(userId);
+        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
 
         assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -58,7 +57,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, -1000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDesc(userId);
+        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
 
         assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -76,7 +75,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId + 1L, -1000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDesc(userId);
+        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
 
         assertFalse(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -121,7 +120,7 @@ class PointSumServiceImplTest {
         for (int i = 0; i < 5; i++) {
             isSum = pointSumService.sum(userId, 5000);
         }
-        Point pointSum = pointRepository.findByUserIdOrderByIdDesc(userId);
+        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
 
         assertTrue(isSum);
         assertEquals(5, pointSum.getVersion());

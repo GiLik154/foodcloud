@@ -1,18 +1,16 @@
 package com.example.foodcloud.domain.user.service.join;
 
+import com.example.foodcloud.domain.point.domain.Point;
+import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.exception.UserNameDuplicateException;
 import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
-import com.example.foodcloud.domain.user.service.join.UserJoinService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,11 +21,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserJoinServiceImplTest {
     private final UserJoinService userJoinService;
     private final UserRepository userRepository;
+    private final PointRepository pointRepository;
 
     @Autowired
-    UserJoinServiceImplTest(UserJoinService userJoinService, UserRepository userRepository) {
+    UserJoinServiceImplTest(UserJoinService userJoinService, UserRepository userRepository, PointRepository pointRepository) {
         this.userJoinService = userJoinService;
         this.userRepository = userRepository;
+        this.pointRepository = pointRepository;
     }
 
     @Test
@@ -35,17 +35,14 @@ class UserJoinServiceImplTest {
         UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
         userJoinService.join(userJoinServiceDto);
 
-        Optional<User> optional = userRepository.findByName("test");
+        User user = userRepository.findByName("test").get();
+        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
 
-        User user = optional.orElseThrow(() ->
-                new UsernameNotFoundException("Invalid user")
-        );
-
-        assertTrue(optional.isPresent());
-        assertThat(userRepository.existsByName("test")).isTrue();
         assertEquals("test", user.getName());
-        assertNotEquals("test",user.getPassword());
+        assertNotEquals("test", user.getPassword());
         assertThat(user.getPhone()).isEqualTo("test");
+        assertEquals(user, point.getUser());
+        assertEquals(0, point.getTotalPoint());
     }
 
     @Test

@@ -2,7 +2,6 @@ package com.example.foodcloud.domain.bank.service.payment;
 
 import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.payment.BankPaymentService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -19,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class NHBankPaymentServiceTest {
-    private final Map<String, BankPaymentService> bankPaymentService;
+    private final Map<String, PaymentService> bankPaymentService;
     private final BankAccountRepository bankAccountRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public NHBankPaymentServiceTest(Map<String, BankPaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, UserRepository userRepository) {
+    public NHBankPaymentServiceTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, UserRepository userRepository) {
         this.bankPaymentService = bankPaymentService;
         this.bankAccountRepository = bankAccountRepository;
         this.userRepository = userRepository;

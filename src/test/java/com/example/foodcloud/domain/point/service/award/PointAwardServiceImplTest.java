@@ -1,6 +1,5 @@
 package com.example.foodcloud.domain.point.service.award;
 
-import com.example.foodcloud.domain.point.service.award.PointAwardService;
 import com.example.foodcloud.domain.point.domain.Point;
 import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -48,7 +47,7 @@ class PointAwardServiceImplTest {
         Long id = user.getId();
 
         pointAwardService.award(id, 5000);
-        Point point = pointRepository.findByUserIdOrderByIdDesc(id);
+        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(id);
 
         assertThat(point.getUser()).isEqualTo(user);
         assertThat(point.getTotalPoint()).isEqualTo(5000);

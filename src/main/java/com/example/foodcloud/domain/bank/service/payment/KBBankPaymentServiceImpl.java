@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service("004")
 @RequiredArgsConstructor
-public class KBBankPaymentServiceImpl implements BankPaymentService {
+public class KBBankPaymentServiceImpl implements PaymentService {
     private final BankAccountRepository bankAccountRepository;
 
     @Override

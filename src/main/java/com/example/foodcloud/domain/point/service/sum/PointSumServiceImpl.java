@@ -14,7 +14,7 @@ public class PointSumServiceImpl implements PointSumService {
 
     public boolean sum(Long userId, int point) {
         if (pointRepository.existsByUserId(userId)) {
-            Point sumPoint = pointRepository.findByUserIdOrderByIdDesc(userId);
+            Point sumPoint = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
 
             sumPoint.updatePoint(point);
 
