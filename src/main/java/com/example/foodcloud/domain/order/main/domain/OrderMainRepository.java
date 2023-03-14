@@ -18,4 +18,10 @@ public interface OrderMainRepository extends JpaRepository<OrderMain, Long> {
 
         return orderMainOptional.orElseThrow(NotFoundOrderMainException::new);
     }
+
+    default OrderMain validateOrderMain(Long orderMainId) {
+        Optional<OrderMain> orderMainOptional = findById(orderMainId);
+
+        return orderMainOptional.orElseThrow(NotFoundOrderMainException::new);
+    }
 }

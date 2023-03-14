@@ -3,7 +3,6 @@ package com.example.foodcloud.controller.core.restaurant.dto;
 import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Getter

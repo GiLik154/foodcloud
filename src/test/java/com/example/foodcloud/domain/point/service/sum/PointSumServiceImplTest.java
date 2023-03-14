@@ -4,7 +4,7 @@ import com.example.foodcloud.domain.point.domain.Point;
 import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.exception.OutOfBoundsPointException;
+import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -103,7 +103,7 @@ class PointSumServiceImplTest {
         Point point = new Point(5000, 5000, user);
         pointRepository.save(point);
 
-        assertThrows(OutOfBoundsPointException.class, () -> pointSumService.sum(userId, Integer.MIN_VALUE));
+        assertThrows(NotEnoughPointException.class, () -> pointSumService.sum(userId, Integer.MIN_VALUE));
     }
 
     @Test

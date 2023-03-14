@@ -100,7 +100,7 @@ class OrderMenuAddServiceImplTest {
         assertEquals(foodMenu, orderMenu.getFoodMenu());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(25000, orderMenu.getPrice());
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("Payment waiting", orderMenu.getResult());
         assertNotNull(orderMenu.getTime());
 
         /** 음식 메뉴에서 주문 추가 기능 테스트 **/

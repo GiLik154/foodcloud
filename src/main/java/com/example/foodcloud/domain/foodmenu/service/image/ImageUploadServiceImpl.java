@@ -1,9 +1,6 @@
 package com.example.foodcloud.domain.foodmenu.service.image;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
-import com.example.foodcloud.domain.restaurant.domain.Restaurant;
-import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
-import com.example.foodcloud.exception.NotFoundRestaurantException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,7 +14,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

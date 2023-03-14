@@ -149,7 +149,7 @@ class PointChargePostControllerTest {
     }
 
     @Test
-    void 포인트_충전_금액이_300만보다_큼() throws Exception { //todo 벨리데이타 안됨
+    void 포인트_충전_금액이_300만보다_큼() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 

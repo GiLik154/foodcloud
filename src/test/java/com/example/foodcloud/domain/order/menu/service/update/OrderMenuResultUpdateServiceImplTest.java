@@ -96,7 +96,7 @@ class OrderMenuResultUpdateServiceImplTest {
         boolean isUpdate = orderMenuResultUpdateService.update(userId + 1L, orderMenuId, "COOKING");
 
         assertFalse(isUpdate);
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("Payment waiting", orderMenu.getResult());
     }
 
     @Test
@@ -124,6 +124,6 @@ class OrderMenuResultUpdateServiceImplTest {
         boolean isUpdate = orderMenuResultUpdateService.update(userId, orderMenuId +1L, "COOKING");
 
         assertFalse(isUpdate);
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("Payment waiting", orderMenu.getResult());
     }
 }

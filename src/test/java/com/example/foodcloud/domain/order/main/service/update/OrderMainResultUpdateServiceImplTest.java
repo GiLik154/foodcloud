@@ -83,7 +83,7 @@ class OrderMainResultUpdateServiceImplTest {
         boolean isUpdate = orderMainResultUpdateService.update(userId + 1L, orderMain.getId(), "PREPARED");
 
         assertFalse(isUpdate);
-        assertEquals("Received", orderMain.getResult());
+        assertEquals("Payment waiting", orderMain.getResult());
     }
 
     @Test
@@ -104,7 +104,7 @@ class OrderMainResultUpdateServiceImplTest {
         boolean isUpdate = orderMainResultUpdateService.update(userId, orderMain.getId() + 1L, "PREPARED");
 
         assertFalse(isUpdate);
-        assertEquals("Received", orderMain.getResult());
+        assertEquals("Payment waiting", orderMain.getResult());
     }
 
     @Test

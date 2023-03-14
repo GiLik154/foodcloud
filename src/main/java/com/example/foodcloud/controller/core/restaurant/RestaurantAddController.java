@@ -4,7 +4,6 @@ import com.example.foodcloud.controller.core.restaurant.dto.RestaurantAddControl
 import com.example.foodcloud.domain.restaurant.service.add.RestaurantAddService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

@@ -4,9 +4,7 @@ import com.example.foodcloud.domain.point.domain.Point;
 import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.exception.OutOfBoundsPointException;
-import com.example.foodcloud.domain.user.service.join.UserJoinService;
-import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
+import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -82,7 +80,7 @@ class PointAwardServiceImplTest {
 
         Long id = userRepository.validateUser("test").getId();
 
-        assertThrows(OutOfBoundsPointException.class, () ->
+        assertThrows(NotEnoughPointException.class, () ->
                 pointAwardService.award(id, Integer.MIN_VALUE)
         );
     }

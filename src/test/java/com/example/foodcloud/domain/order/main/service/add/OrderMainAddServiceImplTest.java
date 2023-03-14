@@ -63,7 +63,7 @@ class OrderMainAddServiceImplTest {
         OrderMain orderMain = orderMainRepository.findByUserId(userId).get(0);
 
         assertEquals("test", orderMain.getLocation());
-        assertEquals("Received", orderMain.getResult());
+        assertEquals("Payment waiting", orderMain.getResult());
         assertEquals(user, orderMain.getUser());
         assertEquals(bankAccount, orderMain.getBankAccount());
         assertEquals(restaurant, orderMain.getRestaurant());

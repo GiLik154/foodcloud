@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.point.domain;
 
 import com.example.foodcloud.domain.user.domain.User;
-import com.example.foodcloud.exception.OutOfBoundsPointException;
+import com.example.foodcloud.exception.NotEnoughPointException;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -45,7 +45,7 @@ public class Point {
 
     public void updatePoint(int calculationPoints) {
         if (Math.addExact(this.totalPoint, calculationPoints) < 0) {
-            throw new OutOfBoundsPointException("Points are less than zero.");
+            throw new NotEnoughPointException("Points are less than zero.");
         }
         this.calculationPoints = calculationPoints;
         this.totalPoint = Math.addExact(this.totalPoint, calculationPoints);

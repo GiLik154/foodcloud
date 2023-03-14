@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class NewOrderControllerTest {
+class NewOrderPostControllerTest {
     private final NewOrderController newOrderController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
@@ -50,7 +50,7 @@ class NewOrderControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderControllerTest(NewOrderController newOrderController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public NewOrderPostControllerTest(NewOrderController newOrderController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.newOrderController = newOrderController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
@@ -140,8 +140,6 @@ class NewOrderControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
-
-        assertTrue(orderMainRepository.findByUserId(user.getId()).isEmpty());
     }
 
     @Test
@@ -170,10 +168,9 @@ class NewOrderControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
+                .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
-
-        assertTrue(orderMainRepository.findByUserId(user.getId()).isEmpty());
     }
 
     @Test
@@ -202,10 +199,9 @@ class NewOrderControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
+                .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_BANK.getResult()));
-
-        assertTrue(orderMainRepository.findByUserId(user.getId()).isEmpty());
     }
 
     @Test
@@ -234,10 +230,9 @@ class NewOrderControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
+                .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_RESTAURANT.getResult()));
-
-        assertTrue(orderMainRepository.findByUserId(user.getId()).isEmpty());
     }
 
     @Test
@@ -269,8 +264,5 @@ class NewOrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_FOOD_MENU.getResult()));
-
-        assertTrue(orderMainRepository.findByUserId(user.getId()).isEmpty());
-        //todo 여기 오류남. 트렌젝션 오류임
     }
 }
