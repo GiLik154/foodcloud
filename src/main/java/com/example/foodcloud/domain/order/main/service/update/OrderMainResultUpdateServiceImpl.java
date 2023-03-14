@@ -1,5 +1,7 @@
 package com.example.foodcloud.domain.order.main.service.update;
 
+import com.example.foodcloud.domain.order.menu.service.update.OrderMenuListResultUpdateService;
+import com.example.foodcloud.domain.order.menu.service.update.OrderMenuResultUpdateService;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
@@ -17,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderMainResultUpdateServiceImpl implements OrderMainResultUpdateService {
     private final OrderMainRepository orderMainRepository;
-    private final OrderMenuRepository orderMenuRepository;
+    private final OrderMenuListResultUpdateService orderMenuListResultUpdateService;
 
     @Override
     public boolean update(Long userId, Long orderMainId, String result) {
@@ -27,21 +29,10 @@ public class OrderMainResultUpdateServiceImpl implements OrderMainResultUpdateSe
 
             orderMainOptional.get().updateResult(orderResult.getResult());
 
-            updateOrderMenu(orderMainId, result);
+            orderMenuListResultUpdateService.update(orderMainId, result);
 
             return true;
         }
         return false;
-    }
-
-    private void updateOrderMenu(Long orderMainId, String result) {
-        List<OrderMenu> list = orderMenuRepository.findByOrderMainId(orderMainId);
-
-        OrderResult orderResult = OrderResult.valueOf(result);
-
-        for (int i = 0; i < list.size(); i++) {
-            list.get(i).updateResult(orderResult.getResult());
-        }
-
     }
 }

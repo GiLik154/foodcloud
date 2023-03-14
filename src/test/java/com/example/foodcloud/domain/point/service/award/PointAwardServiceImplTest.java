@@ -27,27 +27,22 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class PointAwardServiceImplTest {
     private final PointAwardService pointAwardService;
     private final PointRepository pointRepository;
-    private final UserJoinService userJoinService;
     private final UserRepository userRepository;
 
     @Autowired
-    PointAwardServiceImplTest(PointAwardService pointAwardService, PointRepository pointRepository, UserJoinService userJoinService, UserRepository userRepository) {
+    PointAwardServiceImplTest(PointAwardService pointAwardService, PointRepository pointRepository, UserRepository userRepository) {
         this.pointAwardService = pointAwardService;
         this.pointRepository = pointRepository;
-        this.userJoinService = userJoinService;
         this.userRepository = userRepository;
     }
 
     @Test
     void 포인트_가입_정상작동() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
-        userJoinService.join(userJoinServiceDto);
+        User user = new User("test", "test", "tset");
+        userRepository.save(user);
 
-        User user = userRepository.validateUser("test");
-        Long id = user.getId();
-
-        pointAwardService.award(id, 5000);
-        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(id);
+        pointAwardService.award(user.getId(), 5000);
+        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
 
         assertThat(point.getUser()).isEqualTo(user);
         assertThat(point.getTotalPoint()).isEqualTo(5000);
@@ -55,8 +50,8 @@ class PointAwardServiceImplTest {
 
     @Test
     void 포인트_가입_아이디_없음() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
-        userJoinService.join(userJoinServiceDto);
+        User user = new User("test", "test", "tset");
+        userRepository.save(user);
 
         Long id = userRepository.validateUser("test").getId();
 
@@ -70,8 +65,8 @@ class PointAwardServiceImplTest {
 
     @Test
     void 포인트_가입_Max_초과() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
-        userJoinService.join(userJoinServiceDto);
+        User user = new User("test", "test", "tset");
+        userRepository.save(user);
 
         Long id = userRepository.validateUser("test").getId();
 
@@ -82,8 +77,8 @@ class PointAwardServiceImplTest {
 
     @Test
     void 포인트_가입_Min_초과() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
-        userJoinService.join(userJoinServiceDto);
+        User user = new User("test", "test", "tset");
+        userRepository.save(user);
 
         Long id = userRepository.validateUser("test").getId();
 

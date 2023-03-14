@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,17 +33,15 @@ class PointChargePostControllerTest {
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
     private final LoginInterceptor loginInterceptor;
-    private final UserExceptionAdvice userExceptionAdvice;
     private final ParamValidateAdvice paramValidateAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public PointChargePostControllerTest(PointChargeController pointChargeController, PointRepository pointRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, ParamValidateAdvice paramValidateAdvice) {
+    public PointChargePostControllerTest(PointChargeController pointChargeController, PointRepository pointRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, ParamValidateAdvice paramValidateAdvice) {
         this.pointChargeController = pointChargeController;
         this.pointRepository = pointRepository;
         this.userRepository = userRepository;
         this.loginInterceptor = loginInterceptor;
-        this.userExceptionAdvice = userExceptionAdvice;
         this.paramValidateAdvice = paramValidateAdvice;
     }
 
@@ -50,7 +49,6 @@ class PointChargePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(pointChargeController)
                 .addInterceptors(loginInterceptor)
-                .setControllerAdvice(userExceptionAdvice)
                 .setControllerAdvice(paramValidateAdvice)
                 .build();
     }
@@ -68,7 +66,7 @@ class PointChargePostControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
-                .param("price", "3000")
+                .param("point", "3000")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -93,7 +91,7 @@ class PointChargePostControllerTest {
         session.setAttribute("userId", user.getId() + 1L);
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
-                .param("price", "3000")
+                .param("point", "3000")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -115,11 +113,11 @@ class PointChargePostControllerTest {
         pointRepository.save(point);
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
-                .param("price", "3000");
+                .param("point", "3000");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(redirectedUrlPattern("/user/login"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/login"));
 
         assertEquals(5000, point.getTotalPoint());
         assertEquals(5000, point.getCalculationPoints());
@@ -138,7 +136,7 @@ class PointChargePostControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
-                .param("price", "-3000")
+                .param("point", "-3000")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -163,13 +161,13 @@ class PointChargePostControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
-                .param("price", "30000001")
+                .param("point", "30000001")
                 .session(session);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/point/charge-check"))
-                .andExpect(model().attribute("isCharge", true));
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
 
         assertEquals(5000, point.getTotalPoint());
         assertEquals(5000, point.getCalculationPoints());

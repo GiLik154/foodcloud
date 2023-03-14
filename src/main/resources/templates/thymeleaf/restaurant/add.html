@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<link th:href="@{/css/info-revise.css}" type="text/css" rel="stylesheet"/>
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<form name="form" id="form" role="form" method="post"
+      th:action='@{/bank/add}'>
+
+
+  <div class="border_clear">계좌 이름을 입력해주세요.</div>
+  <div class="border">
+    <input type="text" class="form-control" name="name" id="name" placeholder="계좌 이름">
+  </div>
+
+  <div class="border_clear">계좌 번호를 입력해주세요.</div>
+  <div class="border">
+    <input type="text" class="form-control" name="accountNumber" id="accountNumber" placeholder="계좌 번호">
+  </div>
+
+  <div class="border_clear">은행을 선택해주세요.</div>
+  <div class="border">
+    <input type="radio" name="bank" value="004" checked>농협
+    <input type="radio" name="bank" value="011">국민
+    <input type="radio" name="bank" value="088">신한
+  </div>
+
+  <br>
+
+
+  <div class="reset">
+    <input type='submit' value='등록'>
+    <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+  </div>
+</form>
+</body>
+</html>

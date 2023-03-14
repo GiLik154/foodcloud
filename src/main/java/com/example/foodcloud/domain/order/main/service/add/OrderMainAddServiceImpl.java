@@ -4,7 +4,8 @@ import com.example.foodcloud.domain.bank.domain.BankAccount;
 import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddDto;
+import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddServiceDto;
+import com.example.foodcloud.domain.order.menu.service.add.OrderMenuAddService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -20,17 +21,18 @@ import java.time.format.DateTimeFormatter;
 @Transactional
 @RequiredArgsConstructor
 public class OrderMainAddServiceImpl implements OrderMainAddService {
+    private final OrderMenuAddService orderMenuAddService;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public void add(Long userId, OrderMainAddDto orderMainAddDto) {
+    public Long add(Long userId, OrderMainAddServiceDto orderMainAddServiceDto) {
         User user = userRepository.validateUser(userId);
-        BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMainAddDto.getBankAccountId());
-        Restaurant restaurant = restaurantRepository.validateRestaurant(orderMainAddDto.getRestaurantId());
+        BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMainAddServiceDto.getBankAccountId());
+        Restaurant restaurant = restaurantRepository.validateRestaurant(orderMainAddServiceDto.getRestaurantId());
 
-        OrderMain orderMain = new OrderMain(orderMainAddDto.getLocation(),
+        OrderMain orderMain = new OrderMain(orderMainAddServiceDto.getLocation(),
                 getTime(),
                 user,
                 bankAccount,
@@ -38,6 +40,8 @@ public class OrderMainAddServiceImpl implements OrderMainAddService {
         );
 
         orderMainRepository.save(orderMain);
+
+        return orderMain.getId();
     }
 
     private String getTime() {

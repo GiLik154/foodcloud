@@ -1,6 +1,7 @@
 package com.example.foodcloud.enums;
 
 public enum OrderResult {
+    PAYMENT_WAITING("Payment waiting"),
     RECEIVED("Received"),
     COOKING("Cooking"),
     PREPARED("Prepared"),

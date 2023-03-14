@@ -4,7 +4,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddDto;
+import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -36,8 +36,8 @@ class RestaurantAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test", "test");
-        restaurantAddService.add(userId, restaurantAddDto);
+        RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test", "test");
+        restaurantAddService.add(userId, restaurantAddServiceDto);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
@@ -53,10 +53,10 @@ class RestaurantAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddDto restaurantAddDto = new RestaurantAddDto("test", "test",  "test");
+        RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test",  "test");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                restaurantAddService.add(userId + 1L, restaurantAddDto)
+                restaurantAddService.add(userId + 1L, restaurantAddServiceDto)
         );
 
         assertEquals("Invalid user", e.getMessage());

@@ -73,7 +73,6 @@ class OrderMenuAddServiceImplTest {
     void 주문메뉴_추가_정상작동() throws InterruptedException {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount("test", "test", "001", user);
         bankAccountRepository.save(bankAccount);
@@ -89,7 +88,7 @@ class OrderMenuAddServiceImplTest {
 
         OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, bankAccount.getId(), foodMenu.getId(), orderMain.getId());
 
-        orderMenuAddService.add(userId, orderMenuAddServiceDto);
+        orderMenuAddService.add(user.getId(), orderMenuAddServiceDto);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);
 

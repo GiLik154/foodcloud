@@ -45,7 +45,7 @@ public class OrderMenu {
         this.foodMenu = foodMenu;
         this.orderMain = orderMain;
         this.price = foodMenu.getPrice() * count;
-        this.result = "Received";
+        this.result = "Payment waiting";
     }
 
 

@@ -5,6 +5,7 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
+import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class FoodMenuUpdateController {
     @GetMapping("")
     public String get(@RequestParam Long foodMenuId, Model model) {
         FoodMenu foodMenu = foodMenuRepository.findById(foodMenuId)
-                .orElseThrow(NotFoundBankAccountException::new);
+                .orElseThrow(NotFoundFoodMenuException::new);
 
         model.addAttribute("foodMenuInfo", foodMenu);
         return "thymeleaf/food-menu/update";

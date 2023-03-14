@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
-import com.example.foodcloud.controller.advice.RestaurantExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuUpdateController;
+import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
@@ -31,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuUpdateControllerTest {
     private final FoodMenuUpdateController foodMenuUpdateController;
-    private final RestaurantExceptionAdvice restaurantExceptionAdvice;
+    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private final LoginInterceptor loginInterceptor;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
@@ -39,9 +38,9 @@ class FoodMenuUpdateControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuUpdateControllerTest(FoodMenuUpdateController foodMenuUpdateController, RestaurantExceptionAdvice restaurantExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public FoodMenuUpdateControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.foodMenuUpdateController = foodMenuUpdateController;
-        this.restaurantExceptionAdvice = restaurantExceptionAdvice;
+        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
@@ -51,7 +50,7 @@ class FoodMenuUpdateControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuUpdateController)
-                .setControllerAdvice(restaurantExceptionAdvice)
+                .setControllerAdvice(notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }

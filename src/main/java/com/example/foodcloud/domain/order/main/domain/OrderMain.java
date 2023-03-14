@@ -34,7 +34,7 @@ public class OrderMain {
         this.user = user;
         this.bankAccount = bankAccount;
         this.restaurant = restaurant;
-        this.result = "Received";
+        this.result = "Payment waiting";
     }
 
     public void updateResult(String result){

@@ -43,8 +43,7 @@ class UserJoinControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(userJoinController)
-                .setControllerAdvice(paramValidateAdvice)
-                .setControllerAdvice(userExceptionAdvice)
+                .setControllerAdvice(paramValidateAdvice, userExceptionAdvice)
                 .build();
     }
 
@@ -91,5 +90,21 @@ class UserJoinControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_NAME_DUPLICATE.getResult()));
+    }
+
+    @Test
+    void 유저_회원가입_파라미터_Null() throws Exception {
+        User user = new User("testName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        MockHttpServletRequestBuilder builder = post("/user/join")
+                .param("joinName", "")
+                .param("joinPassword", "")
+                .param("joinPhone", "");
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
     }
 }

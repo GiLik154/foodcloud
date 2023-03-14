@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
-import com.example.foodcloud.controller.advice.RestaurantExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuUpdateController;
+import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuUpdateGetControllerTest {
     private final FoodMenuUpdateController foodMenuUpdateController;
-    private final RestaurantExceptionAdvice restaurantExceptionAdvice;
+    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private final LoginInterceptor loginInterceptor;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
@@ -37,9 +36,9 @@ class FoodMenuUpdateGetControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuUpdateGetControllerTest(FoodMenuUpdateController foodMenuUpdateController, RestaurantExceptionAdvice restaurantExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public FoodMenuUpdateGetControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.foodMenuUpdateController = foodMenuUpdateController;
-        this.restaurantExceptionAdvice = restaurantExceptionAdvice;
+        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
@@ -49,13 +48,13 @@ class FoodMenuUpdateGetControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuUpdateController)
-                .setControllerAdvice(restaurantExceptionAdvice)
+                .setControllerAdvice(notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
 
     @Test
-    void 음식_메뉴_정상_출력() throws Exception {
+    void 음식_메뉴_Get_정상_출력() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -79,7 +78,7 @@ class FoodMenuUpdateGetControllerTest {
     }
 
     @Test
-    void 음식_메뉴_세션_없음() throws Exception {
+    void 음식_메뉴_Get_세션_없음() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -89,12 +88,8 @@ class FoodMenuUpdateGetControllerTest {
         FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
         MockHttpServletRequestBuilder builder = get("/food-menu/update")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .session(session);
+                .param("foodMenuId", String.valueOf(foodMenu.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -102,7 +97,7 @@ class FoodMenuUpdateGetControllerTest {
     }
 
     @Test
-    void 음식_메뉴_음식메뉴_고유번호_다름() throws Exception {
+    void 음식_메뉴_Get_음식메뉴_고유번호_다름() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -116,13 +111,12 @@ class FoodMenuUpdateGetControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = get("/food-menu/update")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
+                .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
                 .session(session);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_RESTAURANT.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_FOOD_MENU.getResult()));
     }
-
 }

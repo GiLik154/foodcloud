@@ -4,7 +4,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateDto;
+import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -38,8 +38,8 @@ class RestaurantUpdateServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123", "test123");
-        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId, restaurantUpdateDto);
+        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123", "test123");
+        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId, restaurantUpdateServiceDto);
 
         assertTrue(isUpdate);
         assertEquals("test123", restaurant.getName());
@@ -56,8 +56,8 @@ class RestaurantUpdateServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123", "test123");
-        boolean isUpdate = restaurantUpdateService.update(userId + 1L, restaurantId, restaurantUpdateDto);
+        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123", "test123");
+        boolean isUpdate = restaurantUpdateService.update(userId + 1L, restaurantId, restaurantUpdateServiceDto);
 
         assertFalse(isUpdate);
         assertEquals("test", restaurant.getName(), "test");
@@ -75,8 +75,8 @@ class RestaurantUpdateServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateDto restaurantUpdateDto = new RestaurantUpdateDto("test123", "test123","test123");
-        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId + 1L, restaurantUpdateDto);
+        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123","test123");
+        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId + 1L, restaurantUpdateServiceDto);
 
         assertFalse(isUpdate);
         assertEquals("test", restaurant.getName());

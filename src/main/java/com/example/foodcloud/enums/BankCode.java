@@ -24,8 +24,6 @@ public enum BankCode {
     }
 
     public static String returnName(String code) {
-        System.out.println(code + "Asdasd");
-
         for (BankCode bankCode : BankCode.values()) {
             if (bankCode.code.equals(code)) {
                 return bankCode.name;

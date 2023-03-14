@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.order.main.service.add;
 
-import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddDto;
+import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddServiceDto;
 
 public interface OrderMainAddService {
-    void add(Long userId, OrderMainAddDto orderMainAddDto);
+    Long add(Long userId, OrderMainAddServiceDto orderMainAddServiceDto);
 }
