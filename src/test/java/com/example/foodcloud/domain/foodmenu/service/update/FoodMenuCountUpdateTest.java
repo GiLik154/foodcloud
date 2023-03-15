@@ -31,7 +31,6 @@ class FoodMenuCountUpdateTest {
     private final FoodMenuUpdateService foodMenuUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
@@ -43,7 +42,6 @@ class FoodMenuCountUpdateTest {
         this.restaurantRepository = restaurantRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.orderMainRepository = orderMainRepository;
     }
 
@@ -52,19 +50,17 @@ class FoodMenuCountUpdateTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
+        Long foodMenuId = foodMenu.getId();
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user,  foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
@@ -72,7 +68,7 @@ class FoodMenuCountUpdateTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu.getId(), orderMenu);
+                foodMenuUpdateService.updateFoodMenuOrderCount(foodMenuId, orderMenu);
                 countDownLatch.countDown();
             });
         }
@@ -84,7 +80,6 @@ class FoodMenuCountUpdateTest {
         orderMainRepository.delete(orderMain);
         foodMenuRepository.delete(foodMenu);
         restaurantRepository.delete(restaurant);
-        bankAccountRepository.delete(bankAccount);
         userRepository.delete(user);
     }
 }

@@ -40,7 +40,6 @@ class NewOrderPostControllerTest {
     private final NewOrderController newOrderController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
@@ -54,7 +53,6 @@ class NewOrderPostControllerTest {
         this.newOrderController = newOrderController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -76,9 +74,6 @@ class NewOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
@@ -90,7 +85,6 @@ class NewOrderPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/order/new")
                 .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("count", String.valueOf(5))
@@ -106,12 +100,10 @@ class NewOrderPostControllerTest {
         assertEquals("testInputLocation", orderMain.getLocation());
         assertEquals("Payment waiting", orderMain.getResult());
         assertEquals(user, orderMain.getUser());
-        assertEquals(bankAccount, orderMain.getBankAccount());
         assertEquals(restaurant, orderMain.getRestaurant());
         assertEquals("testInputLocation", orderMenu.getLocation());
         assertEquals("Payment waiting", orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
-        assertEquals(bankAccount, orderMenu.getBankAccount());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
     }
@@ -121,9 +113,6 @@ class NewOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
@@ -132,7 +121,6 @@ class NewOrderPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/order/new")
                 .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("count", String.valueOf(5));
@@ -147,9 +135,6 @@ class NewOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
@@ -161,7 +146,6 @@ class NewOrderPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/order/new")
                 .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("count", String.valueOf(5))
@@ -174,44 +158,10 @@ class NewOrderPostControllerTest {
     }
 
     @Test
-    void 새_주문_추가_은행_고유번호_다름() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
-        MockHttpServletRequestBuilder builder = post("/order/new")
-                .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId() + 1L))
-                .param("restaurantId", String.valueOf(restaurant.getId()))
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("count", String.valueOf(5))
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_BANK.getResult()));
-    }
-
-    @Test
     void 새_주문_추가_식당_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
@@ -223,7 +173,6 @@ class NewOrderPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/order/new")
                 .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId() + 1L))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("count", String.valueOf(5))
@@ -232,16 +181,13 @@ class NewOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_RESTAURANT.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
     }
 
     @Test
     void 새_주문_추가_음식메뉴_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
-
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
@@ -254,7 +200,6 @@ class NewOrderPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/order/new")
                 .param("location", "testInputLocation")
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
                 .param("count", String.valueOf(5))
@@ -263,6 +208,6 @@ class NewOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_FOOD_MENU.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
     }
 }

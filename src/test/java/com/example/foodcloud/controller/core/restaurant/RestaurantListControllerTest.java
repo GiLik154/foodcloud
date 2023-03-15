@@ -102,6 +102,6 @@ class RestaurantListControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_RESTAURANT.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
     }
 }

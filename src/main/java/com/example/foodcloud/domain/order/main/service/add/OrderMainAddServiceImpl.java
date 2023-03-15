@@ -24,18 +24,15 @@ public class OrderMainAddServiceImpl implements OrderMainAddService {
     private final OrderMenuAddService orderMenuAddService;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
 
     public Long add(Long userId, OrderMainAddServiceDto orderMainAddServiceDto) {
         User user = userRepository.validateUser(userId);
-        BankAccount bankAccount = bankAccountRepository.validateBankAccount(userId, orderMainAddServiceDto.getBankAccountId());
         Restaurant restaurant = restaurantRepository.validateRestaurant(orderMainAddServiceDto.getRestaurantId());
 
         OrderMain orderMain = new OrderMain(orderMainAddServiceDto.getLocation(),
                 getTime(),
                 user,
-                bankAccount,
                 restaurant
         );
 

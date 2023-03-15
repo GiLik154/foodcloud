@@ -3,6 +3,7 @@ package com.example.foodcloud.domain.order.menu.service.update;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

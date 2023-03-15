@@ -39,9 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class JoinOrderGetControllerTest {
     private final JoinOrderController joinOrderController;
-    private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
@@ -53,9 +51,7 @@ class JoinOrderGetControllerTest {
     @Autowired
     public JoinOrderGetControllerTest(JoinOrderController joinOrderController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.joinOrderController = joinOrderController;
-        this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -77,16 +73,13 @@ class JoinOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -107,22 +100,18 @@ class JoinOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("orderMainId", String.valueOf(orderMain.getId()));
 

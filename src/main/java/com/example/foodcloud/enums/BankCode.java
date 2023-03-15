@@ -6,7 +6,7 @@ public enum BankCode {
     POINT("000", "포인트"),
     KB("004", "국민"),
     MH("011", "농협"),
-    SHIN_HAN("008", "신한");
+    SHIN_HAN("088", "신한");
 
     private final String code;
     private final String name;
@@ -28,6 +28,24 @@ public enum BankCode {
         for (BankCode bankCode : BankCode.values()) {
             if (bankCode.code.equals(code)) {
                 return bankCode.name;
+            }
+        }
+        throw new NotFoundBankCodeException();
+    }
+
+    public static BankCode returnBankCode(String code) {
+        for (BankCode bankCode : BankCode.values()) {
+            if (bankCode.code.equals(code)) {
+                return bankCode;
+            }
+        }
+        throw new NotFoundBankCodeException();
+    }
+
+    public static void validate(String code) {
+        for (BankCode bankCode : BankCode.values()) {
+            if (bankCode.code.equals(code)) {
+                return;
             }
         }
         throw new NotFoundBankCodeException();

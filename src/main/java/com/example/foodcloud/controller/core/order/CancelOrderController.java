@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
-public class DeleteOrderController {
+public class CancelOrderController {
     private final OrderMenuDeleteService orderMenuDeleteService;
     private final OrderMenuRepository orderMenuRepository;
 
-    @GetMapping("/delete")
+    @GetMapping("/cancel")
     public String get(Long orderMenuId, Model model) {
         model.addAttribute("orderMenuInfo", orderMenuRepository.validateOrderMenuNotCancel(orderMenuId));
         return "thymeleaf/order/delete";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/cancel")
     public String post(@SessionAttribute Long userId,
                        Long orderMenuId,
                        Model model) {

@@ -11,8 +11,8 @@ public enum OrderResult {
 
     private final String result;
 
-    OrderResult(String name) {
-        this.result = name;
+    OrderResult(String result) {
+        this.result = result;
     }
 
     public String getResult() {

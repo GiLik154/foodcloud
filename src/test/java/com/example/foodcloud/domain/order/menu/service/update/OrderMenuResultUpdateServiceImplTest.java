@@ -27,17 +27,15 @@ class OrderMenuResultUpdateServiceImplTest {
     private final OrderMenuResultUpdateService orderMenuResultUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
 
     @Autowired
-    public OrderMenuResultUpdateServiceImplTest(OrderMenuResultUpdateService orderMenuResultUpdateService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
+    public OrderMenuResultUpdateServiceImplTest(OrderMenuResultUpdateService orderMenuResultUpdateService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
         this.orderMenuResultUpdateService = orderMenuResultUpdateService;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -49,19 +47,16 @@ class OrderMenuResultUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -77,19 +72,16 @@ class OrderMenuResultUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -105,19 +97,16 @@ class OrderMenuResultUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 

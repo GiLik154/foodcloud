@@ -26,15 +26,16 @@ class OrderMainDeleteServiceImplTest {
     private final OrderMainDeleteService orderMainDeleteService;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public OrderMainDeleteServiceImplTest(OrderMainDeleteService orderMainDeleteService, OrderMainRepository orderMainRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, FoodMenuRepository foodMenuRepository) {
+    public OrderMainDeleteServiceImplTest(OrderMainDeleteService orderMainDeleteService,
+                                          OrderMainRepository orderMainRepository,
+                                          UserRepository userRepository,
+                                          RestaurantRepository restaurantRepository) {
         this.orderMainDeleteService = orderMainDeleteService;
         this.orderMainRepository = orderMainRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -44,13 +45,11 @@ class OrderMainDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         boolean isDelete = orderMainDeleteService.delete(userId, orderMain.getId());
@@ -65,13 +64,10 @@ class OrderMainDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         boolean isDelete = orderMainDeleteService.delete(userId + 1L, orderMain.getId());
@@ -86,13 +82,10 @@ class OrderMainDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         boolean isDelete = orderMainDeleteService.delete(userId, orderMain.getId() + 1L);

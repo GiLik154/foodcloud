@@ -2,9 +2,6 @@ package com.example.foodcloud.controller.advice;
 
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
-import com.example.foodcloud.exception.UserNameDuplicateException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;

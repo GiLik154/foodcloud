@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -38,7 +37,6 @@ class DeleteOrderGetControllerTest {
     private final DeleteOrderController deleteOrderController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
@@ -51,7 +49,6 @@ class DeleteOrderGetControllerTest {
         this.deleteOrderController = deleteOrderController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -72,19 +69,16 @@ class DeleteOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user,  foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -105,19 +99,16 @@ class DeleteOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user,  foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
         MockHttpServletRequestBuilder builder = get("/order/delete")
@@ -133,19 +124,16 @@ class DeleteOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, bankAccount, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user,  foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -158,6 +146,6 @@ class DeleteOrderGetControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_ORDER_MENU.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND.getResult()));
     }
 }

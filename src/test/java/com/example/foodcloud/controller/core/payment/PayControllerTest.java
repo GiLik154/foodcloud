@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.payment;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
-import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.advice.PointExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -12,7 +11,6 @@ import com.example.foodcloud.domain.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
-import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -37,26 +36,26 @@ class PayControllerTest {
     private final PointRepository pointRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final ParamValidateAdvice paramValidateAdvice;
+    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private final PointExceptionAdvice pointExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public PayControllerTest(PayController payController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, ParamValidateAdvice paramValidateAdvice, PointExceptionAdvice pointExceptionAdvice) {
+    public PayControllerTest(PayController payController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice, PointExceptionAdvice pointExceptionAdvice) {
         this.payController = payController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.paramValidateAdvice = paramValidateAdvice;
+        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
         this.pointExceptionAdvice = pointExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(payController)
-                .setControllerAdvice(userExceptionAdvice, paramValidateAdvice, pointExceptionAdvice)
+                .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice, pointExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
@@ -153,7 +152,7 @@ class PayControllerTest {
     }
 
     @Test
-    void 은행_코드_다름() throws Exception { //todo 이거 NullPoint익셉션 말고 커스텀 입센션 만들어서 핸들링 하는거로.
+    void 은행_코드_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -172,7 +171,48 @@ class PayControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.BANK_NOT_FOUND.getResult()));
+    }
+
+    @Test
+    void 결제_세션_없음() throws Exception {
+        User user = new User("testUserName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        bankAccountRepository.save(bankAccount);
+
+        MockHttpServletRequestBuilder builder = post("/payment/pay")
+                .param("bank", "088")
+                .param("bankAccountId", String.valueOf(bankAccount.getId()))
+                .param("price", String.valueOf(5000));
+
+        mockMvc.perform(builder)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/login"));
+    }
+
+    @Test
+    void 신한_결제_유저_고유번호_다름() throws Exception {
+        User user = new User("testUserName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        bankAccountRepository.save(bankAccount);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userId", user.getId() + 1L);
+
+        MockHttpServletRequestBuilder builder = post("/payment/pay")
+                .param("bank", "088")
+                .param("bankAccountId", String.valueOf(bankAccount.getId()))
+                .param("price", String.valueOf(5000))
+                .session(session);
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/payment/pay"))
+                .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
     }
 
     @Test
@@ -197,6 +237,8 @@ class PayControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price Point payment succeed"));
+
+        assertEquals(1000, point.getTotalPoint());
     }
 
     @Test

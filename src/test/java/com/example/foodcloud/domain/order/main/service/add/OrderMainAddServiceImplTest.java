@@ -27,20 +27,17 @@ class OrderMainAddServiceImplTest {
     private final OrderMainAddService orderMainAddService;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
     public OrderMainAddServiceImplTest(OrderMainAddService OrderMainAddService,
                                        OrderMainRepository OrderMainRepository,
                                        UserRepository userRepository,
-                                       BankAccountRepository bankAccountRepository,
                                        RestaurantRepository restaurantRepository) {
 
         this.orderMainAddService = OrderMainAddService;
         this.orderMainRepository = OrderMainRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
@@ -50,22 +47,17 @@ class OrderMainAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId();
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", bankAccountId, restaurantId);
+        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", restaurantId);
         orderMainAddService.add(userId, OrderMainAddServiceDto);
         OrderMain orderMain = orderMainRepository.findByUserId(userId).get(0);
 
         assertEquals("test", orderMain.getLocation());
         assertEquals("Payment waiting", orderMain.getResult());
         assertEquals(user, orderMain.getUser());
-        assertEquals(bankAccount, orderMain.getBankAccount());
         assertEquals(restaurant, orderMain.getRestaurant());
         assertNotNull(orderMain.getTime());
     }
@@ -76,42 +68,15 @@ class OrderMainAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", bankAccountId, restaurantId);
+        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", restaurantId);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 orderMainAddService.add(userId + 1L, OrderMainAddServiceDto)
         );
-    }
-
-    @Test
-    void 오더_메뉴_추가_계좌고유번호_다름() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-        Long userId = user.getId();
-
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
-
-        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", bankAccountId + 1L, restaurantId);
-
-        NotFoundBankAccountException e = assertThrows(NotFoundBankAccountException.class, () ->
-                orderMainAddService.add(userId, OrderMainAddServiceDto)
-        );
-
-        assertEquals("Not found BankAccount", e.getMessage());
     }
 
     @Test
@@ -120,15 +85,11 @@ class OrderMainAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccountRepository.findByUserId(userId).get(0).getId();
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", bankAccountId, restaurantId + 1L);
+        OrderMainAddServiceDto OrderMainAddServiceDto = new OrderMainAddServiceDto("test", restaurantId + 1L);
 
         NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
                 orderMainAddService.add(userId, OrderMainAddServiceDto)

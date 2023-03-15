@@ -39,7 +39,6 @@ class JoinOrderPostControllerTest {
     private final JoinOrderController joinOrderController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
@@ -53,7 +52,6 @@ class JoinOrderPostControllerTest {
         this.joinOrderController = joinOrderController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -75,16 +73,13 @@ class JoinOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -93,7 +88,6 @@ class JoinOrderPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("orderMainId", String.valueOf(orderMain.getId()))
                 .session(session);
@@ -107,7 +101,6 @@ class JoinOrderPostControllerTest {
         assertEquals("testInputLocation", orderMenu.getLocation());
         assertEquals("Payment waiting", orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
-        assertEquals(bankAccount, orderMenu.getBankAccount());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
     }
@@ -117,22 +110,18 @@ class JoinOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("orderMainId", String.valueOf(orderMain.getId()));
 
@@ -148,16 +137,13 @@ class JoinOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -166,7 +152,6 @@ class JoinOrderPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("orderMainId", String.valueOf(orderMain.getId()))
                 .session(session);
@@ -180,56 +165,17 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_은행_고유번호_다름() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
-        orderMainRepository.save(orderMain);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
-        MockHttpServletRequestBuilder builder = post("/order/join")
-                .param("location", "testInputLocation")
-                .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId() + 1L))
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderMainId", String.valueOf(orderMain.getId()))
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_BANK.getResult()));
-
-        assertTrue(orderMenuRepository.findByOrderMainId(orderMain.getId()).isEmpty());
-    }
-
-    @Test
     void 주문_추가_메뉴_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -238,7 +184,6 @@ class JoinOrderPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
                 .param("orderMainId", String.valueOf(orderMain.getId()))
                 .session(session);
@@ -246,7 +191,7 @@ class JoinOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_FOOD_MENU.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
 
         assertTrue(orderMenuRepository.findByOrderMainId(orderMain.getId()).isEmpty());
     }
@@ -256,16 +201,13 @@ class JoinOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNum", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -274,7 +216,6 @@ class JoinOrderPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("orderMainId", String.valueOf(orderMain.getId() + 1L))
                 .session(session);
@@ -282,7 +223,7 @@ class JoinOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_FOUND_ORDER_MAIN.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MAIN_NOT_FOUND.getResult()));
 
         assertTrue(orderMenuRepository.findByOrderMainId(orderMain.getId()).isEmpty());
     }

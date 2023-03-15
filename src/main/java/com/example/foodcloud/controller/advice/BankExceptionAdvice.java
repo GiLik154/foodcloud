@@ -12,7 +12,7 @@ public class BankExceptionAdvice {
     @ExceptionHandler(NotFoundBankAccountException.class)
     public ModelAndView duplicateOfUserName() {
         ModelAndView modelAndView = new ModelAndView("thymeleaf/error/error-page");
-        modelAndView.addObject("errorMsg", KoreanErrorCode.NOT_FOUND_BANK.getResult());
+        modelAndView.addObject("errorMsg", KoreanErrorCode.BANK_NOT_FOUND.getResult());
 
         return modelAndView;
     }

@@ -22,7 +22,7 @@ public class JoinOrderController {
 
     @GetMapping("/join")
     public String get(Long orderMainId, Model model) {
-        model.addAttribute("orderMainInfo", orderMainRepository.validateOrderMain(orderMainId));
+        model.addAttribute("orderMainInfo", orderMainRepository.validateOrderMainNotCancel(orderMainId));
         return "thymeleaf/order/join";
     }
 

@@ -31,17 +31,15 @@ class RecommendOrderMenuServiceImplTest {
     private final RecommendOrderMenuService recommendOrderMenuService;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final OrderMainRepository orderMainRepository;
 
     @Autowired
-    public RecommendOrderMenuServiceImplTest(RecommendOrderMenuService recommendOrderMenuService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
+    public RecommendOrderMenuServiceImplTest(RecommendOrderMenuService recommendOrderMenuService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
         this.recommendOrderMenuService = recommendOrderMenuService;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
@@ -53,9 +51,6 @@ class RecommendOrderMenuServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
@@ -66,10 +61,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test");
@@ -87,9 +82,6 @@ class RecommendOrderMenuServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
@@ -106,10 +98,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu5);
         foodMenuRepository.save(foodMenu6);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test");
@@ -129,9 +121,6 @@ class RecommendOrderMenuServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
@@ -142,10 +131,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
         orderMenuRepository.save(orderMenu);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
@@ -161,9 +150,6 @@ class RecommendOrderMenuServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
-        bankAccountRepository.save(bankAccount);
-
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
@@ -174,10 +160,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, bankAccount, restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, bankAccount, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test123");
