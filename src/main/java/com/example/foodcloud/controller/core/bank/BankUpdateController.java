@@ -1,10 +1,8 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.core.bank.dto.BankAccountUpdateControllerDto;
-import com.example.foodcloud.domain.bank.domain.BankAccount;
-import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.update.BankAccountUpdateService;
-import com.example.foodcloud.exception.NotFoundBankAccountException;
+import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.bank.service.account.update.BankAccountUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,18 +19,18 @@ public class BankUpdateController {
 
     @GetMapping("")
     public String get(@RequestParam Long bankAccountId, Model model) {
-        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
-                .orElseThrow(NotFoundBankAccountException::new);
+        bankAccountRepository.findById(bankAccountId).ifPresent(bankAccount ->
+                model.addAttribute("bankAccountInfo", bankAccount));
 
-        model.addAttribute("bankAccountInfo", bankAccount);
+
         return "thymeleaf/bank/update";
     }
 
     @PostMapping("")
     public String post(@SessionAttribute("userId") Long userId,
-                        Long bankAccountId,
-                        @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto,
-                        Model model) {
+                       Long bankAccountId,
+                       @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto,
+                       Model model) {
 
         model.addAttribute("isUpdate", bankAccountUpdateService.update(userId,
                 bankAccountId,

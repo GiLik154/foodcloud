@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.order.menu.service.cancel;
 
-import com.example.foodcloud.domain.bank.service.payment.PaymentService;
+import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.menu.service.update.OrderMenuResultUpdateService;
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,16 +18,13 @@ public class OrderMenuCancelServiceImpl implements OrderMenuCancelService {
     private final Map<String, PaymentService> paymentServiceMap;
     private final OrderMenuRepository orderMenuRepository;
 
-    public boolean isCancel(Long userId, Long orderMenuId) {
-        Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findByUserIdAndId(userId, orderMenuId);
-        if (orderMenuOptional.isPresent()) {
+    public String cancel(Long userId, Long orderMenuId) {
+        OrderMenu orderMenu = orderMenuRepository.validateOrderMenuForUserIdAndId(userId, orderMenuId);
 
-            OrderMenu orderMenu = orderMenuOptional.get();
+        PaymentService paymentService = paymentServiceMap.get(orderMenu.getPayment());
 
-            PaymentService paymentService = paymentServiceMap.get(orderMenu.getBankAccount().getBank());
+        orderMenuResultUpdateService.update(userId, orderMenuId, "CANCELED");
 
-
-        }
-        return false;
+        return paymentService.refund(userId, orderMenu);
     }
 }

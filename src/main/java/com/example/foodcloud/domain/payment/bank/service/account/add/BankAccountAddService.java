@@ -1,0 +1,7 @@
+package com.example.foodcloud.domain.payment.bank.service.account.add;
+
+import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
+
+public interface BankAccountAddService {
+    void add(Long userId, BankAccountAddServiceDto bankAccountAddServiceDto);
+}

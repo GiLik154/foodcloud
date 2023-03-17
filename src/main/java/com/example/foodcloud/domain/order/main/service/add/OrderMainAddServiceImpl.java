@@ -1,7 +1,5 @@
 package com.example.foodcloud.domain.order.main.service.add;
 
-import com.example.foodcloud.domain.bank.domain.BankAccount;
-import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
 import com.example.foodcloud.domain.order.main.service.add.dto.OrderMainAddServiceDto;

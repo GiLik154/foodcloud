@@ -1,10 +1,8 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuUpdateControllerDto;
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
-import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,10 +20,10 @@ public class FoodMenuUpdateController {
 
     @GetMapping("")
     public String get(@RequestParam Long foodMenuId, Model model) {
-        FoodMenu foodMenu = foodMenuRepository.findById(foodMenuId)
-                .orElseThrow(NotFoundFoodMenuException::new);
+        foodMenuRepository.findById(foodMenuId).ifPresent(foodMenu ->
+                model.addAttribute("foodMenuInfo", foodMenu));
 
-        model.addAttribute("foodMenuInfo", foodMenu);
+
         return "thymeleaf/food-menu/update";
     }
 

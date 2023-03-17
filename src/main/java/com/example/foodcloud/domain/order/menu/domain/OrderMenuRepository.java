@@ -28,4 +28,10 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);
     }
+
+    default OrderMenu validateOrderMenuForUserIdAndId(Long userId, Long orderMenuId) {
+        Optional<OrderMenu> orderMenu = findByUserIdAndId(userId, orderMenuId);
+
+        return orderMenu.orElseThrow(NotFoundOrderMenuException::new);
+    }
 }

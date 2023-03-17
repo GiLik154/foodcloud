@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
-import com.example.foodcloud.domain.bank.service.account.add.dto.BankAccountAddServiceDto;
+import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;

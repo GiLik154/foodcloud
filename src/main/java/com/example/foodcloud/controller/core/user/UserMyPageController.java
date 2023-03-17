@@ -1,6 +1,5 @@
 package com.example.foodcloud.controller.core.user;
 
-import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,8 +17,8 @@ public class UserMyPageController {
 
     @GetMapping("")
     public String get(@SessionAttribute("userId") Long userId, Model model) {
-        Optional<User> user = userRepository.findById(userId);
-        user.ifPresent(value -> model.addAttribute("userInfo", value));
+        userRepository.findById(userId).ifPresent(user ->
+                model.addAttribute("userInfo", user));
         return "thymeleaf/user/my-page";
     }
 }

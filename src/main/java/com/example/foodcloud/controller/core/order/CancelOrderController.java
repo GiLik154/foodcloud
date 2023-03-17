@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.order;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.service.delete.OrderMenuDeleteService;
+import com.example.foodcloud.domain.order.menu.service.cancel.OrderMenuCancelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,22 +14,21 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
 public class CancelOrderController {
-    private final OrderMenuDeleteService orderMenuDeleteService;
+    private final OrderMenuCancelService orderMenuCancelService;
     private final OrderMenuRepository orderMenuRepository;
 
     @GetMapping("/cancel")
     public String get(Long orderMenuId, Model model) {
         model.addAttribute("orderMenuInfo", orderMenuRepository.validateOrderMenuNotCancel(orderMenuId));
-        return "thymeleaf/order/delete";
+        return "thymeleaf/order/cancel";
     }
 
     @PostMapping("/cancel")
     public String post(@SessionAttribute Long userId,
                        Long orderMenuId,
                        Model model) {
-//환불기능 만들어야함
-        model.addAttribute("isDelete", orderMenuDeleteService.delete(userId, orderMenuId));
+        model.addAttribute("cancelMsg", orderMenuCancelService.cancel(userId, orderMenuId));
 
-        return "thymeleaf/order/delete-check";
+        return "thymeleaf/order/cancel-check";
     }
 }

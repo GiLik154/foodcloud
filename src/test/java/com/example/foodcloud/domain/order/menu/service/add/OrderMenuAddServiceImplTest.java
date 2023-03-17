@@ -1,7 +1,5 @@
 package com.example.foodcloud.domain.order.menu.service.add;
 
-import com.example.foodcloud.domain.bank.domain.BankAccount;
-import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
@@ -13,7 +11,6 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.exception.NotFoundBankAccountException;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import com.example.foodcloud.exception.NotFoundOrderMainException;
 import org.junit.jupiter.api.AfterEach;

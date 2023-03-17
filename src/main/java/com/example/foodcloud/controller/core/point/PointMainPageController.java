@@ -1,8 +1,8 @@
 package com.example.foodcloud.controller.core.point;
 
-import com.example.foodcloud.domain.point.domain.Point;
-import com.example.foodcloud.domain.point.domain.PointRepository;
-import com.example.foodcloud.domain.point.service.award.PointAwardService;
+import com.example.foodcloud.domain.payment.point.domain.Point;
+import com.example.foodcloud.domain.payment.point.domain.PointRepository;
+import com.example.foodcloud.domain.payment.point.service.award.PointAwardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

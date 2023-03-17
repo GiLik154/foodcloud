@@ -1,9 +1,7 @@
 package com.example.foodcloud.controller.core.bank;
 
-import com.example.foodcloud.domain.bank.domain.BankAccount;
-import com.example.foodcloud.domain.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.bank.service.account.delete.BankAccountDeleteService;
-import com.example.foodcloud.exception.NotFoundBankAccountException;
+import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.bank.service.account.delete.BankAccountDeleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +16,10 @@ public class BankDeleteController {
 
     @GetMapping("")
     public String get(@RequestParam Long bankAccountId, Model model) {
-        BankAccount bankAccount = bankAccountRepository.findById(bankAccountId)
-                .orElseThrow(NotFoundBankAccountException::new);
+        bankAccountRepository.findById(bankAccountId).ifPresent(bankAccount ->
+                model.addAttribute("bankAccountInfo", bankAccount));
 
-        model.addAttribute("bankAccountInfo", bankAccount);
+
         return "thymeleaf/bank/delete";
     }
 

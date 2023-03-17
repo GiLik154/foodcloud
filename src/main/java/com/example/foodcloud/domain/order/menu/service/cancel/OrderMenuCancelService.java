@@ -1,5 +1,5 @@
 package com.example.foodcloud.domain.order.menu.service.cancel;
 
 public interface OrderMenuCancelService {
-    boolean isCancel(Long userId, Long orderMenuId);
+    String cancel(Long userId, Long orderMenuId);
 }

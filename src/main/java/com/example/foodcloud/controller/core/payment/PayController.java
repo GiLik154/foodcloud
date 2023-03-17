@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.payment;
 
-import com.example.foodcloud.domain.bank.service.payment.PaymentService;
-import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
+import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
 import com.example.foodcloud.enums.BankCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,7 +34,7 @@ public class PayController {
 
         PaymentService paymentService = paymentServiceMap.get(bank);
 
-        model.addAttribute("payment", paymentService.pay(bank, userId, orderMenuId, bankAccountId, price));
+        model.addAttribute("payment", paymentService.pay(userId, orderMenuId, bankAccountId, price));
 
         return "thymeleaf/payment/pay";
     }

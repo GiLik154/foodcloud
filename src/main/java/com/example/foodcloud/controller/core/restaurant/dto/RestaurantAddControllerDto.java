@@ -8,11 +8,11 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 public class RestaurantAddControllerDto {
     @NotEmpty
-    private String name;
+    private final String name;
     @NotEmpty
-    private String location;
+    private final String location;
     @NotEmpty
-    private String businessHours;
+    private final String businessHours;
 
     public RestaurantAddControllerDto(String name, String location, String businessHours) {
         this.name = name;

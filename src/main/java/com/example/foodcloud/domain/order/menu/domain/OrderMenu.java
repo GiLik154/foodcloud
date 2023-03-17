@@ -1,10 +1,11 @@
 package com.example.foodcloud.domain.order.menu.domain;
 
-import com.example.foodcloud.domain.bank.domain.BankAccount;
+import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.point.domain.Point;
+import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.user.domain.User;
+import com.example.foodcloud.enums.BankCode;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.Getter;
 
@@ -21,6 +22,8 @@ public class OrderMenu {
     private String time;
     private String result;
     private int price;
+
+    private String payment;
     @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
@@ -52,13 +55,15 @@ public class OrderMenu {
         this.result = OrderResult.PAYMENT_WAITING.getResult();
     }
 
-    public void updatePaymentForBank(Object bankAccount) {
+    public void updatePayment(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+        this.payment = bankAccount.getBank();
         this.result = OrderResult.RECEIVED.getResult();
     }
 
-    public void updatePaymentForPoint(Object point) {
+    public void updatePayment(Point point) {
         this.point = point;
+        this.payment = BankCode.POINT.getCode();
         this.result = OrderResult.RECEIVED.getResult();
     }
 
