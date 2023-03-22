@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
+    <!-- 부트스트랩 CSS 파일 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="border_num">이름</q></div>
-<div class="border_kinds">계좌번호</div>
-<div class="border_date">은행</div>
-
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/bank/delete}'>
-
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4 border num">이름</div>
+        <div class="col-sm-4 border kinds">계좌번호</div>
+        <div class="col-sm-4 border date">은행</div>
+    </div>
+    <div class="row">
         <th:block th:with="code=${bankAccountInfo.bank}">
-            <div class="border_num"><td th:text="${bankAccountInfo.name}"></td></div>
-            <div class="border_kinds"><td th:text="${bankAccountInfo.accountNumber}"></td></div>
-            <div class="border_date"><td th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></td></div>
+            <div class="col-sm-4 border num" th:text="${bankAccountInfo.name}"></div>
+            <div class="col-sm-4 border kinds" th:text="${bankAccountInfo.accountNumber}"></div>
+            <div class="col-sm-4 border date" th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></div>
         </th:block>
-
-    <div class="border_clear">비밀번호를 입력해주세요.</div>
-
-    <div class="border">
-        <input type="password" class="form-control" name="password" id="password">
     </div>
-
-    <br>
-
-
-    <div class="reset">
-        <input type='submit' value='삭제'>
-        <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+    <div class="row border clear">비밀번호를 입력해주세요.</div>
+    <div class="row">
+        <form name="form" id="form" role="form" method="post" th:action='@{/bank/delete(bankAccountId=${bankAccountInfo.id})}' class="col-sm-12">
+            <div class="form-group col-sm-12">
+                <input type="password" class="form-control" name="password" id="password" placeholder="비밀번호를 입력하세요.">
+            </div>
+            <div class="form-group col-sm-12 reset">
+                <input type='submit' value='삭제' class="btn btn-primary">
+                <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-secondary">메인페이지로</button>
+            </div>
+        </form>
     </div>
-</form>
+</div>
+
+<!-- 부트스트랩 JS 파일 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -27,10 +27,6 @@ public class FoodMenu {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @OneToMany
-    @JoinColumn(name = "order_history_id")
-    private List<OrderMenu> orderMenu;
-
     public FoodMenu() {
     }
 
@@ -42,7 +38,6 @@ public class FoodMenu {
         this.meatType = meatType;
         this.vegetables = vegetables;
         this.restaurant = restaurant;
-        this.orderMenu = new ArrayList<>();
     }
 
     public void update(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables) {
@@ -54,11 +49,10 @@ public class FoodMenu {
         this.vegetables = vegetables;
     }
 
-    public void updateOrderMenu(OrderMenu orderMenu) {
+    public void updateOrderMenu() {
         restaurant.updateOrderCount();
 
         this.orderCount++;
-        this.orderMenu.add(orderMenu);
     }
 
     public void uploadImage(String imagePath) {

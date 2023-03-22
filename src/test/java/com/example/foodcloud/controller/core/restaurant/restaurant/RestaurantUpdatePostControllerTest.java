@@ -1,8 +1,8 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
-import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
+import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantUpdateController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Manager Results</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <script type="text/javascript" th:src="@{/js/food-menu/orde-mangerr-result-update.js}" rel="stylesheet"></script>
+    <link th:href="@{/css/restaurant/restaurant-check.css}" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1>Order Manager Results</h1>
+
+    <div class="border_clear">조회할 결과를 선택해주세요.</div>
+    <select id="selectResult">
+        <option value="">조회할 결과를 선택해주세요.</option>
+        <th:block th:each="result : ${T(com.example.foodcloud.enums.OrderResult).values()}">
+            <option th:value="${result}" th:text="${result.getResult()}"></option>
+        </th:block>
+    </select>
+
+    <div id="orderList">
+        <table>
+            <thead>
+            <tr>
+                <th>위치</th>
+                <th>개수</th>
+                <th>시간</th>
+                <th>결과</th>
+                <th>가격</th>
+                <th>결제수단</th>
+                <th colspan="4">주문 상태 변경</th>
+            </tr>
+            </thead>
+            <tbody id="orderListBody">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

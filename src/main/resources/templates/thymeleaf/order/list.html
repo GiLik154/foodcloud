@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="order-manager-body">
+    <div id="orderList">
+        <table>
+            <thead>
+            <tr>
+                <th>위치</th>
+                <th>개수</th>
+                <th>시간</th>
+                <th>결과</th>
+                <th>가격</th>
+                <th>결제수단</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody id="orderListBody">
+            <tr th:block th:each="list : ${orderMenuList}">
+                <td th:text="${list.location}"></td>
+                <td th:text="${list.count}"></td>
+                <td th:text="${list.time}"></td>
+                <td th:text="${list.result}"></td>
+                <td th:text="${list.price}"></td>
+                <td th:text="${list.payment}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</body>
+</html>

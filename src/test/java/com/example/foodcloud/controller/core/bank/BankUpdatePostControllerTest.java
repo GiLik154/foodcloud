@@ -55,7 +55,7 @@ class BankUpdatePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_정상작동() throws Exception {
+    void Post_계좌_업데이트_정상작동() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -73,8 +73,8 @@ class BankUpdatePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/update"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isUpdate=true"))
                 .andExpect(model().attribute("isUpdate", true));
 
         assertEquals("updateBankName", bankAccount.getName());
@@ -83,7 +83,7 @@ class BankUpdatePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_유저_고유번호_다름() throws Exception {
+    void Post_계좌_업데이트_유저_고유번호_다름() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -101,8 +101,8 @@ class BankUpdatePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/update"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isUpdate=false"))
                 .andExpect(model().attribute("isUpdate", false));
 
         assertNotEquals("updateBankName", bankAccount.getName());
@@ -111,7 +111,7 @@ class BankUpdatePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_계좌_고유번호_다름() throws Exception {
+    void Post_계좌_업데이트_계좌_고유번호_다름() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -129,8 +129,8 @@ class BankUpdatePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/update"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isUpdate=false"))
                 .andExpect(model().attribute("isUpdate", false));
 
         assertNotEquals("updateBankName", bankAccount.getName());

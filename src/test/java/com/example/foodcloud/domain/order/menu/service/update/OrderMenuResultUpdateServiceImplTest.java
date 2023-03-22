@@ -58,35 +58,10 @@ class OrderMenuResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isUpdate = orderMenuResultUpdateService.update(userId, orderMenuId, "COOKING");
+        boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId, "COOKING");
 
         assertTrue(isUpdate);
         assertEquals("Cooking", orderMenu.getResult());
-    }
-
-    @Test
-    void 오더메뉴_업데이트_유저_고유번호_다름() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-        Long userId = user.getId();
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenuRepository.save(orderMenu);
-        Long orderMenuId = orderMenu.getId();
-
-        boolean isUpdate = orderMenuResultUpdateService.update(userId + 1L, orderMenuId, "COOKING");
-
-        assertFalse(isUpdate);
-        assertEquals("Payment waiting", orderMenu.getResult());
     }
 
     @Test
@@ -108,7 +83,7 @@ class OrderMenuResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isUpdate = orderMenuResultUpdateService.update(userId, orderMenuId +1L, "COOKING");
+        boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId +1L, "COOKING");
 
         assertFalse(isUpdate);
         assertEquals("Payment waiting", orderMenu.getResult());

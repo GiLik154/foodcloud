@@ -28,7 +28,7 @@ public class BankUpdateController {
 
     @PostMapping("")
     public String post(@SessionAttribute("userId") Long userId,
-                       Long bankAccountId,
+                       @RequestParam Long bankAccountId,
                        @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto,
                        Model model) {
 
@@ -36,6 +36,6 @@ public class BankUpdateController {
                 bankAccountId,
                 bankAccountUpdateControllerDto.convert()));
 
-        return "thymeleaf/bank/update";
+        return "redirect:/bank/list";
     }
 }

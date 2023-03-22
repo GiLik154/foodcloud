@@ -4,7 +4,6 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.image.ImageUploadService;
 import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
@@ -48,9 +47,9 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     }
 
     @Override
-    public void updateFoodMenuOrderCount(Long foodMenuId, OrderMenu orderMenu) {
+    public void updateFoodMenuOrderCount(Long foodMenuId) {
         FoodMenu foodMenu = foodMenuRepository.findByIdForUpdate(foodMenuId);
-        foodMenu.updateOrderMenu(orderMenu);
+        foodMenu.updateOrderMenu();
     }
 
 

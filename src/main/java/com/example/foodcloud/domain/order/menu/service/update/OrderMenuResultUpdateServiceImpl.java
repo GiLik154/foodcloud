@@ -17,8 +17,8 @@ public class OrderMenuResultUpdateServiceImpl implements OrderMenuResultUpdateSe
     private final OrderMenuRepository orderMenuRepository;
 
     @Override
-    public boolean update(Long userId, Long orderMenuId, String result) {
-        Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findByUserIdAndId(userId, orderMenuId);
+    public boolean update(Long orderMenuId, String result) {
+        Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findById(orderMenuId);
 
         if (orderMenuOptional.isPresent()) {
             OrderResult orderResult = OrderResult.valueOf(result);

@@ -1,39 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/info-revise.css}" type="text/css" rel="stylesheet"/>
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Bank Account Form</title>
+  <!-- 부트스트랩 링크 추가 -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/bank/add}'>
-
-
-  <div class="border_clear">계좌 이름을 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="name" id="name" placeholder="계좌 이름">
-  </div>
-
-  <div class="border_clear">계좌 번호를 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="accountNumber" id="accountNumber" placeholder="계좌 번호">
-  </div>
-
-  <div class="border_clear">은행을 선택해주세요.</div>
-  <div class="border">
-    <input type="radio" name="bank" value="004" checked>농협
-    <input type="radio" name="bank" value="011">국민
-    <input type="radio" name="bank" value="088">신한
-  </div>
-
-  <br>
-
-
-  <div class="reset">
-    <input type='submit' value='등록'>
-    <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
-  </div>
-</form>
+<div class="container mt-5">
+  <h1 class="text-center mb-4">계좌 추가</h1>
+  <form name="form" id="form" role="form" method="post" action="@{/bank/add}" class="border p-4">
+    <div class="form-group">
+      <label for="name">계좌 이름 : </label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter account name">
+    </div>
+    <div class="form-group">
+      <label for="accountNumber">계좌 번호 : </label>
+      <input type="text" class="form-control" name="accountNumber" id="accountNumber" placeholder="Enter account number">
+    </div>
+    <div class="form-group">
+      <label for="bank">계좌 유형 :</label>
+      <div class="form-check">
+        <input type="radio" name="bank" id="bank1" value="004" class="form-check-input" checked>
+        <label for="bank1" class="form-check-label">농협</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" name="bank" id="bank2" value="011" class="form-check-input">
+        <label for="bank2" class="form-check-label">국민</label>
+      </div>
+      <div class="form-check">
+        <input type="radio" name="bank" id="bank3" value="088" class="form-check-input">
+        <label for="bank3" class="form-check-label">신한</label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+    <a href="@{/main}" class="btn btn-secondary">Go to Main Page</a>
+  </form>
+</div>
+<!-- 부트스트랩 스크립트 추가 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

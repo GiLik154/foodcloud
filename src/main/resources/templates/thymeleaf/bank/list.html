@@ -1,30 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Bank Accounts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 
+<div class="container mt-5">
+    <h1 class="mb-4">Bank Accounts</h1>
 
-<div class="border_num">이름</q></div>
-<div class="border_kinds">계좌번호</div>
-<div class="border_date">은행</div>
+    <div class="row mb-3">
+        <div class="col-sm-3 border-top border-bottom py-2">
+            <strong>이름</strong>
+        </div>
+        <div class="col-sm-4 border-top border-bottom py-2">
+            <strong>계좌</strong>
+        </div>
+        <div class="col-sm-3 border-top border-bottom py-2">
+            <strong>은행</strong>
+        </div>
+        <div class="col-sm-1 border-top border-bottom py-2"></div>
+        <div class="col-sm-1 border-top border-bottom py-2"></div>
+    </div>
 
-<tr th:each="account : ${bankAccountList}">
-    <th:block th:with="code=${account.bank}">
-        <div class="border_num"><td th:text="${account.name}"></td></div>
-        <div class="border_kinds"><td th:text="${account.accountNumber}"></td></div>
-        <div class="border_date"><td th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></td></div>
-        <td><button type="button" th:onclick="|location.href='@{/bank/delete(bankAccountId=${account.id})}'|">삭제하기</button></td>
-        <td><button type="button" th:onclick="|location.href='@{/bank/update(bankAccountId=${account.id})}'|">수정하기</button></td>
-    </th:block>
-</tr>
+    <div th:each="account : ${bankAccountList}" class="row mb-3">
+        <div class="col-sm-3 border-bottom py-2">
+            <div th:text="${account.name}"></div>
+        </div>
+        <div class="col-sm-4 border-bottom py-2">
+            <div th:text="${account.accountNumber}"></div>
+        </div>
+        <div class="col-sm-3 border-bottom py-2">
+            <div th:text="${T(com.example.foodcloud.enums.BankCode).returnName(account.bank)}"></div>
+        </div>
+        <div class="col-sm-1 border-bottom py-2">
+            <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/bank/delete(bankAccountId=${account.id})}'|">Delete</button>
+        </div>
+        <div class="col-sm-1 border-bottom py-2">
+            <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/bank/update(bankAccountId=${account.id})}'|">Edit</button>
+        </div>
+    </div>
 
-<div class="ui-button">
-    <button type="button" th:onclick="|location.href='@{/bank/add}'|">추가하기</button>
-    <button type="button" th:onclick="|location.href='@{/main(date = ${param.date})}'|">메인가기</button>
+    <div class="row mt-4">
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-success" th:onclick="|location.href='@{/bank/add}'|">Add</button>
+        </div>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" th:onclick="|location.href='@{/main(date=${param.date})}'|">Back</button>
+        </div>
+    </div>
 </div>
+
 </body>
 </html>

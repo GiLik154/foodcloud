@@ -54,7 +54,7 @@ class BankDeletePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_정상작동() throws Exception {
+    void Post_계좌_삭제_정상작동() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -70,15 +70,15 @@ class BankDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isDelete=true"))
                 .andExpect(model().attribute("isDelete", true));
 
         assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
-    void 계좌_삭제_세션_없음() throws Exception {
+    void Post_계좌_삭제_세션_없음() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -97,7 +97,7 @@ class BankDeletePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_유저_아이디_다름() throws Exception {
+    void Post_계좌_삭제_유저_아이디_다름() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -115,15 +115,15 @@ class BankDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isDelete=false"))
                 .andExpect(model().attribute("isDelete", false));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
-    void 계좌_삭제_유저_비밀번호_다름() throws Exception {
+    void Post_계좌_삭제_유저_비밀번호_다름() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -147,7 +147,7 @@ class BankDeletePostControllerTest {
     }
 
     @Test
-    void 계좌_삭제_계좌_아이디_다름() throws Exception {
+    void Post_계좌_삭제_계좌_아이디_다름() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -163,8 +163,8 @@ class BankDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/bank/list?isDelete=false"))
                 .andExpect(model().attribute("isDelete", false));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));

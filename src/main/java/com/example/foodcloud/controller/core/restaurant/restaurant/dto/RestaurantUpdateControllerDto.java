@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.core.restaurant.dto;
+package com.example.foodcloud.controller.core.restaurant.restaurant.dto;
 
 import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
 import lombok.Getter;

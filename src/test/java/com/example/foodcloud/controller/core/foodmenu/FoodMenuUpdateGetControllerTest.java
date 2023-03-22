@@ -54,7 +54,7 @@ class FoodMenuUpdateGetControllerTest {
     }
 
     @Test
-    void 음식_메뉴_Get_정상_출력() throws Exception {
+    void Get_음식_메뉴_업데이트_정상_출력() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -78,7 +78,7 @@ class FoodMenuUpdateGetControllerTest {
     }
 
     @Test
-    void 음식_메뉴_Get_세션_없음() throws Exception {
+    void GGet_음식_메뉴_업데이트_세션_없음() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -97,7 +97,7 @@ class FoodMenuUpdateGetControllerTest {
     }
 
     @Test
-    void 음식_메뉴_Get_음식메뉴_고유번호_다름() throws Exception {
+    void Get_음식_메뉴_업데이트_고유번호_다름() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -116,7 +116,7 @@ class FoodMenuUpdateGetControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
+                .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
+                .andExpect(model().attributeDoesNotExist("foodMenuInfo"));
     }
 }

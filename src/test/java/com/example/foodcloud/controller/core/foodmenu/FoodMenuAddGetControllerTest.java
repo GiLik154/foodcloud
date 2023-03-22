@@ -48,7 +48,7 @@ class FoodMenuAddGetControllerTest {
     }
 
     @Test
-    void 음식메뉴_추가_정상출력() throws Exception {
+    void Get_음식메뉴_추가_정상출력() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -60,12 +60,11 @@ class FoodMenuAddGetControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/add"))
-                .andExpect(model().attribute("foodTypes", FoodType.values()));
+                .andExpect(forwardedUrl("thymeleaf/food-menu/add"));
     }
 
     @Test
-    void 음식메뉴_추가_세션_없음() throws Exception {
+    void Get_음식메뉴_추가_세션_없음() throws Exception {
         MockHttpServletRequestBuilder builder = get("/food-menu/add");
 
         mockMvc.perform(builder)

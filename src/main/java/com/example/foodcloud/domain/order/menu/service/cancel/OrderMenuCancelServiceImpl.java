@@ -23,7 +23,7 @@ public class OrderMenuCancelServiceImpl implements OrderMenuCancelService {
 
         PaymentService paymentService = paymentServiceMap.get(orderMenu.getPayment());
 
-        orderMenuResultUpdateService.update(userId, orderMenuId, "CANCELED");
+        orderMenuResultUpdateService.update(orderMenuId, "CANCELED");
 
         return paymentService.refund(userId, orderMenu);
     }

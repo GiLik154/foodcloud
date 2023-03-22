@@ -1,6 +1,7 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
+import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantDeleteController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;

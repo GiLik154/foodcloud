@@ -1,6 +1,6 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
-import com.example.foodcloud.controller.core.restaurant.dto.RestaurantAddControllerDto;
+import com.example.foodcloud.controller.core.restaurant.restaurant.dto.RestaurantAddControllerDto;
 import com.example.foodcloud.domain.restaurant.service.add.RestaurantAddService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

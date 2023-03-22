@@ -1,28 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/user/mypage.css}" type="text/css" rel="stylesheet"/>
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>마이페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="/css/user/my-page.css" type="text/css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-<button type="button" th:onclick="|location.href='@{/delete}'|">등록 계좌 확인</button>
-<button type="button" th:onclick="|location.href='@{/delete}'|">주문 내역 확인</button>
-<button type="button" th:onclick="|location.href='@{/delete}'|">내 주문 보기</button>
-
-<div class="border_clear">아이디</div>
-<div class="border">
-  <td th:text="${userInfo.name}"></td>
-</div>
-<div class="border_clear">휴대폰번호</div>
-<div class="border"><td th:text = "${userInfo.phone}"></td></div>
-
-<br>
-
-<div class="reset">
-  <button type="button" th:onclick="|location.href='@{/user/delete}'|">탈퇴하기</button>
-  <button type="button" th:onclick="|location.href='@{/user/update}'|">수정하기</button>
-<!--  <button type="button" th:onclick="|location.href='@{/main?date=}'|">메인페이지로</button>-->
+<div class="container">
+  <h1>마이페이지</h1>
+  <div class="buttons">
+    <button type="button" onclick="location.href='/bank/list'" class="btn btn-primary">등록 계좌 확인</button>
+    <button type="button" onclick="location.href='/order-menu/list'" class="btn btn-primary">주문 내역 확인</button>
+    <button type="button" onclick="location.href='/delete'" class="btn btn-primary">내 주문 보기</button>
+  </div>
+  <div class="border_clear">아이디</div>
+  <div class="border">
+    <div class="value" th:text="${userInfo.name}"></div>
+  </div>
+  <div class="border_clear">휴대폰번호</div>
+  <div class="border">
+    <div class="value" th:text="${userInfo.phone}"></div>
+  </div>
+  <div class="reset">
+    <button type="button" onclick="location.href='/user/delete'" class="btn btn-danger">탈퇴하기</button>
+    <button type="button" onclick="location.href='/user/update'" class="btn btn-secondary">수정하기</button>
+  </div>
 </div>
 </body>
 </html>

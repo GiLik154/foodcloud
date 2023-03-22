@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(value = "/food-menu/list")
+@RequestMapping(value = "/food-menu")
 public class FoodMenuListController {
     private final FoodMenuRepository foodMenuRepository;
-    @GetMapping("")
+    @GetMapping("/list")
     public String get(Long restaurantId, Model model) {
         model.addAttribute("foodMenuList", foodMenuRepository.findByRestaurantId(restaurantId));
 

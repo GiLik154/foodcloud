@@ -1,13 +1,12 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
+import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
-import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

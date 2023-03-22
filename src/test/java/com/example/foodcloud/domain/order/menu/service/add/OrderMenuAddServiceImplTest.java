@@ -95,7 +95,6 @@ class OrderMenuAddServiceImplTest {
         assertNotNull(orderMenu.getTime());
 
         /** 음식 메뉴에서 주문 추가 기능 테스트 **/
-        assertEquals(orderMenu, foodMenu.getOrderMenu().get(0));
         assertEquals(1, foodMenu.getOrderCount());
         assertEquals(1, foodMenu.getRestaurant().getOrderCount());
     }

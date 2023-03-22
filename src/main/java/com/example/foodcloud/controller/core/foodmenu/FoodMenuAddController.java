@@ -21,8 +21,7 @@ public class FoodMenuAddController {
     private final FoodMenuAddService foodMenuAddService;
 
     @GetMapping("")
-    public String get(Model model) {
-        model.addAttribute("foodTypes", FoodType.values());
+    public String get() {
         return "thymeleaf/food-menu/add";
     }
 

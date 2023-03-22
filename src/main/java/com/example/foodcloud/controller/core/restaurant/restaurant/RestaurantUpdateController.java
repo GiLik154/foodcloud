@@ -1,6 +1,6 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
-import com.example.foodcloud.controller.core.restaurant.dto.RestaurantUpdateControllerDto;
+import com.example.foodcloud.controller.core.restaurant.restaurant.dto.RestaurantUpdateControllerDto;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdateService;
 import lombok.RequiredArgsConstructor;

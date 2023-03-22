@@ -24,9 +24,9 @@ public class BankDeleteController {
     }
 
     @PostMapping("")
-    public String post(@SessionAttribute("userId") Long userId, Long bankAccountId, String password, Model model) {
+    public String post(@SessionAttribute("userId") Long userId, @RequestParam Long bankAccountId, String password, Model model) {
         model.addAttribute("isDelete", bankAccountDeleteService.delete(userId, bankAccountId, password));
 
-        return "thymeleaf/bank/delete";
+        return "redirect:/bank/list";
     }
 }

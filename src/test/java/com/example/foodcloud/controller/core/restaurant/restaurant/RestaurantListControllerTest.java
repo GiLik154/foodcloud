@@ -1,6 +1,7 @@
-package com.example.foodcloud.controller.core.restaurant;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
+import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantListController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
@@ -20,12 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RestaurantDeleteGetControllerTest {
-    private final RestaurantDeleteController restaurantDeleteController;
+class RestaurantListControllerTest {
+    private final RestaurantListController restaurantListController;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final LoginInterceptor loginInterceptor;
@@ -33,8 +35,8 @@ class RestaurantDeleteGetControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantDeleteGetControllerTest(RestaurantDeleteController restaurantDeleteController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.restaurantDeleteController = restaurantDeleteController;
+    public RestaurantListControllerTest(RestaurantListController restaurantListController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+        this.restaurantListController = restaurantListController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.loginInterceptor = loginInterceptor;
@@ -43,14 +45,14 @@ class RestaurantDeleteGetControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(restaurantDeleteController)
+        mockMvc = MockMvcBuilders.standaloneSetup(restaurantListController)
                 .setControllerAdvice(notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
 
     @Test
-    void 식당_삭제_정상작동() throws Exception {
+    void 식당_리스트_정상작동() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -60,25 +62,24 @@ class RestaurantDeleteGetControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = get("/restaurant/delete")
-                .param("restaurantId", String.valueOf(restaurant.getId()))
+        MockHttpServletRequestBuilder builder = get("/restaurant/list")
                 .session(session);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/delete"))
-                .andExpect(model().attribute("restaurantInfo", restaurant));
+                .andExpect(forwardedUrl("thymeleaf/restaurant/list"))
+                .andExpect(model().attribute("restaurantList", restaurantRepository.validateRestaurantByUserId(user.getId())));
     }
 
     @Test
-    void 식당_삭제_세션없음() throws Exception {
+    void 식당_리스트_세션없음() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
         Restaurant restaurant = new Restaurant("testName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        MockHttpServletRequestBuilder builder = get("/restaurant/delete");
+        MockHttpServletRequestBuilder builder = get("/restaurant/list");
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -86,7 +87,7 @@ class RestaurantDeleteGetControllerTest {
     }
 
     @Test
-    void 식당_삭제_식당_고유번호_다름() throws Exception {
+    void 식당_리스트_유저_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -94,10 +95,9 @@ class RestaurantDeleteGetControllerTest {
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        session.setAttribute("userId", user.getId() + 1L);
 
-        MockHttpServletRequestBuilder builder = get("/restaurant/delete")
-                .param("restaurantId", String.valueOf(restaurant.getId() + 1L))
+        MockHttpServletRequestBuilder builder = get("/restaurant/list")
                 .session(session);
 
         mockMvc.perform(builder)
