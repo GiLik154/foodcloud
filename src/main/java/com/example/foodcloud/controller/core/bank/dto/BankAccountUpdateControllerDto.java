@@ -15,7 +15,6 @@ public class BankAccountUpdateControllerDto {
     private final String bank;
 
     public BankAccountUpdateControllerDto(String name, String accountNumber, String bank) {
-        System.out.println(bank);
         this.name = name;
         this.accountNumber = accountNumber;
         this.bank = bank;

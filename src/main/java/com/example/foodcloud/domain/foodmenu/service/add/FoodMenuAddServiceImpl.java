@@ -24,7 +24,7 @@ public class FoodMenuAddServiceImpl implements FoodMenuAddService {
     public boolean add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, MultipartFile file) {
         Optional<Restaurant> restaurantOptional = restaurantRepository.findByUserIdAndId(userId, restaurantId);
         if (restaurantOptional.isPresent()) {
-            FoodMenu foodMenu = new FoodMenu(foodMenuAddServiceDto.getFoodMenu(),
+            FoodMenu foodMenu = new FoodMenu(foodMenuAddServiceDto.getName(),
                     foodMenuAddServiceDto.getPrice(),
                     foodMenuAddServiceDto.getFoodType(),
                     foodMenuAddServiceDto.getTemperature(),

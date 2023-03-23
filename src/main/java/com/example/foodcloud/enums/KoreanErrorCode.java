@@ -1,7 +1,9 @@
 package com.example.foodcloud.enums;
 
 import com.example.foodcloud.exception.NotFoundErrorCodeException;
+import lombok.Getter;
 
+@Getter
 public enum KoreanErrorCode {
     BANK_NOT_FOUND("BANK_NOT_FOUND", "은행 정보를 확인해주세요."),
     FOOD_MENU_NOT_FOUND("FOOD_MENU_NOT_FOUND", "음식 메뉴 정보를 확인해주세요."),
@@ -19,10 +21,6 @@ public enum KoreanErrorCode {
     KoreanErrorCode(String name, String result) {
         this.name = name;
         this.result = result;
-    }
-
-    public String getResult() {
-        return result;
     }
 
     public static String findByResult(String name) {

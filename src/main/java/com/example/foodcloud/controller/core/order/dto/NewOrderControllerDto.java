@@ -11,20 +11,21 @@ public class NewOrderControllerDto {
     @NotEmpty
     private final String location;
     @NotNull
+    private final int count;
     private final Long restaurantId;
     @NotNull
     private final Long foodMenuId;
-    @NotNull
-    private final int count;
 
-    public NewOrderControllerDto(String location, Long restaurantId, int count, Long foodMenuId) {
+    @NotNull
+
+    public NewOrderControllerDto(String location, int count, Long restaurantId, Long foodMenuId) {
         this.location = location;
+        this.count = count;
         this.restaurantId = restaurantId;
         this.foodMenuId = foodMenuId;
-        this.count = count;
     }
 
     public NewOrderServiceDto convert() {
-        return new NewOrderServiceDto(this.location, this.restaurantId, this.foodMenuId, this.count);
+        return new NewOrderServiceDto(this.location, this.count, this.restaurantId, this.foodMenuId);
     }
 }

@@ -1,9 +1,11 @@
 package com.example.foodcloud.enums;
 
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
+@Getter
 public enum FoodType {
     NOODLE("면", Arrays.asList(FoodTypes.RAMEN, FoodTypes.UDON, FoodTypes.JJAJANGMYEON, FoodTypes.SPAGHETTI, FoodTypes.JJAMPPONG, FoodTypes.SOBA, FoodTypes.GUUKSU)),
     RICE("밥", Arrays.asList(FoodTypes.BIBIMBAP, FoodTypes.DEOPBAP, FoodTypes.BOKKEUMBAP)),
@@ -17,14 +19,5 @@ public enum FoodType {
     FoodType(String name, List<FoodTypes> foodTypes) {
         this.name = name;
         this.kinds = foodTypes;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-
-    public List<FoodTypes> getKinds() {
-        return kinds;
     }
 }

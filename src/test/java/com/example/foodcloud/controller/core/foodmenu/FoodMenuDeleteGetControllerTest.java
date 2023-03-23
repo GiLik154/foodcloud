@@ -81,7 +81,7 @@ class FoodMenuDeleteGetControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/food-menu/delete"))
-                .andExpect(model().attribute("bankAccountInfo", true));
+                .andExpect(model().attribute("bankAccountInfo", foodMenu));
     }
 
     @Test

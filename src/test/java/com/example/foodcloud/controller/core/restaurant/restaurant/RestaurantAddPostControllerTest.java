@@ -56,7 +56,7 @@ class RestaurantAddPostControllerTest {
     }
 
     @Test
-    void 식당_추가_정상작동() throws Exception {
+    void Post_식당_추가_정상작동() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -81,7 +81,7 @@ class RestaurantAddPostControllerTest {
     }
 
     @Test
-    void 식당_추가_세션_없음() throws Exception {
+    void Post_식당_추가_세션_없음() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -98,7 +98,7 @@ class RestaurantAddPostControllerTest {
     }
 
     @Test
-    void 식당_추가_유저_고유번호_다름() throws Exception {
+    void Post_식당_추가_유저_고유번호_다름() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -120,7 +120,7 @@ class RestaurantAddPostControllerTest {
     }
 
     @Test
-    void 식당_추가_파라미터_null() throws Exception {
+    void Post_식당_추가_파라미터_null() throws Exception {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 

@@ -23,7 +23,8 @@ public class BankAddController {
     }
 
     @PostMapping("/add")
-    public String post(@SessionAttribute("userId") Long userId, @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
+    public String post(@SessionAttribute("userId") Long userId,
+                       @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
          bankAccountAddService.add(userId, bankAccountAddControllerDto.convert());
 
         return "thymeleaf/bank/add";

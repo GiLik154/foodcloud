@@ -20,7 +20,7 @@ public class UserJoinControllerDto {
         this.joinPhone = joinPhone;
     }
 
-    public UserJoinServiceDto convertDto() {
+    public UserJoinServiceDto convert() {
         return new UserJoinServiceDto(this.joinName, this.joinPassword, this.joinPhone);
     }
 }

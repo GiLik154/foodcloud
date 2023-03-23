@@ -2,7 +2,11 @@ package com.example.foodcloud.controller.core.order;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
+import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuUpdateControllerDto;
+import com.example.foodcloud.controller.core.order.dto.JoinOrderControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
+import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
+import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
@@ -14,6 +18,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,7 +73,7 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_정상작동() throws Exception {
+    void Post_주문_추가_정상작동() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -105,7 +110,7 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_세션_없음() throws Exception {
+    void Post_주문_추가_세션_없음() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -132,7 +137,7 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_유저_고유번호_다름() throws Exception {
+    void Post_주문_추가_유저_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -164,7 +169,7 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_메뉴_고유번호_다름() throws Exception {
+    void Post_주문_추가_메뉴_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -174,7 +179,7 @@ class JoinOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();
@@ -196,7 +201,7 @@ class JoinOrderPostControllerTest {
     }
 
     @Test
-    void 주문_추가_오더메인_고유번호_다름() throws Exception {
+    void Post_주문_추가_오더메인_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -206,7 +211,7 @@ class JoinOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("testFoodMenuName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
+        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
         orderMainRepository.save(orderMain);
 
         MockHttpSession session = new MockHttpSession();

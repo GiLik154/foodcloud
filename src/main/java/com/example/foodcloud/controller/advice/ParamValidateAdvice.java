@@ -11,7 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ParamValidateAdvice {
 
     @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class, NullPointerException.class})
-    public ModelAndView bindException() {
+    public ModelAndView bindException(BindException e, MethodArgumentNotValidException m) {
+        System.out.println(e.getMessage());
+        System.out.println(m.getMessage());
         ModelAndView modelAndView = new ModelAndView("thymeleaf/error/error-page");
         modelAndView.addObject("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult());
 

@@ -12,15 +12,18 @@ public class RestaurantAddControllerDto {
     @NotEmpty
     private final String location;
     @NotEmpty
-    private final String businessHours;
+    private final String openHours;
+    @NotEmpty
+    private final String closeHours;
 
-    public RestaurantAddControllerDto(String name, String location, String businessHours) {
+    public RestaurantAddControllerDto(String name, String location, String openHours, String closeHours) {
         this.name = name;
         this.location = location;
-        this.businessHours = businessHours;
+        this.openHours = openHours;
+        this.closeHours = closeHours;
     }
 
     public RestaurantAddServiceDto convert(){
-        return new RestaurantAddServiceDto(this.name, this.location, this.businessHours);
+        return new RestaurantAddServiceDto(this.name, this.location, this.openHours + "-" + this.closeHours);
     }
 }

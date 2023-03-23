@@ -1,9 +1,11 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
+import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuUpdateControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -28,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuUpdateControllerTest {
+class FoodMenuUpdatePostControllerTest {
     private final FoodMenuUpdateController foodMenuUpdateController;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private final LoginInterceptor loginInterceptor;
@@ -38,7 +40,7 @@ class FoodMenuUpdateControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuUpdateControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public FoodMenuUpdatePostControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.foodMenuUpdateController = foodMenuUpdateController;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
@@ -56,7 +58,7 @@ class FoodMenuUpdateControllerTest {
     }
 
     @Test
-    void 음식_메뉴_업데이트_정상작동() throws Exception {
+    void Post_음식_메뉴_업데이트_정상작동() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
         MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
@@ -99,7 +101,7 @@ class FoodMenuUpdateControllerTest {
     }
 
     @Test
-    void 음식_메뉴_업데이트_세션_없음() throws Exception {
+    void Post_음식_메뉴_업데이트_세션_없음() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
         MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
@@ -137,7 +139,7 @@ class FoodMenuUpdateControllerTest {
     }
 
     @Test
-    void 음식_메뉴_업데이트_음식메뉴_고유번호_다름() throws Exception {
+    void Post_음식_메뉴_업데이트_음식메뉴_고유번호_다름() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
         MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
@@ -180,7 +182,7 @@ class FoodMenuUpdateControllerTest {
     }
 
     @Test
-    void 음식_메뉴_업데이트_식당_고유번호_다름() throws Exception {
+    void Post_음식_메뉴_업데이트_식당_고유번호_다름() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
         MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);

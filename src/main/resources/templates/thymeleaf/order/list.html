@@ -3,39 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- 부트스트랩 4.5.2 CSS 링크 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery 라이브러리 링크 -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- 부트스트랩 4.5.2 JS 라이브러리 링크 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* 추가적인 스타일링 */
+        .order-manager-body {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+
+        .border_num {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .border_num.my-4 {
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .btn-group-sm .btn {
+            padding: 0.3rem 0.6rem;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3e8e41;
+            border-color: #3e8e41;
+        }
+    </style>
 </head>
 <body>
-<div class="order-manager-body">
+<div class="border_num my-4 mx-auto w-75">주문 목록</div>
+
+<div class="container order-manager-body">
     <div id="orderList">
-        <table>
-            <thead>
+        <table class="table">
+            <thead class="thead-light">
             <tr>
-                <th>위치</th>
-                <th>개수</th>
-                <th>시간</th>
-                <th>결과</th>
+                <th>이미지</th>
+                <th>음식 이름</th>
+                <th>음식 타입</th>
+                <th>고기 타입</th>
+                <th>온도</th>
+                <th>야채</th>
                 <th>가격</th>
-                <th>결제수단</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th>주문 횟수</th>
             </tr>
             </thead>
             <tbody id="orderListBody">
-            <tr th:block th:each="list : ${orderMenuList}">
-                <td th:text="${list.location}"></td>
-                <td th:text="${list.count}"></td>
-                <td th:text="${list.time}"></td>
-                <td th:text="${list.result}"></td>
-                <td th:text="${list.price}"></td>
-                <td th:text="${list.payment}"></td>
+            <img th:if="${list.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
+                 th:else th:src="@{${list.imagePath}}">
+            <td th:text="${list.foodMenuName}"></td>
+            <td th:text="${list.foodType}"></td>
+            <td th:text="${list.meatType}"></td>
+            <td th:text="${list.temperature}"></td>
+            <td th:text="${list.vegetables}"></td>
+            <td th:text="${list.price}"></td>
+            <td th:text="${list.orderCount}"></td>
+            <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">주문하기</button>
             </tr>
             </tbody>
         </table>
     </div>
-</div>
+    <div class="reset">
+        <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">메인페이지로</button>
+    </div>
 </div>
 </body>
 </html>

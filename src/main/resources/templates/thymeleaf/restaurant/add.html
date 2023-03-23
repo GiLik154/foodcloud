@@ -1,39 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/info-revise.css}" type="text/css" rel="stylesheet"/>
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
 </head>
 <body>
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/bank/add}'>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h3 class="text-center mb-4">새로운 식당 등록</h3>
+            <form name="form" id="form" role="form" method="post" th:action="@{/restaurant/add}">
+                <div class="form-group">
+                    <label for="name">식당 이름</label>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="식당 이름" required/>
+                </div>
+                <div class="form-group">
+                    <label for="location">위치</label>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="위치" required/>
+                </div>
+                <div class="form-group">
+                    <label for="openHours">식당 운영 시간을 입력해주세요.</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <select id="openHours" class="form-control" name="openHours">
+                                <option value="">오픈시간</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <select id="closeHours" class="form-control" name="closeHours">
+                                <option value="">클로즈시간</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-
-  <div class="border_clear">계좌 이름을 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="name" id="name" placeholder="계좌 이름">
-  </div>
-
-  <div class="border_clear">계좌 번호를 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="accountNumber" id="accountNumber" placeholder="계좌 번호">
-  </div>
-
-  <div class="border_clear">은행을 선택해주세요.</div>
-  <div class="border">
-    <input type="radio" name="bank" value="004" checked>농협
-    <input type="radio" name="bank" value="011">국민
-    <input type="radio" name="bank" value="088">신한
-  </div>
-
-  <br>
-
-
-  <div class="reset">
-    <input type='submit' value='등록'>
-    <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
-  </div>
-</form>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">등록</button>
+                    <button type="button" class="btn btn-secondary" th:onclick="|location.href='@{/main}'|">
+                        메인페이지로
+                    </button>
+                </div>
+            </form>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+                    integrity="sha384-nrx05lDhAHsT/ZlW8eIjZl//NTnAXmJLrOnW8sdosAjpyaLLHCVU6FBmG2fXdf3M"
+                    crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script type="text/javascript" th:src="@{/js/restaurant/add.js}" rel="stylesheet"></script>
+        </div>
+    </div>
+</div>
 </body>
-</html>

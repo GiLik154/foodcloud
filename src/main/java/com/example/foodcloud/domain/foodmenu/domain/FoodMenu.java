@@ -15,14 +15,14 @@ public class FoodMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String foodMenuName;
-    private int price;
-    private String foodType;
-    private String temperature;
-    private String meatType;
-    private String vegetables;
-    private int orderCount;
     private String imagePath;
+    private String foodMenuName;
+    private String foodType;
+    private String meatType;
+    private String temperature;
+    private String vegetables;
+    private int price;
+    private int orderCount;
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;

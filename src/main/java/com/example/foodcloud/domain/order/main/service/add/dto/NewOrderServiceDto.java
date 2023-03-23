@@ -6,15 +6,15 @@ import lombok.Getter;
 @Getter
 public class NewOrderServiceDto {
     private final String location;
+    private final int count;
     private final Long restaurantId;
     private final Long foodMenuId;
-    private final int count;
 
-    public NewOrderServiceDto(String location, Long restaurantId, Long foodMenuId, int count) {
+    public NewOrderServiceDto(String location, int count, Long restaurantId, Long foodMenuId) {
         this.location = location;
+        this.count = count;
         this.restaurantId = restaurantId;
         this.foodMenuId = foodMenuId;
-        this.count = count;
     }
 
     public OrderMainAddServiceDto convertMainDto() {

@@ -4,15 +4,15 @@ import lombok.Getter;
 
 @Getter
 public class FoodMenuUpdateServiceDto {
-    private final String foodMenu;
+    private final String name;
     private final int price;
     private final String foodType;
     private final String temperature;
     private final String meatType;
     private final String vegetables;
 
-    public FoodMenuUpdateServiceDto(String foodMenu, int price, String foodType, String temperature, String meatType, String vegetables) {
-        this.foodMenu = foodMenu;
+    public FoodMenuUpdateServiceDto(String name, int price, String foodType, String temperature, String meatType, String vegetables) {
+        this.name = name;
         this.price = price;
         this.foodType = foodType;
         this.temperature = temperature;

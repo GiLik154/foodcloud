@@ -1,6 +1,6 @@
 <span th:if="${isJoin == null}">
     <script>
-              alert("작성 실패");
+              alert("가입 실패");
               location.href = "/main?date=";
     </script>
 </span>
@@ -8,7 +8,7 @@
 
 <span th:unless="${isJoin == null}">
     <script>
-              alert("작성 성공");
+              alert("가입 성공");
               location.href = "/main?date=";
     </script>
 </span>

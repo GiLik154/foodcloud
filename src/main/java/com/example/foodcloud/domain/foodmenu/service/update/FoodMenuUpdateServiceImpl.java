@@ -32,7 +32,7 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
                 imageUploadService.upload(restaurant.getName(), file, foodMenu);
             }
 
-            foodMenu.update(foodMenuUpdateServiceDto.getFoodMenu(),
+            foodMenu.update(foodMenuUpdateServiceDto.getName(),
                     foodMenuUpdateServiceDto.getPrice(),
                     foodMenuUpdateServiceDto.getFoodType(),
                     foodMenuUpdateServiceDto.getTemperature(),

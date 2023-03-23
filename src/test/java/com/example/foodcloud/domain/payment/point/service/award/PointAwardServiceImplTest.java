@@ -15,8 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -41,6 +40,7 @@ class PointAwardServiceImplTest {
         pointAwardService.award(user.getId(), 5000);
         Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
 
+        assertNotNull(point.getId());
         assertThat(point.getUser()).isEqualTo(user);
         assertThat(point.getTotalPoint()).isEqualTo(5000);
     }

@@ -1,9 +1,11 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
+import com.example.foodcloud.controller.core.bank.dto.BankAccountAddControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,7 +52,7 @@ class BankAddPostControllerTest {
     }
 
     @Test
-    void 계좌_추가_정상작동() throws Exception {
+    void Post_계좌_추가_정상작동() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -77,7 +79,7 @@ class BankAddPostControllerTest {
     }
 
     @Test
-    void 계좌_추가_유저아이디_없음() throws Exception {
+    void Post_계좌_추가_유저아이디_없음() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 

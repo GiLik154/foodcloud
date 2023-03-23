@@ -48,7 +48,7 @@ class UserJoinControllerTest {
     }
 
     @Test
-    void 유저_회원가입_기본페이지() throws Exception {
+    void Get_유저_회원가입_기본페이지() throws Exception {
         MockHttpServletRequestBuilder builder = get("/user/join");
 
         mockMvc.perform(builder)
@@ -57,7 +57,7 @@ class UserJoinControllerTest {
     }
 
     @Test
-    void 유저_회원가입_정상작동() throws Exception {
+    void Post_유저_회원가입_정상작동() throws Exception {
         MockHttpServletRequestBuilder builder = post("/user/join")
                 .param("joinName", "testName")
                 .param("joinPassword", "testPassword")
@@ -77,7 +77,7 @@ class UserJoinControllerTest {
     }
 
     @Test
-    void 유저_회원가입_아이디중복() throws Exception {
+    void Post_유저_회원가입_아이디중복() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -93,7 +93,7 @@ class UserJoinControllerTest {
     }
 
     @Test
-    void 유저_회원가입_파라미터_Null() throws Exception {
+    void Post_유저_회원가입_파라미터_Null() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 

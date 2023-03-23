@@ -1,33 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/info-revise.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .border_num {
+            border: 1px solid black;
+            border-radius: 10px;
+            font-weight: bold;
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .border_clear {
+            border-bottom: 1px solid black;
+            font-weight: bold;
+            display: inline-block;
+            padding: 10px;
+        }
+
+        .border {
+            border: 1px solid black;
+            border-radius: 10px;
+            display: inline-block;
+            padding: 10px;
+        }
+    </style>
 </head>
-<body>
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/update}'>
-
-    <div class="border_clear">아이디</div>
-    <div class="border">
-        <td th:text="${userInfo.id}"></td>
+<body class="text-center">
+<div class="border_num my-4 mx-auto w-75">유저 회원 탈퇴</div>
+<form name="form" id="form" role="form" method="post" class="mx-auto w-75" th:action="@{/user/delete}">
+    <div class="d-flex flex-column justify-content-center align-items-center mb-3">
+        <div class="d-flex justify-content-center align-items-center border_clear w-100">
+            <div class="mr-2">유저 이름:</div>
+            <td class="border-0 pl-2 font-weight-bold" th:text="${userInfo.name}"></td>
+        </div>
+        <div class="d-flex justify-content-center align-items-center border_clear w-100">
+            <div class="mr-2">비밀번호를 입력해주세요.</div>
+            <div class="border ml-2">
+                <input type="password" class="form-control" name="password" id="password">
+            </div>
+        </div>
     </div>
-
-
-    <div class="border_clear">휴대폰 번호를 입력해주세요</div>
-
-    <div class="border">
-        <input type="password" class="form-control" name="password" id="password" th:placeholder="${userInfo.phone}">
-    </div>
-
-    <br>
-
 
     <div class="reset">
-        <input type='submit' value='수정'>
-        <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
+        <input type="submit" value="삭제" class="btn btn-danger mr-2">
+        <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">메인페이지로</button>
     </div>
 </form>
-</body>
-</html>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+        integrity="sha384-nrx05lDhAHsT/ZlW8eIjZl//NTnAXmJLrOnW8sdosAjpyaLLHCVU6FBmG2fXdf3M"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

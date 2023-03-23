@@ -23,7 +23,7 @@ public class UserJoinController {
     @PostMapping("")
     public String post(@Valid UserJoinControllerDto userJoinControllerDto, Model model) {
 
-        userJoinService.join(userJoinControllerDto.convertDto());
+        userJoinService.join(userJoinControllerDto.convert());
 
         model.addAttribute("isJoin", true);
 

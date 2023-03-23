@@ -8,8 +8,10 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.BankCode;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 @Entity
 @Getter
@@ -18,9 +20,11 @@ public class OrderMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String location;
+    @Min(value = 0)
     private int count;
     private String time;
     private String result;
+    @Min(value = 0)
     private int price;
 
     private String payment;
@@ -51,7 +55,7 @@ public class OrderMenu {
         this.user = user;
         this.foodMenu = foodMenu;
         this.orderMain = orderMain;
-        this.price = foodMenu.getPrice() * count;
+        this.price = Math.multiplyExact(foodMenu.getPrice(), count);
         this.result = OrderResult.PAYMENT_WAITING.getResult();
     }
 

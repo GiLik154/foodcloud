@@ -54,7 +54,7 @@ class RestaurantUpdateGetControllerTest {
     }
 
     @Test
-    void 식당_수정_Get_정상작동() throws Exception {
+    void Get_식당_수정_정상작동() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -75,7 +75,7 @@ class RestaurantUpdateGetControllerTest {
     }
 
     @Test
-    void 식당_수정_세션_없음() throws Exception {
+    void Get_식당_수정_세션_없음() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -98,7 +98,7 @@ class RestaurantUpdateGetControllerTest {
     }
 
     @Test
-    void 식당_수정_유저_고유번호_다름() throws Exception {
+    void Get_식당_수정_유저_고유번호_다름() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 

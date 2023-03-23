@@ -1,10 +1,11 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
+import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuAddControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;

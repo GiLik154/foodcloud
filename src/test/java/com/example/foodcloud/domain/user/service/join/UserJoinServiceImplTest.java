@@ -32,23 +32,24 @@ class UserJoinServiceImplTest {
 
     @Test
     void 유저_회원가입_정상작동() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
+        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("testName", "testPassword", "testPhone");
         userJoinService.join(userJoinServiceDto);
 
-        User user = userRepository.findByName("test").get();
+        User user = userRepository.findByName("testName").get();
         Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
 
-        assertEquals("test", user.getName());
-        assertNotEquals("test", user.getPassword());
-        assertThat(user.getPhone()).isEqualTo("test");
+        assertEquals("testName", user.getName());
+        assertNotEquals("testPassword", user.getPassword());
+        assertEquals("testPhone", user.getPhone());
+        assertNotNull(point.getId());
         assertEquals(user, point.getUser());
         assertEquals(0, point.getTotalPoint());
     }
 
     @Test
     void 유저_회원가입_중복아이디() {
-        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("test", "test", "test");
-        UserJoinServiceDto userJoinServiceDto2 = new UserJoinServiceDto("test", "test", "test");
+        UserJoinServiceDto userJoinServiceDto = new UserJoinServiceDto("testName", "testPassword", "testPhone");
+        UserJoinServiceDto userJoinServiceDto2 = new UserJoinServiceDto("testName", "testPassword", "testPhone");
         userJoinService.join(userJoinServiceDto);
 
         UserNameDuplicateException e = assertThrows(UserNameDuplicateException.class, () ->
