@@ -16,7 +16,7 @@ public class RestaurantListController {
 
     @GetMapping("/list")
     public String get(@SessionAttribute("userId") Long userId, Model model) {
-            model.addAttribute("restaurantList", restaurantRepository.validateRestaurantByUserId(userId));
+            model.addAttribute("restaurantList", restaurantRepository.findAll());
             return "thymeleaf/restaurant/list";
     }
 }

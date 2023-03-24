@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <!-- Bootstrap 4.5.2 CSS link -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- jQuery library link -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap 4.5.2 JS library link -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/order/join.css}" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="border_num my-4 mx-auto w-75">Order Information</div>
+
+<table class="table">
+    <thead class="thead-light">
+    <tr>
+        <th>Order Number</th>
+        <th>Location</th>
+        <th>Time</th>
+        <th>Result</th>
+        <th>Restaurant Name</th>
+    </tr>
+    </thead>
+
+    <tbody id="orderListBody">
+    <tr>
+        <td th:text="${orderMainInfo.id}"></td>
+        <td th:text="${orderMainInfo.location}"></td>
+        <td th:text="${orderMainInfo.time}"></td>
+        <td th:text="${orderMainInfo.result}"></td>
+        <td th:text="${orderMainInfo.restaurant.name}"></td>
+    </tr>
+    </tbody>
+</table>
+
+
+<div class="border_num my-4 mx-auto w-75">Food Menu</div>
+
+<div class="container order-manager-body">
+    <div id="orderMenu">
+        <div class="row">
+            <th:block th:each="foodMenu : ${foodMenuList}">
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <img th:if="${foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
+                             th:else th:src="@{${foodMenu.imagePath}}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${foodMenu.foodMenuName}"></h5>
+                            <p class="card-text" th:text="${foodMenu.foodType}"></p>
+                            <p class="card-text" th:text="${foodMenu.meatType}"></p>
+                            <p class="card-text" th:text="${foodMenu.temperature}"></p>
+                            <p class="card-text" th:text="${foodMenu.vegetables}"></p>
+                            <p class="card-text" th:text="${foodMenu.price}"></p>
+                            <p class="card-text" th:text="${foodMenu.orderCount}"></p>
+                            <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">Order</button>
+                        </div>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <div class="reset">
+        <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">Go back to main page</button>
+    </div>
+</div>
+</body>
+</html>

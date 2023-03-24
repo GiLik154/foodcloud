@@ -1,0 +1,40 @@
+/* Order Information */
+.border_num {
+    border-bottom: 2px solid #ccc;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Food Menu */
+.order-manager-body {
+    padding: 50px 0;
+}
+
+.card {
+    border: 1px solid #ccc;
+    margin-bottom: 30px;
+    padding: 15px;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    margin-bottom: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    margin-top: 10px;
+}
