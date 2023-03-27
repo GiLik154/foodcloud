@@ -17,7 +17,6 @@ public class BankAccountUpdateServiceImpl implements BankAccountUpdateService {
 
     @Override
     public boolean update(Long userId, Long bankAccountId, BankAccountUpdateServiceDto bankAccountUpdateServiceDto) {
-        System.out.println(userId + "우저아이디" + bankAccountId + "이게 잘 나오냥>");
         Optional<BankAccount> bankAccountOpt = bankAccountRepository.findByUserIdAndId(userId, bankAccountId);
 
         if (bankAccountOpt.isPresent()) {

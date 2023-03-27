@@ -71,8 +71,8 @@ class RestaurantDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/restaurant/list?isDelete=true"))
                 .andExpect(model().attribute("isDelete", true));
 
         assertTrue(restaurantRepository.findByUserId(user.getId()).isEmpty());
@@ -162,8 +162,8 @@ class RestaurantDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/restaurant/list?isDelete=false"))
                 .andExpect(model().attribute("isDelete", false));
 
         assertFalse(restaurantRepository.findByUserId(user.getId()).isEmpty());

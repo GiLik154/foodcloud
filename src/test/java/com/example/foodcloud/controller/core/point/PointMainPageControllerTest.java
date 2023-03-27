@@ -64,7 +64,6 @@ class PointMainPageControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/point/main"))
                 .andExpect(model().attribute("myPoint", point));
-
     }
 
     @Test

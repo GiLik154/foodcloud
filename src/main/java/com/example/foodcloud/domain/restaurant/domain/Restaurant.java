@@ -19,7 +19,7 @@ public class Restaurant {
     private int orderCount;
     @Column(length = 11)
     private String businessHours;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

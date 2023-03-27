@@ -1,10 +1,9 @@
 package com.example.foodcloud.controller.core.user;
 
-import com.example.foodcloud.controller.core.user.UserDeleteController;
-import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserDeleteControllerTest {
+class UserDeletePostControllerTest {
     private final UserDeleteController userDeleteController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final UserRepository userRepository;
@@ -33,7 +33,7 @@ class UserDeleteControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public UserDeleteControllerTest(UserDeleteController userDeleteController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserDeletePostControllerTest(UserDeleteController userDeleteController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userDeleteController = userDeleteController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.userRepository = userRepository;
@@ -48,16 +48,7 @@ class UserDeleteControllerTest {
     }
 
     @Test
-    void 유저_삭제_기본페이지() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/user/delete");
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/delete"));
-    }
-
-    @Test
-    void 유저_삭제_정상_작동() throws Exception {
+    void Post_유저_삭제_정상_작동() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -70,14 +61,14 @@ class UserDeleteControllerTest {
                 .param("password", "testPassword");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/login"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/my-page"));
 
         assertFalse(userRepository.findByName("testName").isPresent());
     }
 
     @Test
-    void 유저_삭제_정상_아이디_없음() throws Exception {
+    void Post_유저_삭제_정상_아이디_없음() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -97,7 +88,7 @@ class UserDeleteControllerTest {
     }
 
     @Test
-    void 유저_삭제_정상_아이디_다름() throws Exception {
+    void Post_유저_삭제_정상_아이디_다름() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
@@ -118,7 +109,7 @@ class UserDeleteControllerTest {
     }
 
     @Test
-    void 유저_삭제_정상_비밀번호_다름() throws Exception {
+    void Post_유저_삭제_정상_비밀번호_다름() throws Exception {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 

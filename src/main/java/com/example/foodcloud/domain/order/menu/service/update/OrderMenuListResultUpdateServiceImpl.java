@@ -21,7 +21,7 @@ public class OrderMenuListResultUpdateServiceImpl implements OrderMenuListResult
         OrderResult orderResult = OrderResult.valueOf(result);
 
         for (OrderMenu orderMenu : list) {
-            orderMenu.updateResult(orderResult.getResult());
+            orderMenu.updateResult(orderResult);
         }
     }
 }

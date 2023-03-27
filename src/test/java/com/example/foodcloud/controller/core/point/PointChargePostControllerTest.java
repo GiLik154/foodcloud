@@ -9,6 +9,8 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,8 +48,8 @@ class PointChargePostControllerTest {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(pointChargeController)
-                .addInterceptors(loginInterceptor)
                 .setControllerAdvice(paramValidateAdvice)
+                .addInterceptors(loginInterceptor)
                 .build();
     }
 

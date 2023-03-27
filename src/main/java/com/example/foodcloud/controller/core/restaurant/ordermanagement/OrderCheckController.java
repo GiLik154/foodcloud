@@ -27,9 +27,8 @@ public class OrderCheckController {
     @GetMapping("/check/{foodMenuId}/{result}")
     @ResponseBody
     public List<OrderMenu> outOrderResult(@PathVariable("foodMenuId") Long foodMenuId, @PathVariable("result") OrderResult orderResult) {
-        String result = orderResult.getResult();
 
-        return orderMenuRepository.findByFoodMenuIdAndResult(foodMenuId, result);
+        return orderMenuRepository.findByFoodMenuIdAndResult(foodMenuId, orderResult);
     }
 
     @PutMapping("/updateStatus/{orderMenuId}/{status}")

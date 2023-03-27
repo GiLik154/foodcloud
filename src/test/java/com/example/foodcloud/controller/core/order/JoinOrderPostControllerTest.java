@@ -103,7 +103,7 @@ class JoinOrderPostControllerTest {
         OrderMenu orderMenu = orderMenuRepository.findByOrderMainId(orderMain.getId()).get(0);
 
         assertEquals("testInputLocation", orderMenu.getLocation());
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(foodMenu, orderMenu.getFoodMenu());

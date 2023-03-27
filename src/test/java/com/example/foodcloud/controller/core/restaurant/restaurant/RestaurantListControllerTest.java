@@ -85,24 +85,4 @@ class RestaurantListControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
     }
-
-    @Test
-    void 식당_리스트_유저_고유번호_다름() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId() + 1L);
-
-        MockHttpServletRequestBuilder builder = get("/restaurant/list")
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
-    }
 }

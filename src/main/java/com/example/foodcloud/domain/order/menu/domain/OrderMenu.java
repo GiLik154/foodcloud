@@ -8,7 +8,6 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.BankCode;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.Getter;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -23,24 +22,23 @@ public class OrderMenu {
     @Min(value = 0)
     private int count;
     private String time;
-    private String result;
+    private OrderResult result;
     @Min(value = 0)
     private int price;
-
     private String payment;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "point_id")
     private Point point;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "food_menu_id")
     private FoodMenu foodMenu;
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_menu_id")
     private OrderMain orderMain;
 
@@ -56,22 +54,22 @@ public class OrderMenu {
         this.foodMenu = foodMenu;
         this.orderMain = orderMain;
         this.price = Math.multiplyExact(foodMenu.getPrice(), count);
-        this.result = OrderResult.PAYMENT_WAITING.getResult();
+        this.result = OrderResult.PAYMENT_WAITING;
     }
 
     public void updatePayment(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
         this.payment = bankAccount.getBank();
-        this.result = OrderResult.RECEIVED.getResult();
+        this.result = OrderResult.RECEIVED;
     }
 
     public void updatePayment(Point point) {
         this.point = point;
         this.payment = BankCode.POINT.getCode();
-        this.result = OrderResult.RECEIVED.getResult();
+        this.result = OrderResult.RECEIVED;
     }
 
-    public void updateResult(String result) {
-        this.result = result;
+    public void updateResult(OrderResult orderResult) {
+        this.result = orderResult;
     }
 }

@@ -28,7 +28,7 @@ public class Point implements Payment {
     @Column(nullable = false)
     private int totalPoint;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

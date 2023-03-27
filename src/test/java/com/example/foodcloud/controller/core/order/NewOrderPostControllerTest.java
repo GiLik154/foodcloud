@@ -101,7 +101,7 @@ class NewOrderPostControllerTest {
         assertEquals(user, orderMain.getUser());
         assertEquals(restaurant, orderMain.getRestaurant());
         assertEquals("testInputLocation", orderMenu.getLocation());
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(foodMenu, orderMenu.getFoodMenu());

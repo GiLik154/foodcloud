@@ -1,6 +1,5 @@
 package com.example.foodcloud.controller.core.user;
 
-import com.example.foodcloud.controller.core.user.UserUpdateController;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
@@ -24,14 +23,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserUpdateControllerTest {
+class UserUpdatePostControllerTest {
     private final UserUpdateController userUpdateController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserUpdateControllerTest(UserUpdateController userUpdateController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
+    public UserUpdatePostControllerTest(UserUpdateController userUpdateController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
         this.userUpdateController = userUpdateController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.userRepository = userRepository;
@@ -45,16 +44,7 @@ class UserUpdateControllerTest {
     }
 
     @Test
-    void 유저_수정_기본화면() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/user/update");
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/update"));
-    }
-
-    @Test
-    void 유저_수정_정상작동() throws Exception {
+    void Post_유저_수정_정상작동() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
@@ -66,14 +56,14 @@ class UserUpdateControllerTest {
                 .param("phone", "updatePhone");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/update"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/my-page"));
 
         assertEquals("updatePhone", user.getPhone());
     }
 
     @Test
-    void 유저_수정_유저_고유번호_다름() throws Exception {
+    void Post_유저_수정_유저_고유번호_다름() throws Exception {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 

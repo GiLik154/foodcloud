@@ -18,6 +18,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.enums.OrderResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,7 +112,7 @@ class CancelOrderPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
                 .andExpect(model().attribute("cancelMsg", "25000 price KB Bank refund succeed"));
 
-        assertEquals("Canceled", orderMenu.getResult());
+        assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
@@ -151,7 +152,7 @@ class CancelOrderPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
                 .andExpect(model().attribute("cancelMsg", "25000 price NH bank refund succeed"));
 
-        assertEquals("Canceled", orderMenu.getResult());
+        assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
@@ -191,7 +192,7 @@ class CancelOrderPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
                 .andExpect(model().attribute("cancelMsg", "25000 price ShinHan bank refund succeed"));
 
-        assertEquals("Canceled", orderMenu.getResult());
+        assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
@@ -227,7 +228,7 @@ class CancelOrderPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
                 .andExpect(model().attribute("cancelMsg", "25000 price Point refund succeed"));
 
-        assertEquals("Canceled", orderMenu.getResult());
+        assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
@@ -267,6 +268,6 @@ class CancelOrderPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND.getResult()));
 
-        assertNotEquals("Canceled", orderMenu.getResult());
+        assertNotEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 }

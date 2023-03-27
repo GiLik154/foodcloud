@@ -112,7 +112,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price KB Bank payment succeed"));
 
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("RECEIVED", orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -153,7 +153,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price NH bank payment succeed"));
 
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("RECEIVED", orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -194,7 +194,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price ShinHan bank payment succeed"));
 
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals("RECEIVED", orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -235,7 +235,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -276,7 +276,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.BANK_NOT_FOUND.getResult()));
 
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -312,7 +312,7 @@ class PayPostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
 
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -353,7 +353,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }

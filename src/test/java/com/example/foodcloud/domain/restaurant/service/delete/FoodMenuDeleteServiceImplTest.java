@@ -68,16 +68,23 @@ class FoodMenuDeleteServiceImplTest {
 
     @Test
     void 식당_삭제_식당고유번호_다름() {
+//given
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
         Long userId = user.getId();
+        
+        // 유저 저장
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
+
+        // 식당을 저장
+        
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
-
+//when
+        
         boolean isDelete = restaurantDeleteService.delete(userId, restaurantId + 1L, "test");
-
+//then
         assertFalse(isDelete);
         assertTrue(restaurantRepository.existsById(restaurantId));
     }

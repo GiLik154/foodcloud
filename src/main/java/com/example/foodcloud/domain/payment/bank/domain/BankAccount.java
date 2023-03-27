@@ -25,7 +25,7 @@ public class BankAccount implements Payment {
     /** 은행코드 **/
     private String bank;
     /** 유저 **/
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
     public BankAccount() {

@@ -25,7 +25,7 @@ public class OrderMenuResultUpdateServiceImpl implements OrderMenuResultUpdateSe
 
             OrderMenu orderMenu = orderMenuOptional.get();
 
-            orderMenu.updateResult(orderResult.getResult());
+            orderMenu.updateResult(orderResult);
 
             return true;
         }

@@ -1,6 +1,8 @@
 package com.example.foodcloud.controller.core.order;
 
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
+import com.example.foodcloud.domain.restaurant.domain.Restaurant;
+import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class NewOrderGetControllerTest {
     private final NewOrderController newOrderController;
     private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
     private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderGetControllerTest(NewOrderController newOrderController, UserRepository userRepository, LoginInterceptor loginInterceptor) {
+    public NewOrderGetControllerTest(NewOrderController newOrderController, UserRepository userRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
         this.newOrderController = newOrderController;
         this.userRepository = userRepository;
+        this.restaurantRepository = restaurantRepository;
         this.loginInterceptor = loginInterceptor;
     }
 
@@ -44,14 +48,18 @@ class NewOrderGetControllerTest {
     }
 
     @Test
-    void 새_주문_추가_정상작동() throws Exception {
+    void Get_새_주문_추가_정상작동() throws Exception {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
+
+        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = get("/order/new")
+                .param("restaurantId", String.valueOf(restaurant.getId()))
                 .session(session);
 
         mockMvc.perform(builder)
@@ -60,8 +68,15 @@ class NewOrderGetControllerTest {
     }
 
     @Test
-    void 새_주문_추가_세션_없음() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/order/new");
+    void Get_새_주문_추가_세션_없음() throws Exception {
+        User user = new User("testUserName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        restaurantRepository.save(restaurant);
+
+        MockHttpServletRequestBuilder builder = get("/order/new")
+                .param("restaurantId", String.valueOf(restaurant.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

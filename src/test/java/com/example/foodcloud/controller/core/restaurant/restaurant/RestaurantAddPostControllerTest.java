@@ -66,7 +66,8 @@ class RestaurantAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/restaurant/add")
                 .param("name", "testName")
                 .param("location", "testLocation")
-                .param("businessHours", "testHours")
+                .param("openHours", "00:00")
+                .param("closeHours", "12:00")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -77,7 +78,7 @@ class RestaurantAddPostControllerTest {
 
         assertEquals("testName", restaurant.getName());
         assertEquals("testLocation", restaurant.getLocation());
-        assertEquals("testHours", restaurant.getBusinessHours());
+        assertEquals("00:00-12:00", restaurant.getBusinessHours());
     }
 
     @Test
@@ -88,7 +89,8 @@ class RestaurantAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/restaurant/add")
                 .param("name", "testName")
                 .param("location", "testLocation")
-                .param("businessHours", "testHours");
+                .param("openHours", "00:00")
+                .param("closeHours", "12:00");
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -108,7 +110,8 @@ class RestaurantAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/restaurant/add")
                 .param("name", "testName")
                 .param("location", "testLocation")
-                .param("businessHours", "testHours")
+                .param("openHours", "00:00")
+                .param("closeHours", "12:00")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -130,7 +133,8 @@ class RestaurantAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/restaurant/add")
                 .param("name", "")
                 .param("location", "")
-                .param("businessHours", "")
+                .param("openHours", "00:00")
+                .param("closeHours", "12:00")
                 .session(session);
 
         mockMvc.perform(builder)

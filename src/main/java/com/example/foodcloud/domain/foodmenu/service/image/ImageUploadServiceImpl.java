@@ -28,7 +28,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
 
         uploadImage(file, uploadPath, fileName);
 
-        foodMenu.uploadImage(uploadDir + fileName);
+        foodMenu.uploadImage("/" + uploadDir + fileName);
     }
 
     private String creatFileName() {

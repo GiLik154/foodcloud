@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,7 +14,7 @@ public class RestaurantListController {
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping("/list")
-    public String get(@SessionAttribute("userId") Long userId, Model model) {
+    public String get(Model model) {
             model.addAttribute("restaurantList", restaurantRepository.findAll());
             return "thymeleaf/restaurant/list";
     }

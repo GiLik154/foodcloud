@@ -1,12 +1,9 @@
 package com.example.foodcloud.domain.foodmenu.domain;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +20,7 @@ public class FoodMenu {
     private String vegetables;
     private int price;
     private int orderCount;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
