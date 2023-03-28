@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.order.menu.service.recommend;
+package com.example.foodcloud.domain.order.menu.menu.service.recommend;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 

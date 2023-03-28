@@ -25,6 +25,7 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     public boolean update(Long foodMenuId, Long restaurantId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, MultipartFile file) {
         Optional<FoodMenu> foodMenuOptional = foodMenuRepository.findById(foodMenuId);
         Restaurant restaurant = restaurantRepository.validateRestaurant(restaurantId);
+
         if (foodMenuOptional.isPresent()) {
             FoodMenu foodMenu = foodMenuOptional.get();
 
@@ -39,7 +40,6 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
                     foodMenuUpdateServiceDto.getMeatType(),
                     foodMenuUpdateServiceDto.getVegetables()
             );
-
 
             return true;
         }

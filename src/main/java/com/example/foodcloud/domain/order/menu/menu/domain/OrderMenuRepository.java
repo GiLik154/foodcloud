@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.order.menu.domain;
+package com.example.foodcloud.domain.order.menu.menu.domain;
 
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
@@ -29,13 +29,13 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
 
     List<OrderMenu> findByFoodMenuIdAndResult(Long foodMenuId, OrderResult result);
 
-    default OrderMenu validateOrderMenuNotCancel(Long orderMenuId) {
+    default OrderMenu findByResultNotCancel(Long orderMenuId) {
         Optional<OrderMenu> orderMenu = findByIdAndResultNot(orderMenuId, CANCELED);
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);
     }
 
-    default OrderMenu validateOrderMenuForUserIdAndId(Long userId, Long orderMenuId) {
+    default OrderMenu validateForUserIdAndId(Long userId, Long orderMenuId) {
         Optional<OrderMenu> orderMenu = findByUserIdAndId(userId, orderMenuId);
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);

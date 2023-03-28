@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.order;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.service.delete.OrderMenuDeleteService;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.service.delete.OrderMenuDeleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +19,7 @@ public class DeleteOrderController {
 
     @GetMapping("/delete")
     public String get(Long orderMenuId, Model model) {
-        model.addAttribute("orderMenuInfo", orderMenuRepository.validateOrderMenuNotCancel(orderMenuId));
+        model.addAttribute("orderMenuInfo", orderMenuRepository.findByResultNotCancel(orderMenuId));
         return "thymeleaf/order/delete";
     }
 

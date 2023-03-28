@@ -1,8 +1,8 @@
-package com.example.foodcloud.domain.order.menu.service.update.payment;
+package com.example.foodcloud.domain.order.menu.menu.service.update.payment;
 
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.Payment;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import java.util.Optional;
 public class OrderMenuPaymentUpdateServiceImpl implements OrderMenuPaymentUpdateService {
     private final OrderMenuRepository orderMenuRepository;
 
-    public <T extends Payment> boolean isUpdate(Long orderMenuId, T payment) {
+    public <T extends Payment> boolean update(Long orderMenuId, T payment) {
         Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findById(orderMenuId);
         if (orderMenuOptional.isPresent()) {
             OrderMenu orderMenu = orderMenuOptional.get();

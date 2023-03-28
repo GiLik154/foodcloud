@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.order.menu.service.add.dto;
+package com.example.foodcloud.domain.order.menu.menu.service.add.dto;
 
 import lombok.Getter;
 

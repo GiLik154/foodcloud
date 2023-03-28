@@ -1,6 +1,6 @@
-package com.example.foodcloud.domain.order.menu.service.delete;
+package com.example.foodcloud.domain.order.menu.menu.service.delete;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

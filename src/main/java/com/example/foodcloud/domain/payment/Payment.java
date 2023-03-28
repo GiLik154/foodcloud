@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
 
 public interface Payment {
 

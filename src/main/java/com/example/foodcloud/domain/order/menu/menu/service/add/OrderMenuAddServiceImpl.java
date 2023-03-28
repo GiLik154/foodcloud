@@ -1,13 +1,13 @@
-package com.example.foodcloud.domain.order.menu.service.add;
+package com.example.foodcloud.domain.order.menu.menu.service.add;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.order.menu.menu.service.add.dto.OrderMenuAddServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;

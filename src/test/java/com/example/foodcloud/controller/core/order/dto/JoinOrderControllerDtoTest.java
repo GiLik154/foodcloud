@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.order.dto;
 
-import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.order.menu.menu.service.add.dto.OrderMenuAddServiceDto;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

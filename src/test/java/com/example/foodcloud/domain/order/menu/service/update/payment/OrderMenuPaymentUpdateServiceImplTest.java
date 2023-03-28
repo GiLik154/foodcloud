@@ -4,8 +4,9 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.service.update.payment.OrderMenuPaymentUpdateService;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.point.domain.Point;
@@ -67,7 +68,7 @@ class OrderMenuPaymentUpdateServiceImplTest {
         Point point = new Point(user);
         pointRepository.save(point);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId(), point);
+        boolean isUpdate = orderMenuPaymentUpdateService.update(orderMenu.getId(), point);
 
         assertTrue(isUpdate);
         assertEquals("000", orderMenu.getPayment());
@@ -93,7 +94,7 @@ class OrderMenuPaymentUpdateServiceImplTest {
         BankAccount bankAccount = new BankAccount("test", "test", "004", user);
         bankAccountRepository.save(bankAccount);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId(), bankAccount);
+        boolean isUpdate = orderMenuPaymentUpdateService.update(orderMenu.getId(), bankAccount);
 
         assertTrue(isUpdate);
         assertEquals("004", orderMenu.getPayment());
@@ -119,7 +120,7 @@ class OrderMenuPaymentUpdateServiceImplTest {
         BankAccount bankAccount = new BankAccount("test", "test", "004", user);
         bankAccountRepository.save(bankAccount);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId() + 1L, bankAccount);
+        boolean isUpdate = orderMenuPaymentUpdateService.update(orderMenu.getId() + 1L, bankAccount);
 
         assertFalse(isUpdate);
         assertNotEquals("004", orderMenu.getPayment());

@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment.bank.domain;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.user.domain.User;
 import lombok.Getter;

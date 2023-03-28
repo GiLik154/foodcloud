@@ -1,8 +1,8 @@
-package com.example.foodcloud.domain.order.menu.service.recommend;
+package com.example.foodcloud.domain.order.menu.menu.service.recommend;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
