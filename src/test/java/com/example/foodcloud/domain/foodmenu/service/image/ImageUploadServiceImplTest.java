@@ -6,6 +6,10 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -20,6 +24,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @Transactional
@@ -39,10 +45,14 @@ class ImageUploadServiceImplTest {
     }
 
     @Test
-    void 이미지_업로드_정상작동() {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+    void 이미지_업로드_정상작동() throws IOException {
+        String path = "food-menu-images/test/";
+        File folder = new File(path);
+        Path uploadPath = Paths.get("food-menu-images/test/");
+        Files.createDirectories(uploadPath);
+
+        File file = new File("test.jpg");
+        file.createNewFile();
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -50,11 +60,12 @@ class ImageUploadServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         imageUploadService.upload(restaurant.getName(), file, foodMenu);
 
+        assertEquals(1, folder.listFiles().length);
         assertNotNull(foodMenu.getImagePath());
     }
 
@@ -64,9 +75,7 @@ class ImageUploadServiceImplTest {
         File folder = new File(path);
 
         Path uploadPath = Paths.get(path);
-
         Files.createDirectories(uploadPath);
-
         File[] deleteFolderList = folder.listFiles();
 
         for (File f : deleteFolderList) {
@@ -75,9 +84,8 @@ class ImageUploadServiceImplTest {
 
         folder.delete();
 
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+        File file = new File("test.jpg");
+        file.createNewFile();
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -85,11 +93,20 @@ class ImageUploadServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         imageUploadService.upload(restaurant.getName(), file, foodMenu);
 
+        assertEquals(1, folder.listFiles().length);
         assertNotNull(foodMenu.getImagePath());
+
+        deleteFolderList = folder.listFiles();
+
+        for (File f : deleteFolderList) {
+            f.delete();
+        }
+
+        folder.delete();
     }
 }

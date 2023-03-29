@@ -9,6 +9,10 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +65,7 @@ class FoodMenuUpdateGetControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -85,7 +89,7 @@ class FoodMenuUpdateGetControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpServletRequestBuilder builder = get("/food-menu/update")
@@ -104,7 +108,7 @@ class FoodMenuUpdateGetControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();

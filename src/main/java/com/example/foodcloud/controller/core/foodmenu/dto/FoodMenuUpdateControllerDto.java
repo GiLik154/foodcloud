@@ -1,6 +1,10 @@
 package com.example.foodcloud.controller.core.foodmenu.dto;
 
 import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import lombok.Getter;
 
 import javax.validation.constraints.Max;
@@ -18,19 +22,19 @@ public class FoodMenuUpdateControllerDto {
     @Max(3000000)
     private final int price;
     @NotBlank
-    private final String foodType;
+    private final Temperature temperature;
     @NotBlank
-    private final String temperature;
+    private final FoodTypes foodTypes;
     @NotBlank
-    private final String meatType;
+    private final MeatTypes meatType;
     @NotBlank
-    private final String vegetables;
+    private final Vegetables vegetables;
 
-    public FoodMenuUpdateControllerDto(String name, int price, String foodType, String temperature, String meatType, String vegetables) {
+    public FoodMenuUpdateControllerDto(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
         this.name = name;
         this.price = price;
-        this.foodType = foodType;
         this.temperature = temperature;
+        this.foodTypes = foodTypes;
         this.meatType = meatType;
         this.vegetables = vegetables;
     }
@@ -38,8 +42,8 @@ public class FoodMenuUpdateControllerDto {
     public FoodMenuUpdateServiceDto convert(){
         return new FoodMenuUpdateServiceDto(this.name,
                 this.price,
-                this.foodType,
                 this.temperature,
+                this.foodTypes,
                 this.meatType,
                 this.vegetables);
     }

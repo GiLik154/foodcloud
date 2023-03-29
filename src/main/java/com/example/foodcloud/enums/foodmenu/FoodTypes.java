@@ -8,7 +8,7 @@ public enum FoodTypes {
     CAKE("케이크"), ICE_CREAM("아이스크림"), PIE("파이"), PASTRY("페이스트리");
 
 
-    private String name;
+    private final String name;
 
     FoodTypes(String name) {
         this.name = name;

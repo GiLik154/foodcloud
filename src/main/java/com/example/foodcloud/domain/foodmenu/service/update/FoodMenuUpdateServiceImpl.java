@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.lang.reflect.Field;
 import java.util.Optional;
 
 @Service
@@ -22,10 +24,9 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
     private final RestaurantRepository restaurantRepository;
 
     @Override
-    public boolean update(Long foodMenuId, Long restaurantId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, MultipartFile file) {
+    public boolean update(Long foodMenuId, Long restaurantId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, File file) {
         Optional<FoodMenu> foodMenuOptional = foodMenuRepository.findById(foodMenuId);
         Restaurant restaurant = restaurantRepository.validateRestaurant(restaurantId);
-
         if (foodMenuOptional.isPresent()) {
             FoodMenu foodMenu = foodMenuOptional.get();
 
@@ -35,11 +36,12 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
 
             foodMenu.update(foodMenuUpdateServiceDto.getName(),
                     foodMenuUpdateServiceDto.getPrice(),
-                    foodMenuUpdateServiceDto.getFoodType(),
                     foodMenuUpdateServiceDto.getTemperature(),
+                    foodMenuUpdateServiceDto.getFoodTypes(),
                     foodMenuUpdateServiceDto.getMeatType(),
                     foodMenuUpdateServiceDto.getVegetables()
             );
+
 
             return true;
         }

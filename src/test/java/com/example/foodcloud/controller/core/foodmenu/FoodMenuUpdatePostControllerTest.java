@@ -1,16 +1,18 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuUpdateControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +71,7 @@ class FoodMenuUpdatePostControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -92,9 +94,9 @@ class FoodMenuUpdatePostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
                 .andExpect(model().attribute("isUpdate", true));
 
-        assertEquals("updateName", foodMenu.getFoodMenuName());
+        assertEquals("updateName", foodMenu.getName());
         assertEquals(4444, foodMenu.getPrice());
-        assertEquals("updateType", foodMenu.getFoodType());
+        assertEquals("updateType", foodMenu.getFoodTypes());
         assertEquals("updateTemperature", foodMenu.getTemperature());
         assertEquals("updateMeat", foodMenu.getMeatType());
         assertEquals("updateVegetables", foodMenu.getVegetables());
@@ -112,7 +114,7 @@ class FoodMenuUpdatePostControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update")
@@ -130,9 +132,9 @@ class FoodMenuUpdatePostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
 
-        assertNotEquals("updateName", foodMenu.getFoodMenuName());
+        assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodType());
+        assertNotEquals("updateType", foodMenu.getFoodTypes());
         assertNotEquals("updateTemperature", foodMenu.getTemperature());
         assertNotEquals("updateMeat", foodMenu.getMeatType());
         assertNotEquals("updateVegetables", foodMenu.getVegetables());
@@ -150,7 +152,7 @@ class FoodMenuUpdatePostControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -173,9 +175,9 @@ class FoodMenuUpdatePostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
                 .andExpect(model().attribute("isUpdate", false));
 
-        assertNotEquals("updateName", foodMenu.getFoodMenuName());
+        assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodType());
+        assertNotEquals("updateType", foodMenu.getFoodTypes());
         assertNotEquals("updateTemperature", foodMenu.getTemperature());
         assertNotEquals("updateMeat", foodMenu.getMeatType());
         assertNotEquals("updateVegetables", foodMenu.getVegetables());
@@ -193,7 +195,7 @@ class FoodMenuUpdatePostControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("testName", 5000, "testType", "testTemp", "testMeat", "testVegetables", restaurant);
+        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -216,9 +218,9 @@ class FoodMenuUpdatePostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
 
-        assertNotEquals("updateName", foodMenu.getFoodMenuName());
+        assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodType());
+        assertNotEquals("updateType", foodMenu.getFoodTypes());
         assertNotEquals("updateTemperature", foodMenu.getTemperature());
         assertNotEquals("updateMeat", foodMenu.getMeatType());
         assertNotEquals("updateVegetables", foodMenu.getVegetables());

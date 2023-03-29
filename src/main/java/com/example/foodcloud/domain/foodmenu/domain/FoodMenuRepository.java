@@ -1,6 +1,7 @@
 package com.example.foodcloud.domain.foodmenu.domain;
 
 
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -16,9 +17,8 @@ public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
 
     boolean existsById(Long foodMenuId);
 
-    List<FoodMenu> findByFoodTypeAndRestaurantLocation(String vegetables , String location);
+    List<FoodMenu> findByFoodTypesAndRestaurantLocation(FoodTypes foodTypes, String location);
 
-    Optional<FoodMenu> findById(Long foodMenuId);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT f FROM FoodMenu f WHERE f.id = :id")
     FoodMenu findByIdForUpdate(@Param("id") Long foodMenuId);

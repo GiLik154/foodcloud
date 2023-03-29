@@ -17,6 +17,8 @@ public interface OrderMainRepository extends JpaRepository<OrderMain, Long> {
 
     boolean existsByUserIdAndId(Long userId, Long orderMainId);
 
+    Optional<OrderMain> findByUserIdAndIdAndResultNot(Long userId, Long orderMainId, String result);
+
     Optional<OrderMain> findByIdAndResultNot(Long orderMainId, String result);
 
     default OrderMain validateOrderMainNotCancel(Long userId, Long orderMainId) {
@@ -24,8 +26,6 @@ public interface OrderMainRepository extends JpaRepository<OrderMain, Long> {
 
         return orderMainOptional.orElseThrow(NotFoundOrderMainException::new);
     }
-
-    Optional<OrderMain> findByUserIdAndIdAndResultNot(Long userId, Long orderMainId, String result);
 
     default OrderMain validateOrderMainNotCancel(Long orderMainId) {
         Optional<OrderMain> orderMainOptional = findByIdAndResultNot(orderMainId, CANCEL_CODE);

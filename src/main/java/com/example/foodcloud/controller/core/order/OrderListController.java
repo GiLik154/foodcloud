@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.order;
 
-import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

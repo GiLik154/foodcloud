@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,7 +21,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class ImageUploadServiceImpl implements ImageUploadService {
     @Override
-    public void upload(String restaurantName, MultipartFile file, FoodMenu foodMenu) {
+    public void upload(String restaurantName, File file, FoodMenu foodMenu) {
         String fileName = StringUtils.cleanPath(creatFileName());
         String uploadDir = "food-menu-images/" + restaurantName + "/";
         Path uploadPath = Paths.get(uploadDir);
@@ -47,8 +49,8 @@ public class ImageUploadServiceImpl implements ImageUploadService {
         }
     }
 
-    private void uploadImage(MultipartFile file, Path uploadPath, String fileName) {
-        try (InputStream inputStream = file.getInputStream()) {
+    private void uploadImage(File file, Path uploadPath, String fileName) {
+        try (InputStream inputStream = new FileInputStream(file)) {
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
