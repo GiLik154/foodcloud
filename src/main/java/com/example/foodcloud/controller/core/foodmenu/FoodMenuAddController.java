@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,10 +37,13 @@ public class FoodMenuAddController {
 
     @PostMapping("")
     public String post(@SessionAttribute("userId") Long userId,
-                        Long restaurantId,
-                        @Valid FoodMenuAddControllerDto foodMenuAddControllerDto,
-                        MultipartFile file,
-                        Model model) {
+                       Long restaurantId,
+                       @Valid FoodMenuAddControllerDto foodMenuAddControllerDto,
+                       MultipartFile multipartFile,
+                       Model model) throws IOException {
+
+            File file = new File(multipartFile.getOriginalFilename());
+            multipartFile.transferTo(file);
 
         model.addAttribute("isAdd", foodMenuAddService.add(userId, restaurantId, foodMenuAddControllerDto.convert(), file));
 

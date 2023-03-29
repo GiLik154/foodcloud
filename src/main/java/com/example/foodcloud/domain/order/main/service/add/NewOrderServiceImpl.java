@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.order.main.service.add;
 
 import com.example.foodcloud.domain.order.main.service.add.dto.NewOrderServiceDto;
-import com.example.foodcloud.domain.order.menu.menu.service.add.OrderMenuAddService;
+import com.example.foodcloud.domain.order.menu.service.add.OrderMenuAddService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

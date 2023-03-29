@@ -2,15 +2,19 @@ package com.example.foodcloud.enums.foodmenu;
 
 import lombok.Getter;
 
-@Getter
-public enum Temperature {
-    HOT("뜨거움"),
-    MID("중간"),
-    COLD("차가움");
+public enum Vegetables {
+    MANY("많이"),
+    MIDDLE("중간"),
+    FEW("조금"),
+    NOTING("없음");
 
     private final String states;
 
-    Temperature(String states) {
+    Vegetables(String states) {
         this.states = states;
+    }
+
+    public String getStates(){
+        return this.states;
     }
 }

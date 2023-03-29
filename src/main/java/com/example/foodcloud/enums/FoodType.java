@@ -13,8 +13,8 @@ public enum FoodType {
     DRINK("음료", Arrays.asList(FoodTypes.AMERICANO, FoodTypes.LATTE, FoodTypes.ADE, FoodTypes.TEA)),
     DESSERT("디저트", Arrays.asList(FoodTypes.CAKE, FoodTypes.ICE_CREAM, FoodTypes.PIE, FoodTypes.PASTRY));
 
-    private String name;
-    private List<FoodTypes> kinds;
+    private final String name;
+    private final List<FoodTypes> kinds;
 
     FoodType(String name, List<FoodTypes> foodTypes) {
         this.name = name;

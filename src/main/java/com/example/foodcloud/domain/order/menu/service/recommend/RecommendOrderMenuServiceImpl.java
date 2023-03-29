@@ -1,0 +1,68 @@
+package com.example.foodcloud.domain.order.menu.service.recommend;
+
+import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
+import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.JpaSort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.security.SecureRandom;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService {
+    private final OrderMenuRepository orderMenuRepository;
+    private final FoodMenuRepository foodMenuRepository;
+
+    /**
+     * 음식의 종류에 따라 음식 추천
+     * foodMenu를 랜덤으로 가지고 와서
+     * 그 음식의 FoodTypes을 5개 조회함.
+     * 그 후 5개를 랜덤으로 반환해줌.
+     */
+    @Override
+    public List<FoodMenu> recommend(Long userId, String location) {
+        FoodMenu foodMenu = getRandomFoodMenu(userId);
+
+        List<FoodMenu> foodMenus = foodMenuRepository.findByFoodTypesAndRestaurantLocation(foodMenu.getFoodTypes(), location);
+
+        Collections.shuffle(foodMenus);
+
+        return foodMenus.subList(0, limitCount(foodMenus.size()));
+    }
+
+    private FoodMenu getRandomFoodMenu(Long userId) {
+        Pageable pageable = PageRequest.of(0, 5, JpaSort.unsafe("COUNT(f)").descending());
+
+        List<FoodMenu> foodMenus = orderMenuRepository.countByFoodMenuByUserId(userId, pageable);
+
+        return foodMenus.get(getRandomInt(foodMenus.size()));
+    }
+
+    private int getRandomInt(int limit) {
+        if (limit == 0) {
+            throw new UsernameNotFoundException("Invalid user");
+        }
+
+        Random random = new SecureRandom();
+
+        return random.nextInt(limit);
+    }
+
+    private int limitCount(int count) {
+        if (count > 5) {
+            count = 5;
+        }
+
+        return count;
+    }
+}

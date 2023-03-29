@@ -6,11 +6,14 @@ import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceD
 import com.example.foodcloud.domain.foodmenu.service.image.ImageUploadService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
+import com.example.foodcloud.enums.FoodType;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Optional;
 
 @Service
@@ -21,13 +24,13 @@ public class FoodMenuAddServiceImpl implements FoodMenuAddService {
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
 
-    public boolean add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, MultipartFile file) {
+    public boolean add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, File file) {
         Optional<Restaurant> restaurantOptional = restaurantRepository.findByUserIdAndId(userId, restaurantId);
         if (restaurantOptional.isPresent()) {
             FoodMenu foodMenu = new FoodMenu(foodMenuAddServiceDto.getName(),
                     foodMenuAddServiceDto.getPrice(),
-                    foodMenuAddServiceDto.getFoodType(),
                     foodMenuAddServiceDto.getTemperature(),
+                    foodMenuAddServiceDto.getFoodTypes(),
                     foodMenuAddServiceDto.getMeatType(),
                     foodMenuAddServiceDto.getVegetables(),
                     restaurantOptional.get()

@@ -33,35 +33,34 @@
     </th:block>
   </select>
 
-  <select id="foodType">
+  <select id="foodTypes">
     <option value="">음식의 종류를 선택해주세요.</option>
   </select>
 
   <div class="border_clear">온도를 선택해주세요</div>
-  <div class="border">
-    <input type="radio" name="temperature" value="cold" checked>차가움
-    <input type="radio" name="temperature" value="lukewarm">미지근함
-    <input type="radio" name="temperature" value="hot">뜨거움
-  </div>
+  <select id="temperature">
+    <option value="">온도를 선택해주세요.</option>
+    <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.Temperature).values()}">
+      <option th:value="${type}" th:text="${type.getStates()}"></option>
+    </th:block>
+  </select>
 
   <div class="border_clear">고기 종류를 선택해주세요</div>
-  <div class="border">
-    <input type="radio" name="meatType" value="not" checked>없음
-    <input type="radio" name="meatType" value="Pork">돼지
-    <input type="radio" name="meatType" value="Beef">소
-    <input type="radio" name="meatType" value="Chicken">소
-    <input type="radio" name="meatType" value="Lamb">양
-    <input type="radio" name="meatType" value="Fish">물고기
-    <input type="radio" name="meatType" value="Other">기타 등등
-  </div>
+  <select id="meatType">
+    <option value="">고기 종류를 선택해주세요.</option>
+    <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.MeatTypes).values()}">
+      <option th:value="${type}" th:text="${type.getName()}"></option>
+    </th:block>
+  </select>
+
 
   <div class="border_clear">야채의 양을 선택해주세요</div>
-  <div class="border">
-    <input type="radio" name="vegetables" value="Many">많음
-    <input type="radio" name="vegetables" value="Normal">보통
-    <input type="radio" name="vegetables" value="Few">적음
-    <input type="radio" name="vegetables" value="None"checked>없음
-  </div>
+  <select id="vegetables">
+    <option value="">야채의 양을 선택해주세요.</option>
+    <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.Vegetables).values()}">
+      <option th:value="${type}" th:text="${type.getStates()}"></option>
+    </th:block>
+  </select>
 
   <br>
 

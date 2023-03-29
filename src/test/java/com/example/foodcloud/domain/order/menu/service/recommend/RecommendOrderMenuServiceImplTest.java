@@ -4,13 +4,16 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
-import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.menu.service.recommend.RecommendOrderMenuService;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -53,9 +56,9 @@ class RecommendOrderMenuServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu1 = new FoodMenu("1", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu2 = new FoodMenu("2", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu3 = new FoodMenu("3", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu1 = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu2 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu3 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu1);
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
@@ -70,9 +73,9 @@ class RecommendOrderMenuServiceImplTest {
 
         assertNotNull(list);
         assertEquals(3, list.size());
-        assertThat(list.get(0).getFoodMenuName()).isBetween("1", "3");
-        assertThat(list.get(1).getFoodMenuName()).isBetween("1", "3");
-        assertThat(list.get(2).getFoodMenuName()).isBetween("1", "3");
+        assertThat(list.get(0).getName()).isBetween("1", "3");
+        assertThat(list.get(1).getName()).isBetween("1", "3");
+        assertThat(list.get(2).getName()).isBetween("1", "3");
     }
 
     @Test
@@ -84,12 +87,12 @@ class RecommendOrderMenuServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu1 = new FoodMenu("1", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu2 = new FoodMenu("2", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu3 = new FoodMenu("3", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu4 = new FoodMenu("4", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu5 = new FoodMenu("5", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu6 = new FoodMenu("6", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu1 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu2 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu3 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu4 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu5 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu6 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu1);
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
@@ -107,11 +110,11 @@ class RecommendOrderMenuServiceImplTest {
 
         assertNotNull(list);
         assertEquals(5, list.size());
-        assertThat(list.get(0).getFoodMenuName()).isBetween("1", "6");
-        assertThat(list.get(1).getFoodMenuName()).isBetween("1", "6");
-        assertThat(list.get(2).getFoodMenuName()).isBetween("1", "6");
-        assertThat(list.get(3).getFoodMenuName()).isBetween("1", "6");
-        assertThat(list.get(4).getFoodMenuName()).isBetween("1", "6");
+        assertThat(list.get(0).getName()).isBetween("1", "6");
+        assertThat(list.get(1).getName()).isBetween("1", "6");
+        assertThat(list.get(2).getName()).isBetween("1", "6");
+        assertThat(list.get(3).getName()).isBetween("1", "6");
+        assertThat(list.get(4).getName()).isBetween("1", "6");
     }
 
     @Test
@@ -123,9 +126,9 @@ class RecommendOrderMenuServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu1 = new FoodMenu("1", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu2 = new FoodMenu("2", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu3 = new FoodMenu("3", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu1 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu2 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu3 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu1);
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
@@ -152,9 +155,9 @@ class RecommendOrderMenuServiceImplTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu1 = new FoodMenu("1", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu2 = new FoodMenu("2", 5000, "test", "test", "test", "test", restaurant);
-        FoodMenu foodMenu3 = new FoodMenu("3", 5000, "test", "test", "test", "test", restaurant);
+        FoodMenu foodMenu1 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu2 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu3 =  new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu1);
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);

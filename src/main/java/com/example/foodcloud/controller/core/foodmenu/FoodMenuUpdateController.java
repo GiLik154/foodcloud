@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,7 +31,10 @@ public class FoodMenuUpdateController {
     }
 
     @PostMapping("")
-    public String post(Long foodMenuId, Long restaurantId, @Valid FoodMenuUpdateControllerDto foodMenuUpdateControllerDto, MultipartFile file, Model model) {
+    public String post(Long foodMenuId, Long restaurantId, @Valid FoodMenuUpdateControllerDto foodMenuUpdateControllerDto, MultipartFile multipartFile, Model model) throws IOException {
+
+        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        multipartFile.transferTo(file);
 
         model.addAttribute("isUpdate",
                 foodMenuUpdateService.update(foodMenuId,

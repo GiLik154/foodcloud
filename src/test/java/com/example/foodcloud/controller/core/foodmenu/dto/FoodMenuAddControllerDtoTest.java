@@ -1,33 +1,37 @@
 package com.example.foodcloud.controller.core.foodmenu.dto;
 
 import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class FoodMenuAddControllerDtoTest {
     @Test
-    void Post_계좌_업데이트_Dto() {
-        FoodMenuAddControllerDto foodMenuAddControllerDto = new FoodMenuAddControllerDto("testName", 123456789, "testType", "testTemperature", "testMeat", "testVegetables");
+    void 음식_추가_Dto() {
+        FoodMenuAddControllerDto foodMenuAddControllerDto = new FoodMenuAddControllerDto("testName", 123456789, Temperature.COLD, FoodTypes.ADE, MeatTypes.BEEF, Vegetables.FEW);
 
         assertEquals("testName", foodMenuAddControllerDto.getName());
         assertEquals(123456789, foodMenuAddControllerDto.getPrice());
-        assertEquals("testType", foodMenuAddControllerDto.getFoodType());
-        assertEquals("testTemperature", foodMenuAddControllerDto.getTemperature());
-        assertEquals("testMeat", foodMenuAddControllerDto.getMeatType());
-        assertEquals("testVegetables", foodMenuAddControllerDto.getVegetables());
+        assertEquals(Temperature.COLD, foodMenuAddControllerDto.getTemperature());
+        assertEquals(FoodTypes.ADE, foodMenuAddControllerDto.getFoodTypes());
+        assertEquals(MeatTypes.BEEF, foodMenuAddControllerDto.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenuAddControllerDto.getVegetables());
     }
 
     @Test
-    void Post_계좌_업데이트_Dto_Convert() {
-        FoodMenuAddControllerDto foodMenuAddControllerDto = new FoodMenuAddControllerDto("testName", 123456789, "testType", "testTemperature", "testMeat", "testVegetables");
+    void 음식_추가_Dto_Convert() {
+        FoodMenuAddControllerDto foodMenuAddControllerDto = new FoodMenuAddControllerDto("testName", 123456789, Temperature.COLD, FoodTypes.ADE, MeatTypes.BEEF, Vegetables.FEW);
         FoodMenuAddServiceDto foodMenuAddServiceDto = foodMenuAddControllerDto.convert();
 
         assertEquals("testName", foodMenuAddServiceDto.getName());
         assertEquals(123456789, foodMenuAddServiceDto.getPrice());
-        assertEquals("testType", foodMenuAddServiceDto.getFoodType());
-        assertEquals("testTemperature", foodMenuAddServiceDto.getTemperature());
-        assertEquals("testMeat", foodMenuAddServiceDto.getMeatType());
-        assertEquals("testVegetables", foodMenuAddServiceDto.getVegetables());
+        assertEquals(Temperature.COLD, foodMenuAddServiceDto.getTemperature());
+        assertEquals(FoodTypes.ADE, foodMenuAddServiceDto.getFoodTypes());
+        assertEquals(MeatTypes.BEEF, foodMenuAddServiceDto.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenuAddServiceDto.getVegetables());
     }
 }

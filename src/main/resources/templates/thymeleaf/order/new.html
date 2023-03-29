@@ -34,7 +34,7 @@
             <tbody id="orderListBody">
             <tr th:block th:each="list : ${foodMenuList}">
                 <td th:text="${list.imagePath}"></td>
-                <td th:text="${list.foodMenuName}"></td>
+                <td th:text="${list.getName}"></td>
                 <td th:text="${list.orderCount}"></td>
                 <td th:text="${list.price}"></td>
                 <td th:text="${list.foodType}"></td>

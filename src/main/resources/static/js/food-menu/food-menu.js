@@ -1,6 +1,6 @@
 window.onload = function() {
     var foodTypeSelect = document.getElementById("foodKind");
-    var foodKindSelect = document.getElementById("foodType");
+    var foodKindSelect = document.getElementById("foodTypes");
 
     foodTypeSelect.addEventListener("change", function() {
         var selectedType = foodTypeSelect.value;

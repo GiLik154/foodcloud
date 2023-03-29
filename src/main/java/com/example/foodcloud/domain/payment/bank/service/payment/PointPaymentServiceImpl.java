@@ -1,8 +1,7 @@
 package com.example.foodcloud.domain.payment.bank.service.payment;
 
-import com.example.foodcloud.domain.order.menu.item.domain.OrderMenuItems;
-import com.example.foodcloud.domain.order.menu.item.domain.OrderMenuItemsRepository;
-import com.example.foodcloud.domain.order.menu.menu.service.update.payment.OrderMenuPaymentUpdateService;
+import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.domain.payment.point.service.sum.PointSumService;
@@ -16,13 +15,12 @@ public class PointPaymentServiceImpl implements PaymentService {
     private final OrderMenuPaymentUpdateService orderMenuPaymentUpdateService;
     private final PointSumService pointSumService;
     private final PointRepository pointRepository;
-    private final OrderMenuItemsRepository orderMenuItemsRepository;
 
     @Override
     public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
         if (pointSumService.sum(userId, price * -1)) {
 
-            orderMenuPaymentUpdateService.update(orderMenuId, getPointId(userId));
+            orderMenuPaymentUpdateService.isUpdate(orderMenuId, getPointId(userId));
 
             return price + " price Point payment succeed";
         }
@@ -30,11 +28,9 @@ public class PointPaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public String refund(Long userId, Long orderMenuId) {
-        OrderMenuItems orderMenuItems = orderMenuItemsRepository.validate(orderMenuId);
-
-        if (pointSumService.sum(userId, orderMenuItems.getPrice())) {
-            return orderMenuItems.getPrice() + " price Point refund succeed";
+    public String refund(Long userId, OrderMenu orderMenu) {
+        if (pointSumService.sum(userId, orderMenu.getPrice())) {
+            return orderMenu.getPrice() + " price Point refund succeed";
         }
         return "Point refund fail";
     }

@@ -1,20 +1,25 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuAddControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +27,16 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -59,9 +74,20 @@ class FoodMenuAddPostControllerTest {
 
     @Test
     void 음식_메뉴_정상추가() throws Exception {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+        String path = "food-menu-images/test/";
+        File folder = new File(path);
+        Path uploadPath = Paths.get("food-menu-images/test/");
+        Files.createDirectories(uploadPath);
+
+        //todo MultiFile을 테스트하는 법 찾아보기.
+
+        // 업로드할 파일 생성
+        byte[] content = "test content".getBytes();
+        Path tempPath = Files.createTempFile("test", ".txt");
+        Files.write(tempPath, content);
+
+        // MockMultipartFile 객체 생성
+        MockMultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, content);
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -77,10 +103,10 @@ class FoodMenuAddPostControllerTest {
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
                 .param("price", "5000")
-                .param("foodType", "testType")
-                .param("temperature", "testTemperature")
-                .param("meatType", "testMeat")
-                .param("vegetables", "testVegetables")
+                .param("temperature", String.valueOf(Temperature.COLD))
+                .param("foodTypes", String.valueOf(FoodTypes.ADE))
+                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
+                .param("vegetables", String.valueOf(Vegetables.FEW))
                 .session(session);
 
         mockMvc.perform(builder)
@@ -90,9 +116,10 @@ class FoodMenuAddPostControllerTest {
 
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurant.getId()).get(0);
 
-        assertEquals("testName", foodMenu.getFoodMenuName());
+        assertEquals(1, folder.listFiles().length);
+        assertEquals("testName", foodMenu.getName());
         assertEquals(5000, foodMenu.getPrice());
-        assertEquals("testType", foodMenu.getFoodType());
+        assertEquals("testType", foodMenu.getFoodTypes());
         assertEquals("testTemperature", foodMenu.getTemperature());
         assertEquals("testMeat", foodMenu.getMeatType());
         assertEquals("testVegetables", foodMenu.getVegetables());

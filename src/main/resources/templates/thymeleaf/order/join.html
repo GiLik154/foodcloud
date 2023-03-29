@@ -50,7 +50,7 @@
                         <img th:if="${foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
                              th:else th:src="@{${foodMenu.imagePath}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${foodMenu.foodMenuName}"></h5>
+                            <h5 class="card-title" th:text="${foodMenu.getName}"></h5>
                             <p class="card-text" th:text="${foodMenu.foodType}"></p>
                             <p class="card-text" th:text="${foodMenu.meatType}"></p>
                             <p class="card-text" th:text="${foodMenu.temperature}"></p>

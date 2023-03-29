@@ -1,6 +1,10 @@
 package com.example.foodcloud.domain.foodmenu.domain;
 
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
+import com.example.foodcloud.enums.foodmenu.FoodTypes;
+import com.example.foodcloud.enums.foodmenu.MeatTypes;
+import com.example.foodcloud.enums.foodmenu.Temperature;
+import com.example.foodcloud.enums.foodmenu.Vegetables;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -12,36 +16,35 @@ public class FoodMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imagePath;
-    private String foodMenuName;
-    private String foodType;
-    private String meatType;
-    private String temperature;
-    private String vegetables;
+    private String name;
     private int price;
     private int orderCount;
+    private Temperature temperature;
+    private FoodTypes foodTypes;
+    private MeatTypes meatType;
+    private Vegetables vegetables;
+    private String imagePath;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
     public FoodMenu() {
     }
 
-    public FoodMenu(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables, Restaurant restaurant) {
-        this.foodMenuName = foodMenuName;
+    public FoodMenu(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables, Restaurant restaurant) {
+        this.name = name;
         this.price = price;
-        this.foodType = foodType;
         this.temperature = temperature;
+        this.foodTypes = foodTypes;
         this.meatType = meatType;
         this.vegetables = vegetables;
         this.restaurant = restaurant;
     }
 
-    public void update(String foodMenuName, int price, String foodType, String temperature, String meatType, String vegetables) {
-        this.foodMenuName = foodMenuName;
+    public void update(String foodMenuName, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
+        this.name = foodMenuName;
         this.price = price;
-        this.foodType = foodType;
         this.temperature = temperature;
+        this.foodTypes = foodTypes;
         this.meatType = meatType;
         this.vegetables = vegetables;
     }
