@@ -1,10 +1,8 @@
 package com.example.foodcloud.domain.foodmenu.service.image;
 
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +19,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class ImageUploadServiceImpl implements ImageUploadService {
     @Override
-    public void upload(String restaurantName, File file, FoodMenu foodMenu) {
+    public String saveFileAndReturnFilePath(String restaurantName, File file) {
         String fileName = StringUtils.cleanPath(creatFileName());
         String uploadDir = "food-menu-images/" + restaurantName + "/";
         Path uploadPath = Paths.get(uploadDir);
@@ -30,7 +28,7 @@ public class ImageUploadServiceImpl implements ImageUploadService {
 
         uploadImage(file, uploadPath, fileName);
 
-        foodMenu.uploadImage("/" + uploadDir + fileName);
+        return "/" + uploadDir + fileName;
     }
 
     private String creatFileName() {

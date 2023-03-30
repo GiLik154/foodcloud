@@ -4,4 +4,6 @@ import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpda
 
 public interface RestaurantUpdateService {
     boolean update(Long userId, Long restaurantId, RestaurantUpdateServiceDto restaurantUpdateServiceDto);
+
+    void updateOrderCount(Long restaurantId);
 }

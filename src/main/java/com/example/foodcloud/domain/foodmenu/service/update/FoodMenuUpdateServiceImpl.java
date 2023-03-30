@@ -31,7 +31,9 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
             FoodMenu foodMenu = foodMenuOptional.get();
 
             if (file != null) {
-                imageUploadService.upload(restaurant.getName(), file, foodMenu);
+                foodMenu.uploadImage(
+                        imageUploadService.saveFileAndReturnFilePath(restaurant.getName(), file)
+                );
             }
 
             foodMenu.update(foodMenuUpdateServiceDto.getName(),
@@ -42,17 +44,14 @@ public class FoodMenuUpdateServiceImpl implements FoodMenuUpdateService {
                     foodMenuUpdateServiceDto.getVegetables()
             );
 
-
             return true;
         }
         return false;
     }
 
     @Override
-    public void updateFoodMenuOrderCount(Long foodMenuId) {
+    public void updateOrderCount(Long foodMenuId) {
         FoodMenu foodMenu = foodMenuRepository.findByIdForUpdate(foodMenuId);
         foodMenu.updateOrderMenu();
     }
-
-
 }

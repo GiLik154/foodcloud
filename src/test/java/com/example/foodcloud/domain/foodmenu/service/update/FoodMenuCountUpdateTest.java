@@ -69,7 +69,7 @@ class FoodMenuCountUpdateTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuUpdateService.updateFoodMenuOrderCount(foodMenuId);
+                foodMenuUpdateService.updateOrderCount(foodMenuId);
                 countDownLatch.countDown();
             });
         }

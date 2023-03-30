@@ -8,6 +8,7 @@ import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdateService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private final FoodMenuUpdateService foodMenuUpdateService;
+    private final RestaurantUpdateService restaurantUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
@@ -44,8 +46,9 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
         );
 
         orderMenuRepository.save(orderMenu);
-        
-        foodMenuUpdateService.updateFoodMenuOrderCount(foodMenu.getId());
+
+        restaurantUpdateService.updateOrderCount(foodMenu.getRestaurant().getId());
+        foodMenuUpdateService.updateOrderCount(foodMenu.getId());
     }
 
     private String getTime() {
