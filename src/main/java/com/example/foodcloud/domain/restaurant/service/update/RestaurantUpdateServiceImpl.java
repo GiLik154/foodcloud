@@ -31,9 +31,4 @@ public class RestaurantUpdateServiceImpl implements RestaurantUpdateService {
         }
         return false;
     }
-
-    @Override
-    public void updateOrderCount(Long restaurantId) {
-        restaurantRepository.findById(restaurantId).ifPresent(Restaurant::updateOrderCount);
-    }
 }

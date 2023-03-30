@@ -1,6 +1,5 @@
 package com.example.foodcloud.domain.foodmenu.service.update;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
@@ -28,8 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuCountUpdateTest {
-    private final FoodMenuUpdateService foodMenuUpdateService;
+class FoodMenuCountUpdateServiceTest {
+    private final FoodMenuCountUpdateService foodMenuCountUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -37,8 +36,8 @@ class FoodMenuCountUpdateTest {
     private final OrderMainRepository orderMainRepository;
 
     @Autowired
-    public FoodMenuCountUpdateTest(FoodMenuUpdateService foodMenuUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, OrderMainRepository orderMainRepository) {
-        this.foodMenuUpdateService = foodMenuUpdateService;
+    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, OrderMainRepository orderMainRepository) {
+        this.foodMenuCountUpdateService = foodMenuCountUpdateService;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.orderMenuRepository = orderMenuRepository;
@@ -69,7 +68,7 @@ class FoodMenuCountUpdateTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuUpdateService.updateOrderCount(foodMenuId);
+                foodMenuCountUpdateService.updateOrderCount(foodMenuId);
                 countDownLatch.countDown();
             });
         }

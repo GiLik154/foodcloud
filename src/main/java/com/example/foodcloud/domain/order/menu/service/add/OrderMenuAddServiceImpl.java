@@ -2,12 +2,14 @@ package com.example.foodcloud.domain.order.menu.service.add;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuCountUpdateService;
 import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpdateService;
 import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdateService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
@@ -23,8 +25,8 @@ import java.time.format.DateTimeFormatter;
 @Transactional
 @RequiredArgsConstructor
 public class OrderMenuAddServiceImpl implements OrderMenuAddService {
-    private final FoodMenuUpdateService foodMenuUpdateService;
-    private final RestaurantUpdateService restaurantUpdateService;
+    private final FoodMenuCountUpdateService foodMenuCountUpdateService;
+    private final RestaurantCountUpdateService restaurantCountUpdateService;
     private final OrderMenuRepository orderMenuRepository;
     private final OrderMainRepository orderMainRepository;
     private final UserRepository userRepository;
@@ -47,8 +49,8 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
         orderMenuRepository.save(orderMenu);
 
-        restaurantUpdateService.updateOrderCount(foodMenu.getRestaurant().getId());
-        foodMenuUpdateService.updateOrderCount(foodMenu.getId());
+        restaurantCountUpdateService.updateOrderCount(foodMenu.getRestaurant().getId());
+        foodMenuCountUpdateService.updateOrderCount(foodMenu.getId());
     }
 
     private String getTime() {
