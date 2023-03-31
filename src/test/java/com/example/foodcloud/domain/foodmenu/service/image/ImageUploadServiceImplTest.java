@@ -11,6 +11,7 @@ import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -45,7 +46,7 @@ class ImageUploadServiceImplTest {
         this.userRepository = userRepository;
     }
 
-    @AfterEach
+    @BeforeEach
     public void deleteFile() throws IOException {
         String path = "food-menu-images/test/";
         File folder = new File(path);
@@ -59,7 +60,6 @@ class ImageUploadServiceImplTest {
         }
 
         folder.delete();
-
     }
 
     @Test

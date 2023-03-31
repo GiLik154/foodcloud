@@ -12,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserUpdateServiceImpl implements UserUpdateService {
     private final UserRepository userRepository;
 
+    /** 유저 업데이트 메소드.
+     * 유저의 고유키로 유저를 찾은 후
+     * 휴대폰 번호만 변경 가능 */
     @Override
     public void update(Long userId, String phone) {
-        User user = userRepository.validateUser(userId);
-
-        user.update(phone);
+        userRepository.findById(userId).ifPresent(user ->
+                user.update(phone)
+        );
     }
 }

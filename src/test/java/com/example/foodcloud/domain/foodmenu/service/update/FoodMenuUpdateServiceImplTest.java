@@ -7,6 +7,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -20,6 +21,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -42,8 +44,9 @@ class FoodMenuUpdateServiceImplTest {
     }
 
     @Test
-    void 음식메뉴_수정_정상작동() {
-        File file = mock(File.class);
+    void 음식메뉴_수정_정상작동() throws IOException {
+        File file = new File("test.jpg");
+        file.createNewFile();
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -62,10 +65,10 @@ class FoodMenuUpdateServiceImplTest {
         assertTrue(isUpdate);
         assertEquals("test123", foodMenu.getName());
         assertEquals(3000, foodMenu.getPrice());
-        assertEquals("test123", foodMenu.getFoodTypes());
-        assertEquals("test123", foodMenu.getTemperature());
-        assertEquals("test123", foodMenu.getMeatType());
-        assertEquals("test123", foodMenu.getVegetables());
+        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
         assertNotNull(foodMenu.getImagePath());
     }
 
@@ -90,10 +93,10 @@ class FoodMenuUpdateServiceImplTest {
         assertTrue(isUpdate);
         assertEquals("test123", foodMenu.getName());
         assertEquals(3000, foodMenu.getPrice());
-        assertEquals("test123", foodMenu.getFoodTypes());
-        assertEquals("test123", foodMenu.getTemperature());
-        assertEquals("test123", foodMenu.getMeatType());
-        assertEquals("test123", foodMenu.getVegetables());
+        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
         assertNull(foodMenu.getImagePath());
     }
 

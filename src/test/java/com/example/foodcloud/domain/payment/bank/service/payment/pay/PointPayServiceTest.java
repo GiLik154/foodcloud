@@ -88,7 +88,7 @@ class PointPayServiceTest {
 
         assertEquals(point, orderMenu.getPoint());
         assertEquals(BANK_CODE, orderMenu.getPayment());
-        assertEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price Point payment succeed", result);
         assertEquals(1000, point.getTotalPoint());
         assertEquals(-5000, point.getCalculation());

@@ -95,7 +95,7 @@ class OrderCheckPutRestControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
 
-        assertEquals("RECEIVED", orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
     }
 
     @Test

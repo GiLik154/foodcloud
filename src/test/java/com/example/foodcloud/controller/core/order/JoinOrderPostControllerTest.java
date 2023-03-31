@@ -20,6 +20,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.enums.OrderResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,7 @@ class JoinOrderPostControllerTest {
         OrderMenu orderMenu = orderMenuRepository.findByOrderMainId(orderMain.getId()).get(0);
 
         assertEquals("testInputLocation", orderMenu.getLocation());
-        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(foodMenu, orderMenu.getFoodMenu());

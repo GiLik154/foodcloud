@@ -19,6 +19,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -116,7 +117,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price KB Bank payment succeed"));
 
-        assertEquals("RECEIVED", orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -157,7 +158,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price NH bank payment succeed"));
 
-        assertEquals("RECEIVED", orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -198,7 +199,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "5000 price ShinHan bank payment succeed"));
 
-        assertEquals("RECEIVED", orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -239,7 +240,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
-        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -280,7 +281,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.BANK_NOT_FOUND.getResult()));
 
-        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -316,7 +317,7 @@ class PayPostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
 
-        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -357,7 +358,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
-        assertEquals("PAYMENT_WAITING", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }
@@ -400,7 +401,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "5000 price Point payment succeed"));
 
         assertEquals(1000, point.getTotalPoint());
-        assertEquals("Received", orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertEquals(point, orderMenu.getPoint());
     }
@@ -442,7 +443,7 @@ class PayPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_ENOUGH_POINT.getResult()));
 
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNull(orderMenu.getBankAccount());
         assertNull(orderMenu.getPoint());
     }

@@ -21,13 +21,13 @@ public class FoodMenuUpdateControllerDto {
     @Min(1000)
     @Max(3000000)
     private final int price;
-    @NotBlank
+    @NotNull
     private final Temperature temperature;
-    @NotBlank
+    @NotNull
     private final FoodTypes foodTypes;
-    @NotBlank
+    @NotNull
     private final MeatTypes meatType;
-    @NotBlank
+    @NotNull
     private final Vegetables vegetables;
 
     public FoodMenuUpdateControllerDto(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {

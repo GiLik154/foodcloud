@@ -19,6 +19,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -41,8 +42,9 @@ class FoodMenuAddServiceImplTest {
     }
 
     @Test
-    void 음식메뉴_추가_정상작동() {
-        File file = mock(File.class);
+    void 음식메뉴_추가_정상작동() throws IOException {
+        File file = new File("test.jpg");
+        file.createNewFile();
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -59,10 +61,10 @@ class FoodMenuAddServiceImplTest {
         assertTrue(isAdd);
         assertEquals("test", foodMenu.getName());
         assertEquals(5000, foodMenu.getPrice());
-        assertEquals("test", foodMenu.getFoodTypes());
-        assertEquals("test", foodMenu.getTemperature());
-        assertEquals("test", foodMenu.getMeatType());
-        assertEquals("test", foodMenu.getVegetables());
+        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
         assertNotNull(foodMenu.getImagePath());
     }
 
@@ -85,10 +87,10 @@ class FoodMenuAddServiceImplTest {
         assertTrue(isAdd);
         assertEquals("test", foodMenu.getName());
         assertEquals(5000, foodMenu.getPrice());
-        assertEquals("test", foodMenu.getFoodTypes());
-        assertEquals("test", foodMenu.getTemperature());
-        assertEquals("test", foodMenu.getMeatType());
-        assertEquals("test", foodMenu.getVegetables());
+        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
         assertNull(foodMenu.getImagePath());
     }
 

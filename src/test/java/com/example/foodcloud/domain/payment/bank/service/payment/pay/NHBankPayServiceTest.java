@@ -80,7 +80,7 @@ class NHBankPayServiceTest {
 
         assertEquals(bankAccount, orderMenu.getBankAccount());
         assertEquals(BANK_CODE, orderMenu.getPayment());
-        assertEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price NH bank payment succeed", result);
     }
 

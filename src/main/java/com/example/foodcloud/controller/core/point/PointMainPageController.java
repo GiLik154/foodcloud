@@ -26,7 +26,7 @@ public class PointMainPageController {
         if (optionalPoint.isPresent()) {
             model.addAttribute("myPoint", optionalPoint.get());
         } else {
-            pointAwardService.award(userId, 0);
+            pointAwardService.award(userId);
             return "redirect:/point/main";
         }
 

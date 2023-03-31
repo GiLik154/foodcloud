@@ -63,9 +63,11 @@ class FoodMenuAddPostControllerTest {
                 .setControllerAdvice(userExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
+
+
     }
 
-    @AfterEach
+    @BeforeEach
     public void deleteFile() throws IOException {
         String path = "food-menu-images/test/";
         File folder = new File(path);
@@ -128,10 +130,6 @@ class FoodMenuAddPostControllerTest {
 
     @Test
     void 음식_메뉴_정상추가_파일_없음() throws Exception {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("test", imageName, "image/jpeg", imageBytes);
-
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -142,7 +140,6 @@ class FoodMenuAddPostControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
-                .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
                 .param("price", "5000")
@@ -168,10 +165,37 @@ class FoodMenuAddPostControllerTest {
     }
 
     @Test
-    void 음식_메뉴_정상작동() throws Exception {
+    void 음식_메뉴_세션_없음() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
+
+        User user = new User("test", "test", "test");
+        userRepository.save(user);
+
+        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        restaurantRepository.save(restaurant);
+
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+                .file(mockMultipartFile)
+                .param("restaurantId", String.valueOf(restaurant.getId()))
+                .param("name", "testName")
+                .param("price", "5000")
+                .param("temperature", String.valueOf(Temperature.COLD))
+                .param("foodTypes", String.valueOf(FoodTypes.ADE))
+                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
+                .param("vegetables", String.valueOf(Vegetables.FEW));
+
+        mockMvc.perform(builder)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/login"));
+    }
+
+    @Test
+    void 음식_메뉴_유저_고유번호_다름() throws Exception {
+        byte[] imageBytes = "test-image".getBytes();
+        String imageName = "test-image.jpg";
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -180,10 +204,10 @@ class FoodMenuAddPostControllerTest {
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        session.setAttribute("userId", user.getId() + 1L);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
-                .file(file)
+                .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
                 .param("price", "5000")
@@ -196,65 +220,6 @@ class FoodMenuAddPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/food-menu/add"))
-                .andExpect(model().attribute("isAdd", true));
-    }
-
-    @Test
-    void 음식_메뉴_세션_없음() throws Exception {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
-
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
-                .file(file)
-                .param("restaurantId", String.valueOf(restaurant.getId()))
-                .param("name", "testName")
-                .param("price", "5000")
-                .param("foodType", "testType")
-                .param("temperature", "testTemperature")
-                .param("meatType", "testMeat")
-                .param("vegetables", "testVegetables");
-
-        mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
-    }
-
-    @Test
-    void 음식_메뉴_유저_고유번호_다름() throws Exception {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
-
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId() + 1L);
-
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
-                .file(file)
-                .param("restaurantId", String.valueOf(restaurant.getId()))
-                .param("name", "testName")
-                .param("price", "5000")
-                .param("foodType", "testType")
-                .param("temperature", "testTemperature")
-                .param("meatType", "testMeat")
-                .param("vegetables", "testVegetables")
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/add"))
                 .andExpect(model().attribute("isAdd", false));
     }
 
@@ -262,7 +227,7 @@ class FoodMenuAddPostControllerTest {
     void 음식_메뉴_식당_고유번호_다름() throws Exception {
         byte[] imageBytes = "test-image".getBytes();
         String imageName = "test-image.jpg";
-        MockMultipartFile file = new MockMultipartFile("file", imageName, "image/jpeg", imageBytes);
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -274,14 +239,14 @@ class FoodMenuAddPostControllerTest {
         session.setAttribute("userId", user.getId());
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
-                .file(file)
+                .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId() + 1L))
                 .param("name", "testName")
                 .param("price", "5000")
-                .param("foodType", "testType")
-                .param("temperature", "testTemperature")
-                .param("meatType", "testMeat")
-                .param("vegetables", "testVegetables")
+                .param("temperature", String.valueOf(Temperature.COLD))
+                .param("foodTypes", String.valueOf(FoodTypes.ADE))
+                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
+                .param("vegetables", String.valueOf(Vegetables.FEW))
                 .session(session);
 
         mockMvc.perform(builder)

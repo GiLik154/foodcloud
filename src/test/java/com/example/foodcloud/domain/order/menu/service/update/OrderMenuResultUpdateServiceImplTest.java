@@ -10,6 +10,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -65,7 +66,7 @@ class OrderMenuResultUpdateServiceImplTest {
         boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId, "COOKING");
 
         assertTrue(isUpdate);
-        assertEquals("Cooking", orderMenu.getResult());
+        assertEquals(OrderResult.COOKING, orderMenu.getResult());
     }
 
     @Test
@@ -90,6 +91,6 @@ class OrderMenuResultUpdateServiceImplTest {
         boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId +1L, "COOKING");
 
         assertFalse(isUpdate);
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
     }
 }

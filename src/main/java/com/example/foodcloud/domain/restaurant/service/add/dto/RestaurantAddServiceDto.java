@@ -4,9 +4,12 @@ import lombok.Getter;
 
 @Getter
 public class RestaurantAddServiceDto {
-    private String name;
-    private String location;
-    private String businessHours;
+    /** 식당의 이름 */
+    private final String name;
+    /** 식당의 장소 */
+    private final String location;
+    /** 식당의 운영 시간 */
+    private final String businessHours;
 
     public RestaurantAddServiceDto(String name, String location, String businessHours) {
         this.name = name;

@@ -15,10 +15,8 @@ public class PointAwardServiceImpl implements PointAwardService {
     private final UserRepository userRepository;
 
     @Override
-    public void award(Long userId, int point) {
+    public void award(Long userId) {
         Point awardPoint = new Point(userRepository.validateUser(userId));
-
-        awardPoint.updatePoint(point);
 
         pointRepository.save(awardPoint);
     }

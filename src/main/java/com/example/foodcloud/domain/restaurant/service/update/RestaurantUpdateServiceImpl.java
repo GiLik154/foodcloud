@@ -15,20 +15,19 @@ import java.util.Optional;
 public class RestaurantUpdateServiceImpl implements RestaurantUpdateService {
     private final RestaurantRepository restaurantRepository;
 
+    /**
+     * 식당을 수정하는 메소드
+     * 식당을 등록한 유저의 고유번호와 식당의 고유번호를 통해
+     * 식당을 가지고온 후 UpateServiceDto를 통해서 수장함.
+     */
     @Override
-    public boolean update(Long userId, Long restaurantId, RestaurantUpdateServiceDto restaurantUpdateServiceDto) {
+    public void update(Long userId, Long restaurantId, RestaurantUpdateServiceDto restaurantUpdateServiceDto) {
         Optional<Restaurant> restaurantOptional = restaurantRepository.findByUserIdAndId(userId, restaurantId);
 
-        if (restaurantOptional.isPresent()) {
-
-            Restaurant restaurant = restaurantOptional.get();
-
-            restaurant.update(restaurantUpdateServiceDto.getName(),
-                    restaurantUpdateServiceDto.getLocation(),
-                    restaurantUpdateServiceDto.getBusinessHours()
-            );
-            return true;
-        }
-        return false;
+        restaurantOptional.ifPresent(restaurant ->
+                restaurant.update(restaurantUpdateServiceDto.getName(),
+                        restaurantUpdateServiceDto.getLocation(),
+                        restaurantUpdateServiceDto.getBusinessHours()
+                ));
     }
 }

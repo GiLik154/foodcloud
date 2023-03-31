@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class ValidateUserServiceImpl implements ValidateUserService {
+public class ValidateUserPasswordServiceImpl implements ValidateUserPasswordService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
+    /** 유저 패스워드 검증 메소드
+     * 패스워드 불일치시 익셉션 발생함. */
     @Override
     public void validate(String name, String password) {
         User user = userRepository.validateUser(name);
@@ -24,7 +26,6 @@ public class ValidateUserServiceImpl implements ValidateUserService {
             throw new BadCredentialsException("Invalid password");
         }
     }
-
     @Override
     public void validate(Long userId, String password) {
         User user = userRepository.validateUser(userId);

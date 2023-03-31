@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ValidateUserServiceImplTest {
-    private final ValidateUserService validateUserService;
+class ValidateUserPasswordServiceImplTest {
+    private final ValidateUserPasswordService validateUserPasswordService;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ValidateUserServiceImplTest(ValidateUserService validateUserService, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
-        this.validateUserService = validateUserService;
+    public ValidateUserPasswordServiceImplTest(ValidateUserPasswordService validateUserPasswordService, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+        this.validateUserPasswordService = validateUserPasswordService;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -34,7 +34,7 @@ class ValidateUserServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        validateUserService.validate("test", "test");
+        validateUserPasswordService.validate("test", "test");
     }
 
     @Test
@@ -44,7 +44,7 @@ class ValidateUserServiceImplTest {
         Long userId = user.getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                validateUserService.validate("test123", "test")
+                validateUserPasswordService.validate("test123", "test")
         );
 
         assertEquals("Invalid user", e.getMessage());
@@ -57,7 +57,7 @@ class ValidateUserServiceImplTest {
         Long userId = user.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                validateUserService.validate("test", "test123")
+                validateUserPasswordService.validate("test", "test123")
         );
 
         assertEquals("Invalid password", e.getMessage());
@@ -69,7 +69,7 @@ class ValidateUserServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        validateUserService.validate(userId, "test");
+        validateUserPasswordService.validate(userId, "test");
     }
 
     @Test
@@ -79,7 +79,7 @@ class ValidateUserServiceImplTest {
         Long userId = user.getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                validateUserService.validate(userId + 1L, "test")
+                validateUserPasswordService.validate(userId + 1L, "test")
         );
 
         assertEquals("Invalid user", e.getMessage());
@@ -92,7 +92,7 @@ class ValidateUserServiceImplTest {
         Long userId = user.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                validateUserService.validate(userId, "test123")
+                validateUserPasswordService.validate(userId, "test123")
         );
 
         assertEquals("Invalid password", e.getMessage());

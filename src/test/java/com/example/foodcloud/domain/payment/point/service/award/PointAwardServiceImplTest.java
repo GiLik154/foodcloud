@@ -40,12 +40,11 @@ class PointAwardServiceImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        pointAwardService.award(user.getId(), 5000);
+        pointAwardService.award(user.getId());
         Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
 
         assertNotNull(point.getId());
         assertThat(point.getUser()).isEqualTo(user);
-        assertThat(point.getTotalPoint()).isEqualTo(5000);
     }
 
     @Test
@@ -56,34 +55,10 @@ class PointAwardServiceImplTest {
         Long id = userRepository.validateUser("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                pointAwardService.award(id + 1L, 5000)
+                pointAwardService.award(id + 1L)
         );
 
         assertEquals("Invalid user", e.getMessage());
         assertThat(pointRepository.existsById(id)).isFalse();
-    }
-
-    @Test
-    void 포인트_가입_Max_초과() {
-        User user = new User("test", "test", "tset");
-        userRepository.save(user);
-
-        Long id = userRepository.validateUser("test").getId();
-
-        assertThrows(ConstraintViolationException.class, () ->
-                pointAwardService.award(id, Integer.MAX_VALUE)
-        );
-    }
-
-    @Test
-    void 포인트_가입_Min_초과() {
-        User user = new User("test", "test", "tset");
-        userRepository.save(user);
-
-        Long id = userRepository.validateUser("test").getId();
-
-        assertThrows(NotEnoughPointException.class, () ->
-                pointAwardService.award(id, Integer.MIN_VALUE)
-        );
     }
 }
