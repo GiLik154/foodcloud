@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -42,8 +41,13 @@ public class FoodMenuAddController {
                        MultipartFile multipartFile,
                        Model model) throws IOException {
 
-            File file = new File(multipartFile.getOriginalFilename());
+        File file = null;
+
+        if (multipartFile != null && multipartFile.getOriginalFilename() != null) {
+            String originalFilename = multipartFile.getOriginalFilename();
+            file = new File(originalFilename);
             multipartFile.transferTo(file);
+        }
 
         model.addAttribute("isAdd", foodMenuAddService.add(userId, restaurantId, foodMenuAddControllerDto.convert(), file));
 

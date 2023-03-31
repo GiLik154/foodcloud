@@ -50,8 +50,6 @@ public class FoodMenu {
     }
 
     public void updateOrderMenu() {
-        restaurant.updateOrderCount();
-
         this.orderCount++;
     }
 

@@ -11,6 +11,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -26,6 +27,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,23 +59,25 @@ class OrderMenuAddServiceImplTest {
         this.foodMenuRepository = foodMenuRepository;
         this.orderMainRepository = orderMainRepository;
     }
-
-    private ExecutorService executorService;
-    private CountDownLatch latch;
-
-    @BeforeEach
-    public void setUp() {
-        executorService = Executors.newFixedThreadPool(2);
-        latch = new CountDownLatch(2);
-    }
-
     @AfterEach
-    public void tearDown() {
-        executorService.shutdown();
+    public void deleteFile() throws IOException {
+        String path = "food-menu-images/test/";
+        File folder = new File(path);
+
+        Path uploadPath = Paths.get(path);
+        Files.createDirectories(uploadPath);
+        File[] deleteFolderList = folder.listFiles();
+
+        for (File f : deleteFolderList) {
+            f.delete();
+        }
+
+        folder.delete();
+
     }
 
     @Test
-    void 주문메뉴_추가_정상작동() throws InterruptedException {
+    void 주문메뉴_추가_정상작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
@@ -95,7 +103,7 @@ class OrderMenuAddServiceImplTest {
         assertEquals(foodMenu, orderMenu.getFoodMenu());
         assertEquals(orderMain, orderMenu.getOrderMain());
         assertEquals(25000, orderMenu.getPrice());
-        assertEquals("Payment waiting", orderMenu.getResult());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNotNull(orderMenu.getTime());
 
         /** 음식 메뉴에서 주문 추가 기능 테스트 **/

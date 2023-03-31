@@ -10,6 +10,7 @@ import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -44,6 +45,23 @@ class ImageUploadServiceImplTest {
         this.userRepository = userRepository;
     }
 
+    @AfterEach
+    public void deleteFile() throws IOException {
+        String path = "food-menu-images/test/";
+        File folder = new File(path);
+
+        Path uploadPath = Paths.get(path);
+        Files.createDirectories(uploadPath);
+        File[] deleteFolderList = folder.listFiles();
+
+        for (File f : deleteFolderList) {
+            f.delete();
+        }
+
+        folder.delete();
+
+    }
+
     @Test
     void 이미지_업로드_정상작동() throws IOException {
         String path = "food-menu-images/test/";
@@ -63,10 +81,9 @@ class ImageUploadServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.upload(restaurant.getName(), file, foodMenu);
+        imageUploadService.saveFileAndReturnFilePath(restaurant.getName(), file);
 
         assertEquals(1, folder.listFiles().length);
-        assertNotNull(foodMenu.getImagePath());
     }
 
     @Test
@@ -96,17 +113,8 @@ class ImageUploadServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.upload(restaurant.getName(), file, foodMenu);
+        imageUploadService.saveFileAndReturnFilePath(restaurant.getName(), file);
 
         assertEquals(1, folder.listFiles().length);
-        assertNotNull(foodMenu.getImagePath());
-
-        deleteFolderList = folder.listFiles();
-
-        for (File f : deleteFolderList) {
-            f.delete();
-        }
-
-        folder.delete();
     }
 }

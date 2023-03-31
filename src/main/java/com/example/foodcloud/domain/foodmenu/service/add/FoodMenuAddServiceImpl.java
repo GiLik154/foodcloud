@@ -37,7 +37,9 @@ public class FoodMenuAddServiceImpl implements FoodMenuAddService {
             );
 
             if (file != null) {
-                imageUploadService.upload(restaurantOptional.get().getName(), file, foodMenu);
+                foodMenu.uploadImage(
+                        imageUploadService.saveFileAndReturnFilePath(restaurantOptional.get().getName(), file)
+                );
             }
 
             foodMenuRepository.save(foodMenu);
