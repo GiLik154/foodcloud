@@ -32,7 +32,7 @@
             <div th:text="${account.accountNumber}"></div>
         </div>
         <div class="col-sm-3 border-bottom py-2">
-            <div th:text="${T(com.example.foodcloud.enums.BankCode).returnName(account.bank)}"></div>
+            <div th:text="${T(com.example.foodcloud.enums.PaymentCode).returnName(account.bank)}"></div>
         </div>
         <div class="col-sm-1 border-bottom py-2">
             <button type="button" class="btn btn-danger" th:onclick="|location.href='@{/bank/delete(bankAccountId=${account.id})}'|">Delete</button>

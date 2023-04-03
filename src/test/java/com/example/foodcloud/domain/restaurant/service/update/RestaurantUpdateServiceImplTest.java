@@ -39,9 +39,8 @@ class RestaurantUpdateServiceImplTest {
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123", "test123");
-        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId, restaurantUpdateServiceDto);
+        restaurantUpdateService.update(userId, restaurantId, restaurantUpdateServiceDto);
 
-        assertTrue(isUpdate);
         assertEquals("test123", restaurant.getName());
         assertEquals("test123", restaurant.getBusinessHours());
     }
@@ -57,9 +56,8 @@ class RestaurantUpdateServiceImplTest {
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123", "test123");
-        boolean isUpdate = restaurantUpdateService.update(userId + 1L, restaurantId, restaurantUpdateServiceDto);
+        restaurantUpdateService.update(userId + 1L, restaurantId, restaurantUpdateServiceDto);
 
-        assertFalse(isUpdate);
         assertEquals("test", restaurant.getName(), "test");
         assertEquals("test", restaurant.getLocation(), "test");
         assertEquals("test", restaurant.getBusinessHours(), "test");
@@ -76,9 +74,8 @@ class RestaurantUpdateServiceImplTest {
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("test123", "test123","test123");
-        boolean isUpdate = restaurantUpdateService.update(userId, restaurantId + 1L, restaurantUpdateServiceDto);
+        restaurantUpdateService.update(userId, restaurantId + 1L, restaurantUpdateServiceDto);
 
-        assertFalse(isUpdate);
         assertEquals("test", restaurant.getName());
         assertEquals("test", restaurant.getLocation());
         assertEquals("test", restaurant.getBusinessHours());

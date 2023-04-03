@@ -5,12 +5,10 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Component;
 
 
-@Service
-@Transactional
+@Component
 @RequiredArgsConstructor
 public class ValidateUserPasswordServiceImpl implements ValidateUserPasswordService {
     private final UserRepository userRepository;

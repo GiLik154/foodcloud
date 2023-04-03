@@ -21,7 +21,7 @@ public class OrderMenuCancelServiceImpl implements OrderMenuCancelService {
     public String cancel(Long userId, Long orderMenuId) {
         OrderMenu orderMenu = orderMenuRepository.validateOrderMenuForUserIdAndId(userId, orderMenuId);
 
-        PaymentService paymentService = paymentServiceMap.get(orderMenu.getPayment());
+        PaymentService paymentService = paymentServiceMap.get(orderMenu.getPayment().getPaymentCode().getCode());
 
         orderMenuResultUpdateService.update(orderMenuId, "CANCELED");
 

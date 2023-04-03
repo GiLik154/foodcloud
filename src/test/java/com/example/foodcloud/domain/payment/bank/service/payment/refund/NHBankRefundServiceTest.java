@@ -13,6 +13,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -58,7 +59,7 @@ class NHBankRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -84,7 +85,7 @@ class NHBankRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 

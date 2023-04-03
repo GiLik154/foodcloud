@@ -1,6 +1,7 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
 import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
+import com.example.foodcloud.enums.PaymentCode;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
@@ -12,15 +13,15 @@ public class BankAccountAddControllerDto {
     @NotEmpty
     private final String accountNumber;
     @NotEmpty
-    private final String bank;
+    private final String paymentCode;
 
-    public BankAccountAddControllerDto(String name, String accountNumber, String bank) {
+    public BankAccountAddControllerDto(String name, String accountNumber, String paymentCode) {
         this.name = name;
         this.accountNumber = accountNumber;
-        this.bank = bank;
+        this.paymentCode = paymentCode;
     }
 
     public BankAccountAddServiceDto convert() {
-        return new BankAccountAddServiceDto(this.name, this.accountNumber, this.bank);
+        return new BankAccountAddServiceDto(this.name, this.accountNumber, PaymentCode.valueOfCode(paymentCode));
     }
 }

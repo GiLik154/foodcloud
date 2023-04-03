@@ -4,6 +4,7 @@ import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, 5000);
@@ -53,7 +55,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, -1000);
@@ -71,7 +74,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId + 1L, -1000);
@@ -88,7 +92,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         assertThrows(ArithmeticException.class, () -> pointSumService.sum(userId, Integer.MAX_VALUE));
@@ -100,7 +105,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         assertThrows(NotEnoughPointException.class, () -> pointSumService.sum(userId, Integer.MIN_VALUE));
@@ -112,7 +118,8 @@ class PointSumServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(5000, 5000, user);
+        Point point = new Point(user, PaymentCode.POINT);
+        point.updatePoint(5000);
         pointRepository.save(point);
 
         boolean isSum = false;

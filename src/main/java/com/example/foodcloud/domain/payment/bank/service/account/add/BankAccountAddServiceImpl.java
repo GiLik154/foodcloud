@@ -22,8 +22,8 @@ public class BankAccountAddServiceImpl implements BankAccountAddService {
 
         BankAccount bankAccount = new BankAccount(bankAccountAddServiceDto.getName(),
                 bankAccountAddServiceDto.getAccountNumber(),
-                bankAccountAddServiceDto.getBank(),
-                user);
+                user,
+                bankAccountAddServiceDto.getPaymentCode());
 
         bankAccountRepository.save(bankAccount);
     }

@@ -10,6 +10,7 @@ import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAcc
 import com.example.foodcloud.domain.payment.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -73,7 +74,7 @@ class BankUpdatePostControllerTest {
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("name", "updateBankName")
                 .param("accountNumber", "updateBankNumber")
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -83,7 +84,7 @@ class BankUpdatePostControllerTest {
 
         assertEquals("updateBankName", bankAccount.getName());
         assertEquals("updateBankNumber", bankAccount.getAccountNumber());
-        assertEquals("088", bankAccount.getBank());
+        assertEquals(PaymentCode.SHIN_HAN, bankAccount.getPaymentCode());
     }
 
     @Test
@@ -91,7 +92,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -101,7 +102,7 @@ class BankUpdatePostControllerTest {
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("name", "updateBankName")
                 .param("accountNumber", "updateBankNumber")
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -111,7 +112,7 @@ class BankUpdatePostControllerTest {
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
-        assertNotEquals("088", bankAccount.getBank());
+        assertNotEquals("088", bankAccount.getPaymentCode());
     }
 
     @Test
@@ -119,7 +120,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -129,7 +130,7 @@ class BankUpdatePostControllerTest {
                 .param("bankAccountId", String.valueOf(bankAccount.getId()) + 1L)
                 .param("name", "updateBankName")
                 .param("accountNumber", "updateBankNumber")
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -139,6 +140,6 @@ class BankUpdatePostControllerTest {
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
-        assertNotEquals("088", bankAccount.getBank());
+        assertNotEquals("088", bankAccount.getPaymentCode());
     }
 }

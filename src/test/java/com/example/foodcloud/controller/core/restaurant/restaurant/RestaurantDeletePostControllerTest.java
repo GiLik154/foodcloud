@@ -72,8 +72,7 @@ class RestaurantDeletePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/restaurant/list?isDelete=true"))
-                .andExpect(model().attribute("isDelete", true));
+                .andExpect(redirectedUrl("/restaurant/list"));
 
         assertTrue(restaurantRepository.findByUserId(user.getId()).isEmpty());
     }
@@ -162,8 +161,8 @@ class RestaurantDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/restaurant/list?isDelete=false"))
+                .andExpect(status().isOk())
+                .andExpect(redirectedUrl("/restaurant/list"))
                 .andExpect(model().attribute("isDelete", false));
 
         assertFalse(restaurantRepository.findByUserId(user.getId()).isEmpty());

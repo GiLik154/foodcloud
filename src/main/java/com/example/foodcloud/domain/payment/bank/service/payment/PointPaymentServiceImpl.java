@@ -20,7 +20,7 @@ public class PointPaymentServiceImpl implements PaymentService {
     public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
         if (pointSumService.sum(userId, price * -1)) {
 
-            orderMenuPaymentUpdateService.isUpdate(orderMenuId, getPointId(userId));
+            orderMenuPaymentUpdateService.update(orderMenuId, getPointId(userId));
 
             return price + " price Point payment succeed";
         }

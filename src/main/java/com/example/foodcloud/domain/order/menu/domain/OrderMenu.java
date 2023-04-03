@@ -1,16 +1,13 @@
 package com.example.foodcloud.domain.order.menu.domain;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
+import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.user.domain.User;
-import com.example.foodcloud.enums.BankCode;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.Getter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 @Entity
 @Getter
@@ -27,13 +24,10 @@ public class OrderMenu {
     private OrderResult result;
     private String time;
     private String location;
-    private String payment;
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
-    private BankAccount bankAccount;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Point point;
+    private Payment payment;
 
     public OrderMenu() {
     }
@@ -49,16 +43,8 @@ public class OrderMenu {
         this.result = OrderResult.PAYMENT_WAITING;
     }
 
-    public void updatePayment(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
-        this.payment = bankAccount.getBank();
-        this.result = OrderResult.RECEIVED;
-    }
-
-    public void updatePayment(Point point) {
-        this.point = point;
-        this.payment = BankCode.POINT.getCode();
-        this.result = OrderResult.RECEIVED;
+    public void updatePayment(Payment payment) {
+        this.payment = payment;
     }
 
     public void updateResult(OrderResult orderResult) {

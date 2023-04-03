@@ -20,6 +20,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -86,7 +87,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -107,7 +108,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "004")
+                .param("paymentCode", "004")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -118,8 +119,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "5000 price KB Bank payment succeed"));
 
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertEquals(bankAccount, orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertEquals(bankAccount, orderMenu.getPayment());
     }
 
     @Test
@@ -127,7 +127,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -148,7 +148,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "011")
+                .param("paymentCode", "011")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -159,8 +159,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "5000 price NH bank payment succeed"));
 
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertEquals(bankAccount, orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertEquals(bankAccount, orderMenu.getPayment());
     }
 
     @Test
@@ -168,7 +167,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -189,7 +188,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -200,8 +199,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "5000 price ShinHan bank payment succeed"));
 
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertEquals(bankAccount, orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertEquals(bankAccount, orderMenu.getPayment());
     }
 
     @Test
@@ -209,7 +207,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -230,7 +228,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId() + 1L))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -241,8 +239,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 
     @Test
@@ -250,7 +247,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -271,7 +268,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "099")
+                .param("paymentCode", "099")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -282,8 +279,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.BANK_NOT_FOUND.getResult()));
 
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 
     @Test
@@ -291,7 +287,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -309,7 +305,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000));
 
@@ -318,8 +314,7 @@ class PayPostControllerTest {
                 .andExpect(redirectedUrl("/user/login"));
 
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 
     @Test
@@ -327,7 +322,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "011", user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -348,7 +343,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "088")
+                .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -359,8 +354,7 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("payment", "ShinHan bank payment fail"));
 
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 
     @Test
@@ -368,7 +362,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(6000);
         pointRepository.save(point);
 
@@ -390,7 +384,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "000")
+                .param("paymentCode", "000")
                 .param("bankAccountId", String.valueOf(0))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -402,8 +396,7 @@ class PayPostControllerTest {
 
         assertEquals(1000, point.getTotalPoint());
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertEquals(point, orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 
     @Test
@@ -411,7 +404,7 @@ class PayPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(3000);
         pointRepository.save(point);
 
@@ -433,7 +426,7 @@ class PayPostControllerTest {
 
         MockHttpServletRequestBuilder builder = post("/payment/pay")
                 .param("orderMenuId", String.valueOf(orderMenuId))
-                .param("bank", "000")
+                .param("paymentCode", "000")
                 .param("bankAccountId", String.valueOf(0))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -444,7 +437,6 @@ class PayPostControllerTest {
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.NOT_ENOUGH_POINT.getResult()));
 
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
-        assertNull(orderMenu.getBankAccount());
-        assertNull(orderMenu.getPoint());
+        assertNull(orderMenu.getPayment());
     }
 }

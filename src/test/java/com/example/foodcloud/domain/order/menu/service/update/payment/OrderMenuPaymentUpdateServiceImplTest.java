@@ -14,6 +14,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -68,13 +69,12 @@ class OrderMenuPaymentUpdateServiceImplTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         pointRepository.save(point);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId(), point);
+        orderMenuPaymentUpdateService.update(orderMenu.getId(), point);
 
-        assertTrue(isUpdate);
-        assertEquals("000", orderMenu.getPayment());
+        assertEquals(PaymentCode.POINT, orderMenu.getPayment().getPaymentCode());
     }
 
     @Test
@@ -94,13 +94,12 @@ class OrderMenuPaymentUpdateServiceImplTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId(), bankAccount);
+        orderMenuPaymentUpdateService.update(orderMenu.getId(), bankAccount);
 
-        assertTrue(isUpdate);
-        assertEquals("004", orderMenu.getPayment());
+        assertEquals(PaymentCode.KB, orderMenu.getPayment().getPaymentCode());
     }
 
     @Test
@@ -120,12 +119,11 @@ class OrderMenuPaymentUpdateServiceImplTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
-        boolean isUpdate = orderMenuPaymentUpdateService.isUpdate(orderMenu.getId() + 1L, bankAccount);
+        orderMenuPaymentUpdateService.update(orderMenu.getId() + 1L, bankAccount);
 
-        assertFalse(isUpdate);
-        assertNotEquals("004", orderMenu.getPayment());
+        assertNull(orderMenu.getPayment());
     }
 }

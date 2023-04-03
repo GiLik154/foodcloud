@@ -8,6 +8,7 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ class BankAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/bank/add")
                 .param("name", "testName")
                 .param("accountNumber", "testNumber")
-                .param("bank", "004")
+                .param("paymentCode", "004")
                 .session(session);
 
         mockMvc.perform(builder)
@@ -74,7 +75,7 @@ class BankAddPostControllerTest {
         assertNotNull(bankAccount.getId());
         assertEquals("testName", bankAccount.getName());
         assertEquals("testNumber", bankAccount.getAccountNumber());
-        assertEquals("004", bankAccount.getBank());
+        assertEquals(PaymentCode.KB, bankAccount.getPaymentCode());
 
     }
 
@@ -86,7 +87,7 @@ class BankAddPostControllerTest {
         MockHttpServletRequestBuilder builder = post("/bank/add")
                 .param("name", "testName")
                 .param("accountNumber", "testNumber")
-                .param("bank", "004");
+                .param("paymentCode", "004");
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

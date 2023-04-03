@@ -23,9 +23,9 @@ public class RestaurantDeleteController {
     @PostMapping("/delete")
     public String post(@SessionAttribute("userId") Long userId,
                        @RequestParam Long restaurantId,
-                       String password,
-                       Model model) {
-        model.addAttribute("isDelete", restaurantDeleteService.delete(userId, restaurantId, password));
+                       String password) {
+
+        restaurantDeleteService.delete(userId, restaurantId, password);
 
         return "redirect:/restaurant/list";
     }

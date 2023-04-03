@@ -117,8 +117,7 @@ class RestaurantUpdateGetControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/update"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(forwardedUrl("thymeleaf/restaurant/update"));
 
         assertNotEquals("updateName", restaurant.getName());
         assertNotEquals("updateLocation", restaurant.getLocation());

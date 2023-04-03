@@ -4,6 +4,7 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -36,7 +37,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test");
@@ -50,7 +51,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId() + 1L, bankAccount.getId(), "test");
@@ -64,7 +65,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId() + 1L, "test");
@@ -79,7 +80,7 @@ class BankAccountDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 

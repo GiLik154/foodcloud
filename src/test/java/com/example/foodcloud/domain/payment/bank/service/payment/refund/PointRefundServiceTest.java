@@ -15,6 +15,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -63,11 +64,11 @@ class PointRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(6000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -95,11 +96,11 @@ class PointRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);

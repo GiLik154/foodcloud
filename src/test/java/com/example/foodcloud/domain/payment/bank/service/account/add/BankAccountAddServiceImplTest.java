@@ -5,6 +5,7 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -13,8 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -37,15 +37,17 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("test", "test", "001");
+        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("testName", "testNumber", PaymentCode.KB);
         bankAccountAddService.add(userId, bankAccountAddServiceDto);
 
         BankAccount bankAccount = bankAccountRepository.findByUserId(userId).get(0);
 
-        assertThat(bankAccount.getUser()).isEqualTo(user);
-        assertThat(bankAccount.getName()).isEqualTo("test");
-        assertThat(bankAccount.getAccountNumber()).isEqualTo("test");
-        assertThat(bankAccount.getBank()).isEqualTo("001");
+
+        assertNotNull(bankAccount.getId());
+        assertEquals(user, bankAccount.getUser());
+        assertEquals("testName", bankAccount.getName());
+        assertEquals("testNumber", bankAccount.getAccountNumber());
+        assertEquals(PaymentCode.KB, bankAccount.getPaymentCode());
     }
 
     @Test
@@ -54,10 +56,10 @@ class BankAccountAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("test", "test", "001");
+        BankAccountAddServiceDto bankAccountAddServiceDto = new BankAccountAddServiceDto("testName", "testNumber", PaymentCode.KB);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                bankAccountAddService.add(userId +1L, bankAccountAddServiceDto)
+                bankAccountAddService.add(userId + 1L, bankAccountAddServiceDto)
         );
         assertEquals("Invalid user", e.getMessage());
     }

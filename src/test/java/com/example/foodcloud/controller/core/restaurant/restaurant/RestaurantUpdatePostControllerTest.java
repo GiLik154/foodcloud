@@ -72,8 +72,7 @@ class RestaurantUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/update"))
-                .andExpect(model().attribute("isUpdate", true));
+                .andExpect(forwardedUrl("thymeleaf/restaurant/update"));
 
         assertEquals("updateName", restaurant.getName());
         assertEquals("updateLocation", restaurant.getLocation());
@@ -123,8 +122,7 @@ class RestaurantUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/update"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(forwardedUrl("thymeleaf/restaurant/update"));
 
         assertNotEquals("updateName", restaurant.getName());
         assertNotEquals("updateLocation", restaurant.getLocation());
@@ -151,8 +149,7 @@ class RestaurantUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/update"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(forwardedUrl("thymeleaf/restaurant/update"));
 
         assertNotEquals("updateName", restaurant.getName());
         assertNotEquals("updateLocation", restaurant.getLocation());

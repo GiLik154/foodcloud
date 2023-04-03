@@ -42,9 +42,8 @@ class FoodMenuDeleteServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        boolean isDelete = restaurantDeleteService.delete(userId, restaurantId, "test");
+        restaurantDeleteService.delete(userId, restaurantId, "test");
 
-        assertTrue(isDelete);
         assertFalse(restaurantRepository.existsById(restaurantId));
     }
 
@@ -83,9 +82,8 @@ class FoodMenuDeleteServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 //when
         
-        boolean isDelete = restaurantDeleteService.delete(userId, restaurantId + 1L, "test");
+        restaurantDeleteService.delete(userId, restaurantId + 1L, "test");
 //then
-        assertFalse(isDelete);
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 

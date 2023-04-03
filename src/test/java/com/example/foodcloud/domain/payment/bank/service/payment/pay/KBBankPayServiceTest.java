@@ -14,6 +14,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -51,15 +52,13 @@ class KBBankPayServiceTest {
         this.userRepository = userRepository;
     }
 
-    private final String BANK_CODE = "004";
-
     @Test
     void KB_결제_정상작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -75,10 +74,10 @@ class KBBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.KB.getCode()).pay(userId, orderMenu.getId(), bankAccountId, 5000);
 
-        assertEquals(bankAccount, orderMenu.getBankAccount());
-        assertEquals(BANK_CODE, orderMenu.getPayment());
+        assertEquals(bankAccount, orderMenu.getPayment());
+        assertEquals(PaymentCode.KB, orderMenu.getPayment().getPaymentCode());
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price KB Bank payment succeed", result);
     }
@@ -89,7 +88,7 @@ class KBBankPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -105,11 +104,11 @@ class KBBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId, orderMenu.getId(), bankAccountId + 1L, 5000);
+        String result = bankPaymentService.get(PaymentCode.KB.getCode()).pay(userId, orderMenu.getId(), bankAccountId + 1L, 5000);
 
-        assertNotEquals(bankAccount, orderMenu.getBankAccount());
-        assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertEquals(bankAccount, orderMenu.getPayment());
+        assertEquals(PaymentCode.KB, orderMenu.getPayment().getPaymentCode());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("KB bank payment fail", result);
     }
 
@@ -119,7 +118,7 @@ class KBBankPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -135,11 +134,11 @@ class KBBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.KB.getCode()).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
 
-        assertNotEquals(bankAccount, orderMenu.getBankAccount());
+        assertNotEquals(bankAccount, orderMenu.getPayment());
         assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("KB bank payment fail", result);
     }
 }

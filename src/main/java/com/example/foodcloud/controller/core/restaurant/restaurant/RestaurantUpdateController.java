@@ -26,9 +26,9 @@ public class RestaurantUpdateController {
     @PostMapping("/update")
     public String post(@SessionAttribute("userId") Long userId,
                        Long restaurantId,
-                       @Valid RestaurantUpdateControllerDto restaurantUpdateControllerDto,
-                       Model model) {
-        model.addAttribute("isUpdate", restaurantUpdateService.update(userId, restaurantId, restaurantUpdateControllerDto.convert()));
+                       @Valid RestaurantUpdateControllerDto restaurantUpdateControllerDto) {
+
+        restaurantUpdateService.update(userId, restaurantId, restaurantUpdateControllerDto.convert());
 
         return "thymeleaf/restaurant/update";
     }

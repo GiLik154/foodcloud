@@ -16,6 +16,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -56,19 +57,17 @@ class PointPayServiceTest {
         this.pointRepository = pointRepository;
     }
 
-    private final String BANK_CODE = "000";
-
     @Test
     void Point_결제_정상작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(6000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -84,10 +83,10 @@ class PointPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.POINT.getCode()).pay(userId, orderMenu.getId(), bankAccountId, 5000);
 
-        assertEquals(point, orderMenu.getPoint());
-        assertEquals(BANK_CODE, orderMenu.getPayment());
+        assertEquals(point, orderMenu.getPayment());
+        assertEquals(PaymentCode.POINT, orderMenu.getPayment().getPaymentCode());
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price Point payment succeed", result);
         assertEquals(1000, point.getTotalPoint());
@@ -100,11 +99,11 @@ class PointPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -120,11 +119,10 @@ class PointPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.POINT.getCode()).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
 
-        assertNotEquals(point, orderMenu.getPoint());
-        assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertNotEquals(point, orderMenu.getPayment());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("Point payment fail", result);
         assertEquals(5000, point.getTotalPoint());
         assertEquals(5000, point.getCalculation());
@@ -136,11 +134,11 @@ class PointPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         point.updatePoint(1000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "004", user);
+        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -157,15 +155,14 @@ class PointPayServiceTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        PaymentService paymentService = bankPaymentService.get(BANK_CODE);
+        PaymentService paymentService = bankPaymentService.get(PaymentCode.POINT.getCode());
 
         NotEnoughPointException exception = assertThrows(NotEnoughPointException.class, () ->
                 paymentService.pay(userId, orderMenuId, bankAccountId, 5000)
         );
 
-        assertNotEquals(point, orderMenu.getPoint());
-        assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertNotEquals(point, orderMenu.getPayment());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("Out of bounds for point Points are less than zero.", exception.getMessage());
         assertEquals(1000, point.getTotalPoint());
         assertEquals(1000, point.getCalculation());

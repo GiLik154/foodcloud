@@ -20,7 +20,7 @@ public class KBBankPaymentServiceImpl implements PaymentService {
     public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
         if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
 
-            orderMenuPaymentUpdateService.isUpdate(orderMenuId, getBankAccount(bankAccountId));
+            orderMenuPaymentUpdateService.update(orderMenuId, getBankAccount(bankAccountId));
 
             return price + " price KB Bank payment succeed";
         }
@@ -29,7 +29,7 @@ public class KBBankPaymentServiceImpl implements PaymentService {
 
     @Override
     public String refund(Long userId, OrderMenu orderMenu) {
-        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, orderMenu.getBankAccount().getId())) {
+        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, orderMenu.getPayment().getId())) {
             return orderMenu.getPrice() + " price KB Bank refund succeed";
         }
         return "KB bank refund fail";

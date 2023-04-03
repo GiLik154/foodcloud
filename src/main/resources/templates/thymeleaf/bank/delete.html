@@ -18,7 +18,7 @@
         <th:block th:with="code=${bankAccountInfo.bank}">
             <div class="col-sm-4 border num" th:text="${bankAccountInfo.name}"></div>
             <div class="col-sm-4 border kinds" th:text="${bankAccountInfo.accountNumber}"></div>
-            <div class="col-sm-4 border date" th:text="${T(com.example.foodcloud.enums.BankCode).returnName(code)}"></div>
+            <div class="col-sm-4 border date" th:text="${T(com.example.foodcloud.enums.PaymentCode).returnName(code)}"></div>
         </th:block>
     </div>
     <div class="row border clear">비밀번호를 입력해주세요.</div>

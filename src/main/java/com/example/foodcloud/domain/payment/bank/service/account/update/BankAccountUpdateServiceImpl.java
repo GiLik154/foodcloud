@@ -25,7 +25,7 @@ public class BankAccountUpdateServiceImpl implements BankAccountUpdateService {
 
             bankAccount.update(bankAccountUpdateServiceDto.getName(),
                     bankAccountUpdateServiceDto.getAccountNumber(),
-                    bankAccountUpdateServiceDto.getBank());
+                    bankAccountUpdateServiceDto.getPaymentCode());
 
             return true;
         }

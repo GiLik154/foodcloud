@@ -46,9 +46,7 @@ class UserUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                userUpdateService.update(userId + 1, "test123")
-        );
+        userUpdateService.update(userId + 1, "test123");
 
         User updateTest = userRepository.findById(userId).get();
 

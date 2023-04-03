@@ -5,6 +5,7 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -34,17 +35,17 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("updateName", "updateNumber", PaymentCode.KB);
         boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateServiceDto);
 
         assertTrue(isUpdate);
-        assertEquals("test123", bankAccount.getName());
-        assertEquals("test123", bankAccount.getAccountNumber());
-        assertEquals("011", bankAccount.getBank());
+        assertEquals("updateName", bankAccount.getName());
+        assertEquals("updateNumber", bankAccount.getAccountNumber());
+        assertEquals(PaymentCode.KB, bankAccount.getPaymentCode());
     }
 
     @Test
@@ -53,17 +54,17 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", PaymentCode.KB);
         boolean isUpdate = bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateServiceDto);
 
         assertFalse(isUpdate);
-        assertEquals("test", bankAccount.getName());
-        assertEquals("test", bankAccount.getAccountNumber());
-        assertEquals("001", bankAccount.getBank());
+        assertEquals("testBankName", bankAccount.getName());
+        assertEquals("testBankNumber", bankAccount.getAccountNumber());
+        assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());
     }
 
     @Test
@@ -72,16 +73,16 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
-        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", "011");
+        BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", PaymentCode.KB);
         boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateServiceDto);
 
         assertFalse(isUpdate);
-        assertEquals("test", bankAccount.getName());
-        assertEquals("test", bankAccount.getAccountNumber());
-        assertEquals("001", bankAccount.getBank());
+        assertEquals("testBankName", bankAccount.getName());
+        assertEquals("testBankNumber", bankAccount.getAccountNumber());
+        assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());
     }
 }

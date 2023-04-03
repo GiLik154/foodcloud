@@ -18,10 +18,8 @@ public class OrderMenuListResultUpdateServiceImpl implements OrderMenuListResult
     @Override
     public void update(Long orderMainId, String result) {
         List<OrderMenu> list = orderMenuRepository.findByOrderMainId(orderMainId);
-        OrderResult orderResult = OrderResult.valueOf(result);
 
-        for (OrderMenu orderMenu : list) {
-            orderMenu.updateResult(orderResult);
-        }
+        list.forEach(orderMenu ->
+                orderMenu.updateResult(OrderResult.valueOf(result)));
     }
 }

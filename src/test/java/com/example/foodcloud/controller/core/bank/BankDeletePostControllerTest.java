@@ -7,6 +7,7 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -82,7 +83,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpServletRequestBuilder builder = post("/bank/delete")
@@ -101,7 +102,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -127,7 +128,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -151,7 +152,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("test", "test", "001", user);
+        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();

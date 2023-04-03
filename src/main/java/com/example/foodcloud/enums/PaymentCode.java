@@ -3,8 +3,10 @@ package com.example.foodcloud.enums;
 import com.example.foodcloud.exception.NotFoundBankCodeException;
 import lombok.Getter;
 
+import java.util.Arrays;
+
 @Getter
-public enum BankCode {
+public enum PaymentCode {
     POINT("000", "포인트"),
     KB("004", "국민"),
     NH("011", "농협"),
@@ -13,26 +15,33 @@ public enum BankCode {
     private final String code;
     private final String name;
 
-    BankCode(String code, String name) {
+    PaymentCode(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
     public static String returnName(String code) {
-        for (BankCode bankCode : BankCode.values()) {
-            if (bankCode.code.equals(code)) {
-                return bankCode.name;
+        for (PaymentCode paymentCode : PaymentCode.values()) {
+            if (paymentCode.code.equals(code)) {
+                return paymentCode.name;
             }
         }
         throw new NotFoundBankCodeException();
     }
 
     public static void validate(String code) {
-        for (BankCode bankCode : BankCode.values()) {
-            if (bankCode.code.equals(code)) {
+        for (PaymentCode paymentCode : PaymentCode.values()) {
+            if (paymentCode.code.equals(code)) {
                 return;
             }
         }
         throw new NotFoundBankCodeException();
+    }
+
+    public static PaymentCode valueOfCode(String code) {
+        return Arrays.stream(values())
+                .filter(value -> value.code.equals(code))
+                .findAny()
+                .orElse(null);
     }
 }

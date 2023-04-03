@@ -14,6 +14,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -51,16 +52,13 @@ class ShinHanBankPayServiceTest {
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
     }
-
-    private final String BANK_CODE = "088";
-
     @Test
     void ShinHan_결제_정상작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -76,10 +74,10 @@ class ShinHanBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.SHIN_HAN.getCode()).pay(userId, orderMenu.getId(), bankAccountId, 5000);
 
-        assertEquals(bankAccount, orderMenu.getBankAccount());
-        assertEquals(BANK_CODE, orderMenu.getPayment());
+        assertEquals(bankAccount, orderMenu.getPayment());
+        assertEquals(PaymentCode.SHIN_HAN, orderMenu.getPayment().getPaymentCode());
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price ShinHan bank payment succeed", result);
     }
@@ -90,7 +88,7 @@ class ShinHanBankPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -106,11 +104,10 @@ class ShinHanBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId, orderMenu.getId(), bankAccountId + 1L, 5000);
+        String result = bankPaymentService.get(PaymentCode.SHIN_HAN.getCode()).pay(userId, orderMenu.getId(), bankAccountId + 1L, 5000);
 
-        assertNotEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("ShinHan bank payment fail", result);
     }
 
@@ -120,7 +117,7 @@ class ShinHanBankPayServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", BANK_CODE, user);
+        BankAccount bankAccount = new BankAccount("testName", "testNumber", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
@@ -136,11 +133,10 @@ class ShinHanBankPayServiceTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
         orderMenuRepository.save(orderMenu);
 
-        String result = bankPaymentService.get(BANK_CODE).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
+        String result = bankPaymentService.get(PaymentCode.SHIN_HAN.getCode()).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
 
-        assertNotEquals(bankAccount, orderMenu.getBankAccount());
         assertNull(orderMenu.getPayment());
-        assertNotEquals(OrderResult.RECEIVED.getResult(), orderMenu.getResult());
+        assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("ShinHan bank payment fail", result);
     }
 }

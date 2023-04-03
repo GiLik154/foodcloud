@@ -3,7 +3,9 @@ package com.example.foodcloud.domain.order.menu.service.update.payment;
 import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.payment.point.domain.Point;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,15 +17,10 @@ import java.util.Optional;
 public class OrderMenuPaymentUpdateServiceImpl implements OrderMenuPaymentUpdateService {
     private final OrderMenuRepository orderMenuRepository;
 
-    public <T extends Payment> boolean isUpdate(Long orderMenuId, T payment) {
+    public void update(Long orderMenuId, Payment payment) {
         Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findById(orderMenuId);
-        if (orderMenuOptional.isPresent()) {
-            OrderMenu orderMenu = orderMenuOptional.get();
 
-            payment.orderMenuUpdate(orderMenu);
-            return true;
-
-        }
-        return false;
+        orderMenuOptional.ifPresent(orderMenu ->
+                orderMenu.updatePayment(payment));
     }
 }

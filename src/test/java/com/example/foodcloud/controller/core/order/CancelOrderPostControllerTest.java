@@ -19,6 +19,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -84,9 +85,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", "004", user);
-        BankAccount nhBank = new BankAccount("test", "test", "011", user);
-        BankAccount shBank = new BankAccount("test", "test", "008", user);
+        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
+        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
+        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -124,9 +125,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", "004", user);
-        BankAccount nhBank = new BankAccount("test", "test", "011", user);
-        BankAccount shBank = new BankAccount("test", "test", "008", user);
+        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
+        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
+        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -164,9 +165,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", "004", user);
-        BankAccount nhBank = new BankAccount("test", "test", "011", user);
-        BankAccount shBank = new BankAccount("test", "test", "088", user);
+        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
+        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
+        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -204,7 +205,7 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user);
+        Point point = new Point(user, PaymentCode.POINT);
         pointRepository.save(point);
 
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
@@ -240,9 +241,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", "004", user);
-        BankAccount nhBank = new BankAccount("test", "test", "011", user);
-        BankAccount shBank = new BankAccount("test", "test", "088", user);
+        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
+        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
+        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
