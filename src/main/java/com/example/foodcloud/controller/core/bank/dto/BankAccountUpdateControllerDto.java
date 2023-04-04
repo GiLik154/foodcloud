@@ -1,6 +1,5 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
-import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
 import com.example.foodcloud.domain.payment.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 import com.example.foodcloud.enums.PaymentCode;
 import lombok.Getter;

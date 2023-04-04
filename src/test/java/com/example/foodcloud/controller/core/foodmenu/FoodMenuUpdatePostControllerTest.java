@@ -145,10 +145,10 @@ class FoodMenuUpdatePostControllerTest {
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "updateName")
                 .param("price", "4444")
-                .param("foodType", "updateType")
-                .param("temperature", "updateTemperature")
-                .param("meatType", "updateMeat")
-                .param("vegetables", "updateVegetables");
+                .param("temperature", String.valueOf(Temperature.COLD))
+                .param("foodTypes", String.valueOf(FoodTypes.ADE))
+                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
+                .param("vegetables", String.valueOf(Vegetables.FEW));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -156,10 +156,10 @@ class FoodMenuUpdatePostControllerTest {
 
         assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodTypes());
-        assertNotEquals("updateTemperature", foodMenu.getTemperature());
-        assertNotEquals("updateMeat", foodMenu.getMeatType());
-        assertNotEquals("updateVegetables", foodMenu.getVegetables());
+        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
     }
 
     @Test
@@ -199,10 +199,10 @@ class FoodMenuUpdatePostControllerTest {
 
         assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodTypes());
-        assertNotEquals("updateTemperature", foodMenu.getTemperature());
-        assertNotEquals("updateMeat", foodMenu.getMeatType());
-        assertNotEquals("updateVegetables", foodMenu.getVegetables());
+        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
     }
 
     @Test
@@ -242,9 +242,9 @@ class FoodMenuUpdatePostControllerTest {
 
         assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals("updateType", foodMenu.getFoodTypes());
-        assertNotEquals("updateTemperature", foodMenu.getTemperature());
-        assertNotEquals("updateMeat", foodMenu.getMeatType());
-        assertNotEquals("updateVegetables", foodMenu.getVegetables());
+        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
+        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
+        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
     }
 }

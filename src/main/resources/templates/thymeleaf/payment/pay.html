@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container my-5">
+    <h1 class="text-center mb-5">주문 상세 정보</h1>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="font-weight-bold mb-0">주문 정보</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">주문한 음식 이름</div>
+                <div class="col-md-9"><span th:text="${orderMenu.foodMenu.name}"></span></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">주문 갯수</div>
+                <div class="col-md-9"><span th:text="${orderMenu.count}"></span></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">주문 가격</div>
+                <div class="col-md-9"><span th:text="${orderMenu.price}"></span></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">주문 결과</div>
+                <div class="col-md-9"><span th:text="${orderMenu.result.name()}"></span></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">주문 장소</div>
+                <div class="col-md-9"><span th:text="${orderMenu.location}"></span></div>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-3 font-weight-bold">결제 종류</div>
+                <div class="col-md-9"><span th:text="${orderMenu.payment.getPaymentCode().name()}"></span></div>
+            </div>
+            <hr>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <button type="button" onclick="location.href='/main}'" class="btn btn-secondary mr-2">메인으로</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container my-5">
+    <h1 class="text-center mb-5">Payment</h1>
+    <form id="paymentForm" method="post">
+        <div class="form-check mb-3">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="bankPayment" value=""bank">
+            <label class="form-check-label" for="bankPayment">
+                은행 계좌 이체
+            </label>
+        </div>
+        <div id="bankDetails" style="display:none;">
+            <div class="form-group">
+                <label for="bankName">은행 이름</label>
+                <input type="text" class="form-control" id="bankName" name="bankName" placeholder="은행 이름을 입력하세요">
+            </div>
+            <div class="form-group">
+                <label for="accountNumber">계좌 번호</label>
+                <input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="계좌 번호를 입력하세요">
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="pointPayment" value="point">
+            <label class="form-check-label" for="pointPayment">
+                포인트 결제
+            </label>
+        </div>
+
+        <div id="pointDetails" style="display:none;">
+            <div class="form-group">
+                <label for="points">포인트 사용량</label>
+                <input type="number" class="form-control" id="points" name="points" placeholder="사용할 포인트 양을 입력하세요">
+            </div>
+        </div>
+
+        <br>
+        <button type="submit" class="btn btn-primary">결제하기</button>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" th:src="@{/js/payment/pay.js}" rel="stylesheet"></script>
+<script>
+    // Show the details for the selected payment method
+    $('input[name=paymentMethod]').change(function() {
+        var value = $(this).val();
+        if (value === 'bank') {
+            $('#bankDetails').show();
+            $('#pointDetails').hide();
+        } else {
+            $('#bankDetails').hide();
+            $('#pointDetails').show();
+        }
+    });
+</script>
+</body>
+</html>

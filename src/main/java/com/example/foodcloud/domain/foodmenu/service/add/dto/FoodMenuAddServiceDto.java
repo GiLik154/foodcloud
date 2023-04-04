@@ -6,7 +6,6 @@ import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
 import lombok.Getter;
 
-import javax.validation.constraints.NotBlank;
 
 @Getter
 public class FoodMenuAddServiceDto {

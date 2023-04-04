@@ -162,8 +162,8 @@ class RestaurantDeletePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(redirectedUrl("/restaurant/list"))
-                .andExpect(model().attribute("isDelete", false));
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
         assertFalse(restaurantRepository.findByUserId(user.getId()).isEmpty());
     }

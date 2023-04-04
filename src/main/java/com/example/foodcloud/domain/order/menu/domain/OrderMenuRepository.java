@@ -28,6 +28,7 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
     List<FoodMenu> countByFoodMenuByUserId(@Param("userId") Long userId, Pageable pageable);
 
     List<OrderMenu> findByFoodMenuIdAndResult(Long foodMenuId, OrderResult result);
+    List<OrderMenu> findByOrderMainRestaurantId(Long restaurantId);
 
     default OrderMenu validateOrderMenuNotCancel(Long orderMenuId) {
         Optional<OrderMenu> orderMenu = findByIdAndResultNot(orderMenuId, CANCELED);

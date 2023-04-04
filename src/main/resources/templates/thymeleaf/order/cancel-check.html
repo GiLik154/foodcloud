@@ -1,0 +1,7 @@
+<span th:if="${cancelMsg != null}">
+	    <script type="text/javascript">
+            const text = "[[${cancelMsg}]]";
+            top.alert(text);
+            window.history.back();
+        </script>
+    </span>

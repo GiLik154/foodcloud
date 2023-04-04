@@ -32,7 +32,7 @@ window.onload = function () {
     }
 
     function updateOrderStatus(orderId, status) {
-        fetch(`/restaurant/updateStatus/${orderId}/${status}`, {
+        fetch(`/restaurant/check/updateStatus/${orderId}/${status}`, {
             method: 'PUT'
         })
             .then(response => {

@@ -45,6 +45,7 @@ public class OrderMenu {
 
     public void updatePayment(Payment payment) {
         this.payment = payment;
+        this.result = OrderResult.RECEIVED;
     }
 
     public void updateResult(OrderResult orderResult) {

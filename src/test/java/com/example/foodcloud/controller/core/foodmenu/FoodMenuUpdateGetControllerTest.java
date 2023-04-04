@@ -78,7 +78,7 @@ class FoodMenuUpdateGetControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
-                .andExpect(model().attribute("foodMenuInfo", foodMenuRepository.findById(foodMenu.getId()).get()));
+                .andExpect(model().attribute("foodMenu", foodMenuRepository.findById(foodMenu.getId()).get()));
     }
 
     @Test

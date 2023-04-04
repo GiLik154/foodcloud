@@ -1,6 +1,5 @@
 package com.example.foodcloud.domain.payment.bank.domain;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
@@ -28,8 +27,7 @@ public class BankAccount extends Payment {
     }
 
     public BankAccount(String name, String accountNumber, User user, PaymentCode paymentCode) {
-        updateUser(user);
-        updatePaymentCode(paymentCode);
+        init(user, paymentCode);
         this.name = name;
         this.accountNumber = accountNumber;
     }

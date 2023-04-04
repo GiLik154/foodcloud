@@ -14,9 +14,9 @@ public class NewOrderServiceImpl implements NewOrderService {
     private final OrderMenuAddService orderMenuAddService;
 
     @Override
-    public void order(Long userId, NewOrderServiceDto newOrderServiceDto) {
+    public Long order(Long userId, NewOrderServiceDto newOrderServiceDto) {
         Long orderMainId = orderMainAddService.add(userId, newOrderServiceDto.convertMainDto());
 
-        orderMenuAddService.add(userId, newOrderServiceDto.convertMenuDto(orderMainId));
+        return orderMenuAddService.add(userId, newOrderServiceDto.convertMenuDto(orderMainId));
     }
 }

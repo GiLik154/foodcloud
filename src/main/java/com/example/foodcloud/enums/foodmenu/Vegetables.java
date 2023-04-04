@@ -1,7 +1,5 @@
 package com.example.foodcloud.enums.foodmenu;
 
-import lombok.Getter;
-
 public enum Vegetables {
     MANY("많이"),
     MIDDLE("중간"),

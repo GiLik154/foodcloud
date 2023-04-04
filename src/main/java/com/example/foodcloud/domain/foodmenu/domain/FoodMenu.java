@@ -8,7 +8,6 @@ import com.example.foodcloud.enums.foodmenu.Vegetables;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -55,22 +54,5 @@ public class FoodMenu {
 
     public void uploadImage(String imagePath) {
         this.imagePath = imagePath;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        FoodMenu foodMenu = (FoodMenu) obj;
-        return Objects.equals(id, foodMenu.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

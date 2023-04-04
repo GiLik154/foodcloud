@@ -5,6 +5,6 @@ import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateSe
 import java.io.File;
 
 public interface FoodMenuUpdateService {
-    boolean update(Long foodMenuId, Long restaurantId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, File file);
+    void update(Long foodMenuId, FoodMenuUpdateServiceDto foodMenuUpdateServiceDto, File file);
 }
 

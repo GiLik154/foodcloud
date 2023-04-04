@@ -1,6 +1,5 @@
 package com.example.foodcloud.domain.user.service.update;
 
-import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

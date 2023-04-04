@@ -18,6 +18,7 @@ public class KBBankPaymentServiceImpl implements PaymentService {
 
     @Override
     public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
+
         if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
 
             orderMenuPaymentUpdateService.update(orderMenuId, getBankAccount(bankAccountId));

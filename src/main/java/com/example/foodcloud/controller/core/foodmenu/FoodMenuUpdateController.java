@@ -21,30 +21,37 @@ public class FoodMenuUpdateController {
     private final FoodMenuUpdateService foodMenuUpdateService;
     private final FoodMenuRepository foodMenuRepository;
 
-    @GetMapping("")
-    public String get(@RequestParam Long foodMenuId, Model model) {
+    @GetMapping("/{foodMenuId}")
+    public String get(@PathVariable Long foodMenuId, Model model) {
         foodMenuRepository.findById(foodMenuId).ifPresent(foodMenu ->
-                model.addAttribute("foodMenuInfo", foodMenu));
+                model.addAttribute("foodMenu", foodMenu));
 
 
         return "thymeleaf/food-menu/update";
     }
 
-    @PostMapping("")
-    public String post(Long foodMenuId,
-                       Long restaurantId,
+    /**
+     * 세션으로 userId를 받아야와하고
+     * PathVariable를 통해 foodMenuId를 받아옴
+     * 이후 Dto를 받아오고 @Valid로 검증함
+     * MultipartFile를 File로 바꿔주고 서비스단으로 내림.
+     */
+    @PostMapping("/{foodMenuId}")
+    public String post(@PathVariable Long foodMenuId,
                        @Valid FoodMenuUpdateControllerDto foodMenuUpdateControllerDto,
-                       MultipartFile multipartFile,
-                       Model model) throws IOException {
+                       MultipartFile multipartFile) throws IOException {
 
-        File file = new File(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        multipartFile.transferTo(file);
+        File file = null;
 
-        model.addAttribute("isUpdate",
-                foodMenuUpdateService.update(foodMenuId,
-                        restaurantId,
-                        foodMenuUpdateControllerDto.convert(),
-                        file));
+        if (multipartFile != null && multipartFile.getOriginalFilename() != null) {
+            String originalFilename = multipartFile.getOriginalFilename();
+            file = new File(originalFilename);
+            multipartFile.transferTo(file);
+        }
+
+        foodMenuUpdateService.update(foodMenuId,
+                foodMenuUpdateControllerDto.convert(),
+                file);
 
         return "thymeleaf/food-menu/update";
     }

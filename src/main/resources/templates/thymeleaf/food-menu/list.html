@@ -1,33 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>음식 상세 정보</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/food-menu/detail.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/food-menu/list.css}" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-
-
-<div class="border_num">번호</q></div>
-<div class="border_kinds">입/출금</div>
-<div class="border_date">날짜</div>
-<div class="border_content_title">내용</div>
-<div class="border_price_title">금액</div>
-
-
-<tr th:each="account : ${bankAccountList}">
-    <th:block th:with="code=${account.bank}">
-        <td class="border_num" th:text="${account.name}"></td>
-        <td class="border_kinds" th:text="${account.accountNumber}"></td>
-        <td class="border_content" th:text="${BankCode.returnName(code)}"></td>
-        <td><button type="button" th:onclick="|location.href='@{/bank/delete(bankAccountId=${account.id})}'|">삭제하기</button></td>
-        <td><button type="button" th:onclick="|location.href='@{/bank/update(bankAccountId=${account.id})}'|">수정하기</button></td>
-    </th:block>
-</tr>
-
-<div class="ui-button">
-    <button type="button" th:onclick="|location.href='@{/calendar/details/add(date = ${param.date})}'|">추가하기</button>
-    <button type="button" th:onclick="|location.href='@{/main(date = ${param.date})}'|">메인가기</button>
+<div class="container">
+    <h1>음식 상세 정보</h1>
+    <div th:each="foodMenu : ${foodMenuList}">
+        <div class="border_clear">음식 이름</div>
+        <div class="border">
+            <span class="label">이름:</span>
+            <span class="value" th:text="${foodMenu.getName()}"></span>
+        </div>
+        <div class="border_clear">가격</div>
+        <div class="border">
+            <span class="label">가격:</span>
+            <span class="value" th:text="${foodMenu.getPrice()}"></span>
+        </div>
+        <div class="border_clear">주문 수량</div>
+        <div class="border">
+            <span class="label">주문 수량:</span>
+            <span class="value" th:text="${foodMenu.getOrderCount()}"></span>
+        </div>
+        <div class="border_clear">온도</div>
+        <div class="border">
+            <span class="label">온도:</span>
+            <span class="value" th:text="${foodMenu.getTemperature().name()}"></span>
+        </div>
+        <div class="border_clear">음식 종류</div>
+        <div class="border">
+            <span class="label">음식 종류:</span>
+            <span class="value" th:text="${foodMenu.getFoodTypes().name()}"></span>
+        </div>
+        <div class="border_clear">고기 종류</div>
+        <div class="border">
+            <span class="label">고기 종류:</span>
+            <span class="value" th:text="${foodMenu.getMeatType().name()}"></span>
+        </div>
+        <div class="border_clear">채소</div>
+        <div class="border">
+            <span class="label">채소:</span>
+            <span class="value" th:text="${foodMenu.getVegetables().name()}"></span>
+        </div>
+        <div class="border_clear">이미지</div>
+        <div class="border">
+            <div class="value" th:if="${foodMenu.getImagePath() != null}">
+                <img th:src="@{'/img/' + ${foodMenu.getImagePath()}}" alt="음식 이미지">
+            </div>
+            <div class="value" th:unless="${foodMenu.getImagePath() != null}">
+                <p>이미지가 없습니다.</p>
+            </div>
+        </div>
+        <div class="join">
+            <button type="button" onclick="location.href='/order/new?restaurantId=${foodMenu.getRestaurant().getId()}'" class="btn btn-secondary">주문하기</button>
+        </div>
+    </div>
 </div>
-</body>
-</html>

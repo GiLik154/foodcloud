@@ -1,33 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>음식 상세 정보</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/food-menu/detail.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/food-menu/delete.css}" type="text/css" rel="stylesheet"/>
 </head>
 <body>
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/bank/delete}'>
-
-    <tr th:each="foodMenu : ${bankAccountList}">
-        <td class="border_num" th:text="${bankList.name}"></td>
-        <td class="border_kinds" th:text="${bankList.accountNumber}"></td>
-        <td class="border_content" th:text="${bankList.getBank()}"></td>
-    </tr>
-
-    <div class="border_clear">비밀번호를 입력해주세요.</div>
-
-    <div class="border">
-        <input type="password" class="form-control" name="password" id="password">
+<div class="container">
+    <h1 class="text-center mt-4 mb-5">음식 상세 정보</h1>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="font-weight-bold mb-0">음식 정보</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">이름</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getName()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">가격</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getPrice()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문 수량</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getOrderCount()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">온도</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getTemperature().name()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">음식 종류</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getFoodTypes().name()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">고기 종류</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getMeatType().name()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">채소</div>
+                <div class="col-md-9 border"><span th:text="${foodMenu.getVegetables().name()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">이미지</div>
+                <div class="col-md-9 border">
+                    <div th:if="${foodMenu.getImagePath() != null}">
+                        <img class="img-fluid" th:src="@{'/img/' + ${foodMenu.getImagePath()}}" alt="음식 이미지">
+                    </div>
+                    <div th:unless="${foodMenu.getImagePath() != null}">
+                        <p class="value">이미지가 없습니다.</p>
+                    </div>
+                </div>
+                <div class="container">
+                    <h2 class="text-center">메뉴 삭제</h2>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6">
+                            <form th:action="@{/foodmenu/delete}" method="post">
+                                <input type="hidden" name="id" th:value="${foodMenu.id}" />
+                                <div class="form-group">
+                                    <label for="password">비밀번호</label>
+                                    <input type="password" class="form-control" id="password" name="password" required />
+                                </div>
+                                <div class="delete d-flex justify-content-end">
+                                    <div class="reset">
+                                        <input type='submit' value='삭제' class="btn btn-danger">
+                                    </div>
+                                    <button type="button" onclick="location.href='/foodmenu/list?restaurantId=${foodMenu.getRestaurant().getId()}'" class="btn btn-secondary mr-2">리스트로 돌아가기</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br>
-
-
-    <div class="reset">
-        <input type='submit' value='삭제'>
-        <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
-    </div>
-</form>
+</div>
 </body>
 </html>

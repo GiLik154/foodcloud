@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>음식 상세 정보</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/food-menu/detail.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/food-menu/delete.css}" type="text/css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center mt-4 mb-5">주문 상세 정보</h1>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="font-weight-bold mb-0">주문 정보</h4>
+        </div>
+        <div class="card-body">
+            <div class="border">
+                <div class="value" th:if="${orderMenu.foodMenu.imagePath != null}">
+                    <img th:src="@{'/img/' + ${orderMenu.foodMenu.imagePath}}" alt="음식 이미지">
+                </div>
+                <div class="value" th:unless="${orderMenu.foodMenu.imagePath != null}">
+                    <p>이미지가 없습니다.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문한 음식 이름</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.foodMenu.name}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문 갯수</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.count}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문 가격</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.price}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문 결과</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.result.name()}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">주문 장소</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.location}"></span></div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 border font-weight-bold">결제 종류</div>
+                <div class="col-md-9 border"><span th:text="${orderMenu.payment.getPaymentCode().name()}"></span></div>
+            </div>
+            <div class="container">
+                <hr>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <button type="button" onclick="location.href='/main}'" class="btn btn-secondary mr-2">메인으로
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</body>
+</html>

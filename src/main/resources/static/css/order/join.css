@@ -1,40 +1,72 @@
 /* Order Information */
 .border_num {
-    border-bottom: 2px solid #ccc;
-    font-size: 24px;
+    border-bottom: 1px solid #ddd;
     font-weight: bold;
-    text-align: center;
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
 }
 
 /* Food Menu */
 .order-manager-body {
-    padding: 50px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 0;
 }
 
 .card {
-    border: 1px solid #ccc;
-    margin-bottom: 30px;
-    padding: 15px;
+    margin-bottom: 1.5rem;
 }
 
 .card-img-top {
     height: 200px;
     object-fit: cover;
-    width: 100%;
 }
 
 .card-title {
-    font-size: 18px;
+    font-size: 1.2rem;
     font-weight: bold;
-    margin-bottom: 10px;
 }
 
 .card-text {
-    margin-bottom: 5px;
+    margin-bottom: 0.5rem;
 }
 
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.delete {
+    margin-top: 1rem;
+}
+
+.reset {
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+/* Button */
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
-    margin-top: 10px;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
 }

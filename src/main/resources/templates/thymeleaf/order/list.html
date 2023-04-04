@@ -24,31 +24,29 @@
             <tr>
                 <th>이미지</th>
                 <th>음식 이름</th>
-                <th>음식 타입</th>
-                <th>고기 타입</th>
-                <th>온도</th>
-                <th>야채</th>
-                <th>가격</th>
-                <th>주문 횟수</th>
+                <th>주문 가격</th>
+                <th>주문 장소</th>
+                <th>결제 종류</th>
+                <th>주문 갯수</th>
+                <th>주문 결과</th>
             </tr>
             </thead>
             <tbody id="orderListBody">
-            <div class="row" th:each="restaurant : ${orderMenuList}"> </div>
-            <img th:if="${list.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
-                 th:else th:src="@{${list.imagePath}}">
-            <td th:text="${list.foodMenuName}"></td>
-            <td th:text="${list.foodType}"></td>
-            <td th:text="${list.meatType}"></td>
-            <td th:text="${list.temperature}"></td>
-            <td th:text="${list.vegetables}"></td>
-            <td th:text="${list.price}"></td>
-            <td th:text="${list.orderCount}"></td>
-            <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">주문하기</button>
+            <div class="row" th:each="ordermMenu : ${orderMenuList}"> </div>
+            <img th:if="${orderMenu.foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
+                 th:else th:src="@{${orderMenu.foodMenu.imagePath}}">
+            <td th:text="${orderMenu.foodMenu.name}"></td>
+            <td th:text="${orderMenu.count}"></td>
+            <td th:text="${orderMenu.location}"></td>
+            <td th:text="${orderMenu.payment.getPaymentCode().name()}"></td>
+            <td th:text="${orderMenu.price}"></td>
+            <td th:text="${orderMenu.result.name()}"></td>
             </tr>
             </tbody>
         </table>
     </div>
     <div class="reset">
+        <button type="button" th:onclick="|location.href='@{/order/new?restaurantId=${foodMenu.getRestaurant().getId()}'|" class="btn btn-primary">공구하기</button>
         <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">메인페이지로</button>
     </div>
 </div>

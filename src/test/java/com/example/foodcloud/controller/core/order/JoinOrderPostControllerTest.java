@@ -101,9 +101,10 @@ class JoinOrderPostControllerTest {
                 .param("orderMainId", String.valueOf(orderMain.getId()))
                 .session(session);
 
+
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/join"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/payment/pay/*"));
 
         OrderMenu orderMenu = orderMenuRepository.findByOrderMainId(orderMain.getId()).get(0);
 

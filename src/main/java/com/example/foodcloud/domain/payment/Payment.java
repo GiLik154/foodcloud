@@ -21,11 +21,12 @@ public class Payment {
 
     private PaymentCode paymentCode;
 
-    public Payment() {
+    protected Payment() {
     }
 
-    public void updateUser(User user) {
+    public void init(User user, PaymentCode paymentCode) {
         this.user = user;
+        this.paymentCode = paymentCode;
     }
 
     public void updatePaymentCode(PaymentCode paymentCode) {

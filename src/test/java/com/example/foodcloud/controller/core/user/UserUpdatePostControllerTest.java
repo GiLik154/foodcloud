@@ -75,9 +75,8 @@ class UserUpdatePostControllerTest {
                 .param("phone", "updatePhone");
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(redirectedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/user/my-page"));
 
         assertEquals("testPhone", user.getPhone());
     }

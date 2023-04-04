@@ -1,0 +1,34 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background-color: white;
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 5px;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.border {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.border_clear {
+    margin-top: 2rem;
+}
+
+.reset {
+    margin-top: 2rem;
+}
+
+select {
+    border-radius: 0;
+    margin-bottom: 1rem;
+}

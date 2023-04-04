@@ -108,7 +108,6 @@ class NHBankPayServiceTest {
         String result = bankPaymentService.get(PaymentCode.NH.getCode()).pay(userId,orderMenu.getId(), bankAccountId + 1L, 5000);
 
         assertNull(orderMenu.getPayment());
-        assertEquals(PaymentCode.NH, orderMenu.getPayment().getPaymentCode());
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("NH bank payment fail", result);
     }
@@ -138,7 +137,6 @@ class NHBankPayServiceTest {
         String result = bankPaymentService.get(PaymentCode.NH.getCode()).pay(userId +1L, orderMenu.getId(), bankAccountId, 5000);
 
         assertNull(orderMenu.getPayment());
-        assertEquals(PaymentCode.NH, orderMenu.getPayment().getPaymentCode());
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("NH bank payment fail", result);
     }

@@ -5,7 +5,6 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
 import com.example.foodcloud.exception.UserNameDuplicateException;
-import com.example.foodcloud.exception.PasswordEncodingFailedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

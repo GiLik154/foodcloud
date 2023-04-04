@@ -34,9 +34,15 @@ public class FoodMenuAddController {
         return kinds.stream().map(FoodTypes::getName).collect(Collectors.toList());
     }
 
-    @PostMapping("")
+    /**
+     * 세션으로 userId를 받아야와하고
+     * PathVariable를 통해 foodMenuId를 받아옴
+     * 이후 Dto를 받아오고 @Valid로 검증함
+     * MultipartFile를 File로 바꿔주고 서비스단으로 내림.
+     */
+    @PostMapping("/{restaurantId}")
     public String post(@SessionAttribute("userId") Long userId,
-                       Long restaurantId,
+                       @PathVariable Long restaurantId,
                        @Valid FoodMenuAddControllerDto foodMenuAddControllerDto,
                        MultipartFile multipartFile,
                        Model model) throws IOException {

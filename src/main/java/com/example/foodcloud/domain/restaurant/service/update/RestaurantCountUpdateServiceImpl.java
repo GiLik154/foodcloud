@@ -2,12 +2,10 @@ package com.example.foodcloud.domain.restaurant.service.update;
 
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
-import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @Transactional

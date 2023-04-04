@@ -95,8 +95,8 @@ class NewOrderPostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/new"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/payment/pay/*"));
 
         OrderMain orderMain = orderMainRepository.findByUserId(user.getId()).get(0);
         OrderMenu orderMenu = orderMenuRepository.findByOrderMainId(orderMain.getId()).get(0);

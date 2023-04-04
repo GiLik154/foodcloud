@@ -1,0 +1,37 @@
+.border_clear {
+    border: none;
+}
+
+.border {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+.border:last-child {
+    border-bottom: none;
+}
+
+.value {
+    margin-left: 10px;
+}
+.join {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.join button {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    border-radius: 30px;
+    padding: 10px 30px;
+    transition: all 0.2s ease-in-out;
+}
+
+.join button:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}

@@ -79,8 +79,8 @@ class PointMainPageControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/point/main"));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/point/main"));
 
         assertNotNull(pointRepository.findByUserId(user.getId()));
     }

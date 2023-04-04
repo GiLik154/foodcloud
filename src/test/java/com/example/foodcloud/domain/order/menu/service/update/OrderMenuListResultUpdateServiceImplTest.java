@@ -92,7 +92,7 @@ class OrderMenuListResultUpdateServiceImplTest {
 
         orderMenuListResultUpdateService.update(orderMain.getId() + 1L, "COOKING");
 
-        assertNotEquals("Cooking", orderMenu1.getResult());
-        assertNotEquals("Cooking", orderMenu2.getResult());
+        assertNotEquals(OrderResult.COOKING, orderMenu1.getResult());
+        assertNotEquals(OrderResult.COOKING, orderMenu2.getResult());
     }
 }

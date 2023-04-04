@@ -1,15 +1,12 @@
 package com.example.foodcloud.domain.payment.point.domain;
 
 import com.example.foodcloud.domain.payment.Payment;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
 import lombok.Getter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 
 @Entity
 @Getter
@@ -23,13 +20,7 @@ public class Point extends Payment {
     }
 
     public Point(User user, PaymentCode paymentCode) {
-        updateUser(user);
-        updatePaymentCode(paymentCode);
-    }
-    
-    public Point(int calculation, int totalPoint) {
-        this.calculation = calculation;
-        this.totalPoint = totalPoint;
+        init(user, paymentCode);
     }
 
     public void updatePoint(int calculationPoints) {

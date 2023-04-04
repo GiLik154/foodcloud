@@ -106,8 +106,7 @@ class KBBankPayServiceTest {
 
         String result = bankPaymentService.get(PaymentCode.KB.getCode()).pay(userId, orderMenu.getId(), bankAccountId + 1L, 5000);
 
-        assertEquals(bankAccount, orderMenu.getPayment());
-        assertEquals(PaymentCode.KB, orderMenu.getPayment().getPaymentCode());
+        assertNull(orderMenu.getPayment());
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("KB bank payment fail", result);
     }

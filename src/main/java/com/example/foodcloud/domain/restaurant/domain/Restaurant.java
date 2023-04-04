@@ -4,7 +4,6 @@ import com.example.foodcloud.domain.user.domain.User;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter

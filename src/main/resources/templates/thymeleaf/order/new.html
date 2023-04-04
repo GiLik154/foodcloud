@@ -22,6 +22,7 @@
             <tr>
                 <th>음식 이미지</th>
                 <th>개수</th>
+                <th>개수</th>
                 <th>가격</th>
                 <th>위치</th>
                 <th>시간</th>
@@ -45,8 +46,15 @@
             </tbody>
         </table>
     </div>
-    <div class="reset">
-        <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-primary">메인페이지로</button>
+    <div class="col-md-6">
+        <form th:action="@{/order/new(restaurantId=${restaurantId})}" method="post">
+            <div class="delete d-flex justify-content-end">
+                <div class="reset">
+                    <input type='submit' value='주문하기' class="btn btn-danger">
+                </div>
+                <button type="button" onclick="location.href='/foodmenu/list?restaurantId=${foodMenu.getRestaurant().getId()}'" class="btn btn-secondary mr-2">리스트로 돌아가기</button>
+            </div>
+        </form>
     </div>
 </div>
 </body>

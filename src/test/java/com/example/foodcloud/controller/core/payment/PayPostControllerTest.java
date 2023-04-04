@@ -106,7 +106,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "004")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
@@ -146,7 +146,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "011")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
@@ -186,9 +186,9 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
-                .param("orderMenuId", String.valueOf(orderMenuId))
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("paymentCode", "088")
+                .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .param("price", String.valueOf(5000))
                 .session(session);
@@ -226,7 +226,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId() + 1L))
@@ -266,7 +266,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "099")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
@@ -303,7 +303,7 @@ class PayPostControllerTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
@@ -341,7 +341,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "088")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
@@ -382,7 +382,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "000")
                 .param("bankAccountId", String.valueOf(0))
@@ -396,7 +396,7 @@ class PayPostControllerTest {
 
         assertEquals(1000, point.getTotalPoint());
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertNull(orderMenu.getPayment());
+        assertEquals(point, orderMenu.getPayment());
     }
 
     @Test
@@ -424,7 +424,7 @@ class PayPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = post("/payment/pay")
+        MockHttpServletRequestBuilder builder = post("/payment/pay/"+ orderMenu.getId())
                 .param("orderMenuId", String.valueOf(orderMenuId))
                 .param("paymentCode", "000")
                 .param("bankAccountId", String.valueOf(0))

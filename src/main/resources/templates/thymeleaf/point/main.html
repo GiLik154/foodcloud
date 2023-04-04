@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>내 포인트 조회</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/user/my-page.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link th:href="@{/css/point/main.css}" type="text/css" rel="stylesheet"/>
+
+</head>
+<body>
+<div class="container">
+    <h1>마이페이지</h1>
+    <div class="buttons">
+        <button type="button" onclick="location.href='bank/list'" class="btn btn-primary">등록 계좌 확인</button>
+        <button type="button" onclick="location.href='/order-menu/list'" class="btn btn-primary">주문 내역 확인</button>
+    </div>
+    <div class="border_clear">아이디</div>
+    <div class="border">
+        <div class="value" th:text="${myPoint.getUser().name}"></div>
+    </div>
+    <div class="border_clear">포인트 금액</div>
+    <div class="border">
+        <div class="value" th:text="${myPoint.getTotalPoint()}"></div>
+    </div>
+    <div class="reset">
+        <button type="button" onclick="location.href='/main'" class="btn btn-secondary">메인으로 돌아가기</button>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<span th:if="${isDelete == false}">
+    <script>
+              alert("충전 실패");
+              location.href = "/point/main";
+    </script>
+</span>
+
+
+<span th:unless="${isDelete == false}">
+    <script>
+              alert("충전 성공");
+              location.href = "/point/main";
+    </script>
+</span>

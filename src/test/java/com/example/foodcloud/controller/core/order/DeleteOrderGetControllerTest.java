@@ -94,7 +94,7 @@ class DeleteOrderGetControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/order/delete"))
-                .andExpect(model().attribute("orderMenuInfo", orderMenu));
+                .andExpect(model().attribute("orderMenu", orderMenu));
     }
 
     @Test

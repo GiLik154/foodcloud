@@ -112,7 +112,7 @@ class BankUpdatePostControllerTest {
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
-        assertNotEquals("088", bankAccount.getPaymentCode());
+        assertNotEquals(PaymentCode.SHIN_HAN, bankAccount.getPaymentCode());
     }
 
     @Test
@@ -140,6 +140,6 @@ class BankUpdatePostControllerTest {
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
-        assertNotEquals("088", bankAccount.getPaymentCode());
+        assertNotEquals(PaymentCode.SHIN_HAN, bankAccount.getPaymentCode());
     }
 }

@@ -1,42 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<link th:href="@{/css/bank.css}" type="text/css" rel="stylesheet"/>
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>음식 메뉴 추가</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+  <link th:href="@{/css/food-menu/add.css}" type="text/css" rel="stylesheet"/>
+  <script type="text/javascript" th:src="@{/js/food-menu/food-menu.js}" rel="stylesheet"></script>
 </head>
 <body>
-<form name="form" id="form" role="form" method="post"
-      th:action='@{/bank/update}'>
+<div class="container">
+  <h2 class="text-center">음식 메뉴 추가</h2>
+  <hr>
 
-
-  <div class="border_clear">계좌 이름을 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="name" id="name" th:placeholder="${bankAccountInfo.name}">
-  </div>
-
-  <div class="border_clear">계좌 번호를 입력해주세요.</div>
-  <div class="border">
-    <input type="text" class="form-control" name="accountNumber" id="accountNumber" th:placeholder="${bankAccountInfo.accountNumber}">
-  </div>
-
-  <div class="border_clear">은행을 선택해주세요.</div>
-  <th:block th:with="code=${bankAccountInfo.bank}">
-    <div>기존 은행 : <span th:text="${BankCode.returnName(code)}"></span></div>
+  <form name="form" id="form" role="form" method="post" th:action='@{/food-menu/update}'>
+    <div class="border_clear">수정할 음식 메뉴의 이름을 입력해주세요.</div>
     <div class="border">
-      <label><input type="radio" name="bank" th:value="004" th:checked="${bankAccountInfo.bank == '004'}">농협</label>
-      <label><input type="radio" name="bank" th:value="011" th:checked="${bankAccountInfo.bank == '011'}">국민</label>
-      <label><input type="radio" name="bank" th:value="088" th:checked="${bankAccountInfo.bank == '088'}">신한</label>
+      <input type="text" class="form-control" name="name" id="name" th:placeholder="${foodMenu.name}">
     </div>
-  </th:block>
 
-  <br>
+    <div class="border_clear">수정할 사진 이미지를 업로드해주세요.</div>
+    <div class="border">
+      <div class="value" th:if="${foodMenu.getImagePath() != null}">
+        <img th:src="@{'/img/' + ${foodMenu.getImagePath()}}" alt="음식 이미지">
+      </div>
+      <div class="value" th:unless="${foodMenu.getImagePath() != null}">
+        <p>이미지가 없습니다.</p>
+      </div>
+    </div>
+    <input type="file" name="file" accept="image/*" th:placeholder="${foodMenu.imagePath}">
 
+    <div class="border_clear">음식의 가격을 입력해주세요.</div>
+    <div class="border">
+      <input type="number" class="form-control" name="accountNumber" id="accountNumber" th:placeholder="${foodMenu.price}" min="0">
+    </div>
 
-  <div class="reset">
-    <input type='submit' value='수정'>
-    <button type="button" th:onclick="|location.href='@{/main}'|">메인페이지로</button>
-  </div>
-</form>
+    <div class="border_clear">음식의 종류를 입력해주세요.</div>
+    <select id="foodKind" class="form-control">
+      <option value="">음식의 타입을 선택해주세요.</option>
+      <th:block th:each="type : ${T(com.example.foodcloud.enums.FoodType).values()}">
+        <option th:value="${type}" th:text="${type.getName()}"></option>
+      </th:block>
+    </select>
+
+    <select id="foodTypes" class="form-control">
+      <option value="">음식의 종류를 선택해주세요.</option>
+    </select>
+
+    <div class="border_clear">온도를 선택해주세요</div>
+    <select id="temperature" class="form-control">
+      <option value="">온도를 선택해주세요.</option>
+      <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.Temperature).values()}">
+        <option th:value="${type}" th:text="${type.getStates()}"></option>
+      </th:block>
+    </select>
+
+    <div class="border_clear">고기 종류를 선택해주세요</div>
+    <select id="meatType">
+      <option value="">고기 종류를 선택해주세요.</option>
+      <th:blockth:each="type : ${T(com.example.foodcloud.enums.foodmenu.MeatTypes).values()}">
+      <option th:value="${type}" th:text="${type.getName()}"></option>
+      </th:block>
+    </select>
+    <div class="border_clear">야채의 양을 선택해주세요</div>
+    <select id="vegetables">
+      <option value="">야채의 양을 선택해주세요.</option>
+      <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.Vegetables).values()}">
+        <option th:value="${type}" th:text="${type.getStates()}"></option>
+      </th:block>
+    </select>
+    <br>
+
+    <div class="reset">
+      <input type='submit' value='등록' class="btn btn-primary">
+      <button type="button" th:onclick="|location.href='@{/main}'|" class="btn btn-secondary">메인페이지로</button>
+    </div>
+  </form>
+</div>
 </body>
 </html>

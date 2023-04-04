@@ -3,14 +3,12 @@ package com.example.foodcloud.domain.order.menu.service.add;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuCountUpdateService;
-import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.main.domain.OrderMain;
 import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
 import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpdateService;
-import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdateService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +31,7 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private final FoodMenuRepository foodMenuRepository;
 
     @Override
-    public void add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
+    public Long add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
         User user = userRepository.validateUser(userId);
         FoodMenu foodMenu = foodMenuRepository.validateFoodMenu(orderMenuAddServiceDto.getFoodMenuId());
         OrderMain orderMain = orderMainRepository.validateOrderMainNotCancel(userId, orderMenuAddServiceDto.getOrderMainId());
@@ -51,6 +49,8 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
         restaurantCountUpdateService.updateOrderCount(foodMenu.getRestaurant().getId());
         foodMenuCountUpdateService.updateOrderCount(foodMenu.getId());
+
+        return orderMenu.getId();
     }
 
     private String getTime() {
