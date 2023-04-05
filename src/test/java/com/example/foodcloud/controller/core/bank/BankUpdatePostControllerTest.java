@@ -64,7 +64,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -79,8 +79,7 @@ class BankUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isUpdate=true"))
-                .andExpect(model().attribute("isUpdate", true));
+                .andExpect(redirectedUrl("/bank/list"));
 
         assertEquals("updateBankName", bankAccount.getName());
         assertEquals("updateBankNumber", bankAccount.getAccountNumber());
@@ -92,7 +91,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -107,8 +106,7 @@ class BankUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isUpdate=false"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(redirectedUrl("/bank/list"));
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
@@ -120,7 +118,7 @@ class BankUpdatePostControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -135,8 +133,7 @@ class BankUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isUpdate=false"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(redirectedUrl("/bank/list"));
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());

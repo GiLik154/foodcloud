@@ -2,8 +2,8 @@ package com.example.foodcloud.domain.order.menu.service.add;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
@@ -17,9 +17,8 @@ import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
-import com.example.foodcloud.exception.NotFoundOrderMainException;
+import com.example.foodcloud.exception.NotFoundOrderJoinGroupException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -32,9 +31,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,16 +44,16 @@ class OrderMenuAddServiceImplTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
 
     @Autowired
-    OrderMenuAddServiceImplTest(OrderMenuAddService orderMenuAddService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
+    OrderMenuAddServiceImplTest(OrderMenuAddService orderMenuAddService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository) {
         this.orderMenuAddService = orderMenuAddService;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
     }
     @AfterEach
     public void deleteFile() throws IOException {
@@ -87,10 +83,10 @@ class OrderMenuAddServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderJoinGroup.getId());
 
         orderMenuAddService.add(user.getId(), orderMenuAddServiceDto);
 
@@ -101,7 +97,7 @@ class OrderMenuAddServiceImplTest {
         assertEquals(5, orderMenu.getCount());
         assertEquals(user, orderMenu.getUser());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
-        assertEquals(orderMain, orderMenu.getOrderMain());
+        assertEquals(orderJoinGroup, orderMenu.getOrderJoinGroup());
         assertEquals(25000, orderMenu.getPrice());
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertNotNull(orderMenu.getTime());
@@ -123,10 +119,10 @@ class OrderMenuAddServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderJoinGroup.getId());
         orderMenuAddService.add(user.getId(), orderMenuAddServiceDto);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
@@ -147,10 +143,10 @@ class OrderMenuAddServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId() + 1L, orderMain.getId());
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId() + 1L, orderJoinGroup.getId());
 
         NotFoundFoodMenuException e = assertThrows(NotFoundFoodMenuException.class, () ->
                 orderMenuAddService.add(userId, orderMenuAddServiceDto)
@@ -171,15 +167,15 @@ class OrderMenuAddServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderMain.getId() + 1L);
+        OrderMenuAddServiceDto orderMenuAddServiceDto = new OrderMenuAddServiceDto("test", 5, foodMenu.getId(), orderJoinGroup.getId() + 1L);
 
-        NotFoundOrderMainException e = assertThrows(NotFoundOrderMainException.class, () ->
+        NotFoundOrderJoinGroupException e = assertThrows(NotFoundOrderJoinGroupException.class, () ->
                 orderMenuAddService.add(userId, orderMenuAddServiceDto)
         );
 
-        assertEquals("Not found OrderMain", e.getMessage());
+        assertEquals("Not found OrderJoinGroup", e.getMessage());
     }
 }

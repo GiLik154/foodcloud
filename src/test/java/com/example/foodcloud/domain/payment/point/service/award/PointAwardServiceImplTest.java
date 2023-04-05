@@ -4,18 +4,12 @@ import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-
-import javax.validation.ConstraintViolationException;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +46,7 @@ class PointAwardServiceImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        Long id = userRepository.validateUser("test").getId();
+        Long id = userRepository.validate("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 pointAwardService.award(id + 1L)

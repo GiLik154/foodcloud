@@ -59,7 +59,7 @@ class BankDeleteGetControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();

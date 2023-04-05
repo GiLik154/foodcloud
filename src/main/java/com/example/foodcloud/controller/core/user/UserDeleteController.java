@@ -19,7 +19,7 @@ public class UserDeleteController {
 
     @GetMapping("")
     public String get(@SessionAttribute("userId") Long userId, Model model) {
-        model.addAttribute("userInfo", userRepository.validateUser(userId));
+        model.addAttribute("userInfo", userRepository.validate(userId));
         return "thymeleaf/user/delete";
     }
 

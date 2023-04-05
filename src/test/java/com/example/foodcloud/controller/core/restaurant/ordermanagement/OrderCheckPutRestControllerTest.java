@@ -5,8 +5,8 @@ import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -43,19 +43,19 @@ class OrderCheckPutRestControllerTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final LoginInterceptor loginInterceptor;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderCheckPutRestControllerTest(OrderCheckController orderCheckController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public OrderCheckPutRestControllerTest(OrderCheckController orderCheckController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.orderCheckController = orderCheckController;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.loginInterceptor = loginInterceptor;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
@@ -80,16 +80,16 @@ class OrderCheckPutRestControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = put("/restaurant/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED)
+        MockHttpServletRequestBuilder builder = put("/restaurant/check/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED)
                 .session(session);
 
         mockMvc.perform(builder)
@@ -109,13 +109,13 @@ class OrderCheckPutRestControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
-        MockHttpServletRequestBuilder builder = put("/restaurant/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED);
+        MockHttpServletRequestBuilder builder = put("/restaurant/check/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED.getResult());
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

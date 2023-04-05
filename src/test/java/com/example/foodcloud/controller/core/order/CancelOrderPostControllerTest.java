@@ -5,8 +5,8 @@ import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
@@ -44,13 +44,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class CancelOrderPostControllerTest {
-    private final CancelOrderController cancelOrderController;
+    private final OrderCancelController orderCancelController;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final PointRepository pointRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
@@ -58,14 +58,14 @@ class CancelOrderPostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    CancelOrderPostControllerTest(CancelOrderController cancelOrderController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.cancelOrderController = cancelOrderController;
+    CancelOrderPostControllerTest(OrderCancelController orderCancelController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+        this.orderCancelController = orderCancelController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
@@ -74,7 +74,7 @@ class CancelOrderPostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(cancelOrderController)
+        mockMvc = MockMvcBuilders.standaloneSetup(orderCancelController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
@@ -85,9 +85,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
-        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
-        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
+        BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
+        BankAccount shBank = new BankAccount(user, "test", "test", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -98,11 +98,11 @@ class CancelOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(kbBank);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(kbBank);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -125,9 +125,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
-        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
-        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
+        BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
+        BankAccount shBank = new BankAccount(user, "test", "test", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -138,11 +138,11 @@ class CancelOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(nhBank);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(nhBank);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -165,9 +165,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
-        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
-        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
+        BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
+        BankAccount shBank = new BankAccount(user, "test", "test", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -178,11 +178,11 @@ class CancelOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(shBank);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -214,11 +214,11 @@ class CancelOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(point);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(point);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -241,9 +241,9 @@ class CancelOrderPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount kbBank = new BankAccount("test", "test", user, PaymentCode.KB);
-        BankAccount nhBank = new BankAccount("test", "test", user, PaymentCode.NH);
-        BankAccount shBank = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
+        BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
+        BankAccount shBank = new BankAccount(user, "test", "test", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(kbBank);
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
@@ -254,11 +254,11 @@ class CancelOrderPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(shBank);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -271,7 +271,7 @@ class CancelOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND));
 
         assertNotEquals(OrderResult.CANCELED, orderMenu.getResult());
     }

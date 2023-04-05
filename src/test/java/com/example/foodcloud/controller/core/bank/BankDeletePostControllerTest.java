@@ -59,7 +59,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -83,7 +83,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpServletRequestBuilder builder = post("/bank/delete")
@@ -102,7 +102,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -128,7 +128,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -152,7 +152,7 @@ class BankDeletePostControllerTest {
         User user = new User("testName", passwordEncoder.encode("testPassword"), "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();

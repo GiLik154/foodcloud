@@ -6,8 +6,8 @@ import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -41,25 +41,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class NewOrderPostControllerTest {
-    private final NewOrderController newOrderController;
+    private final NewOrderCreateController newOrderCreateController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderPostControllerTest(NewOrderController newOrderController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.newOrderController = newOrderController;
+    public NewOrderPostControllerTest(NewOrderCreateController newOrderCreateController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+        this.newOrderCreateController = newOrderCreateController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
@@ -67,7 +67,7 @@ class NewOrderPostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(newOrderController)
+        mockMvc = MockMvcBuilders.standaloneSetup(newOrderCreateController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
@@ -98,17 +98,17 @@ class NewOrderPostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/payment/pay/*"));
 
-        OrderMain orderMain = orderMainRepository.findByUserId(user.getId()).get(0);
-        OrderMenu orderMenu = orderMenuRepository.findByOrderMainId(orderMain.getId()).get(0);
+        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findByUserId(user.getId()).get(0);
+        OrderMenu orderMenu = orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).get(0);
 
-        assertEquals("testInputLocation", orderMain.getLocation());
-        assertEquals("Payment waiting", orderMain.getResult());
-        assertEquals(user, orderMain.getUser());
-        assertEquals(restaurant, orderMain.getRestaurant());
+        assertEquals("testInputLocation", orderJoinGroup.getLocation());
+        assertEquals(OrderResult.PAYMENT_WAITING, orderJoinGroup.getResult());
+        assertEquals(user, orderJoinGroup.getUser());
+        assertEquals(restaurant, orderJoinGroup.getRestaurant());
         assertEquals("testInputLocation", orderMenu.getLocation());
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
-        assertEquals(orderMain, orderMenu.getOrderMain());
+        assertEquals(orderJoinGroup, orderMenu.getOrderJoinGroup());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
     }
 
@@ -185,7 +185,7 @@ class NewOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND));
     }
 
     @Test
@@ -212,6 +212,6 @@ class NewOrderPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND));
     }
 }

@@ -59,7 +59,7 @@ class BankUpdateGetControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -80,7 +80,7 @@ class BankUpdateGetControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         MockHttpServletRequestBuilder builder = get("/bank/update")

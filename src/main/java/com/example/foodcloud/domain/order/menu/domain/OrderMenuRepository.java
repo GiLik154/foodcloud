@@ -13,32 +13,29 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
-    OrderResult CANCELED = OrderResult.CANCELED;
 
-    List<OrderMenu> findByOrderMainId(Long orderMainId);
+    List<OrderMenu> findByOrderJoinGroupId(Long orderJoinGroupId);
+
     List<OrderMenu> findByUserId(Long userId);
 
-    Optional<OrderMenu> findByUserIdAndId(Long userId, Long orderMenuId);
-
-    Optional<OrderMenu> findByIdAndResultNot(Long orderMenuId, OrderResult result);
-
-    boolean existsByUserIdAndId(Long userId, Long orderMenuId);
-
     @Query("SELECT f.foodMenu FROM OrderMenu f JOIN f.user u WHERE u.id = :userId GROUP BY f.foodMenu")
-    List<FoodMenu> countByFoodMenuByUserId(@Param("userId") Long userId, Pageable pageable);
+    List<FoodMenu> findByFoodMenuByUserId(@Param("userId") Long userId, Pageable pageable);
 
     List<OrderMenu> findByFoodMenuIdAndResult(Long foodMenuId, OrderResult result);
-    List<OrderMenu> findByOrderMainRestaurantId(Long restaurantId);
 
     default OrderMenu validateOrderMenuNotCancel(Long orderMenuId) {
-        Optional<OrderMenu> orderMenu = findByIdAndResultNot(orderMenuId, CANCELED);
+        Optional<OrderMenu> orderMenu = findByIdAndResultNot(orderMenuId, OrderResult.CANCELED);
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);
     }
+
+    Optional<OrderMenu> findByIdAndResultNot(Long orderMenuId, OrderResult result);
 
     default OrderMenu validateOrderMenuForUserIdAndId(Long userId, Long orderMenuId) {
         Optional<OrderMenu> orderMenu = findByUserIdAndId(userId, orderMenuId);
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);
     }
+
+    Optional<OrderMenu> findByUserIdAndId(Long userId, Long orderMenuId);
 }

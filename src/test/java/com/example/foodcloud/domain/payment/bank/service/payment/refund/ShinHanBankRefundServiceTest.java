@@ -5,8 +5,8 @@ import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -36,17 +36,17 @@ class ShinHanBankRefundServiceTest {
     private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public ShinHanBankRefundServiceTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository) {
+    public ShinHanBankRefundServiceTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository) {
         this.bankPaymentService = bankPaymentService;
         this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
     }
@@ -57,7 +57,7 @@ class ShinHanBankRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -66,11 +66,11 @@ class ShinHanBankRefundServiceTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(bankAccount);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(bankAccount);
         orderMenuRepository.save(orderMenu);
 
         String result = bankPaymentService.get(PaymentCode.SHIN_HAN.getCode()).refund(userId, orderMenu);
@@ -84,7 +84,7 @@ class ShinHanBankRefundServiceTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("test", "test", user, PaymentCode.SHIN_HAN);
+        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.SHIN_HAN);
         bankAccountRepository.save(bankAccount);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -93,11 +93,11 @@ class ShinHanBankRefundServiceTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
-        orderMenu.updatePayment(bankAccount);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(bankAccount);
         orderMenuRepository.save(orderMenu);
 
         String result = bankPaymentService.get(PaymentCode.SHIN_HAN.getCode()).refund(userId + 1L, orderMenu);

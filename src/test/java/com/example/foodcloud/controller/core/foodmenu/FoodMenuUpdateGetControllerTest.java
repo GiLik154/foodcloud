@@ -71,8 +71,7 @@ class FoodMenuUpdateGetControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = get("/food-menu/update")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
+        MockHttpServletRequestBuilder builder = get("/food-menu/update/" + foodMenu.getId())
                 .session(session);
 
         mockMvc.perform(builder)
@@ -92,8 +91,7 @@ class FoodMenuUpdateGetControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        MockHttpServletRequestBuilder builder = get("/food-menu/update")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()));
+        MockHttpServletRequestBuilder builder = get("/food-menu/update/" + foodMenu.getId());
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -114,8 +112,7 @@ class FoodMenuUpdateGetControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = get("/food-menu/update")
-                .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
+        MockHttpServletRequestBuilder builder = get("/food-menu/update/" + foodMenu.getId())
                 .session(session);
 
         mockMvc.perform(builder)

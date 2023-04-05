@@ -2,8 +2,8 @@ package com.example.foodcloud.domain.order.menu.service.update.payment;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
@@ -36,18 +36,18 @@ class OrderMenuPaymentUpdateServiceImplTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final PointRepository pointRepository;
     private final BankAccountRepository bankAccountRepository;
 
     @Autowired
-    public OrderMenuPaymentUpdateServiceImplTest(OrderMenuPaymentUpdateService orderMenuPaymentUpdateService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository, PointRepository pointRepository, BankAccountRepository bankAccountRepository) {
+    public OrderMenuPaymentUpdateServiceImplTest(OrderMenuPaymentUpdateService orderMenuPaymentUpdateService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, PointRepository pointRepository, BankAccountRepository bankAccountRepository) {
         this.orderMenuPaymentUpdateService = orderMenuPaymentUpdateService;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.pointRepository = pointRepository;
         this.bankAccountRepository = bankAccountRepository;
     }
@@ -63,10 +63,10 @@ class OrderMenuPaymentUpdateServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         Point point = new Point(user, PaymentCode.POINT);
@@ -88,13 +88,13 @@ class OrderMenuPaymentUpdateServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         orderMenuPaymentUpdateService.update(orderMenu.getId(), bankAccount);
@@ -113,13 +113,13 @@ class OrderMenuPaymentUpdateServiceImplTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         orderMenuPaymentUpdateService.update(orderMenu.getId() + 1L, bankAccount);

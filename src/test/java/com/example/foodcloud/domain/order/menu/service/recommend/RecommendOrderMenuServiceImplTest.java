@@ -2,8 +2,8 @@ package com.example.foodcloud.domain.order.menu.service.recommend;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -35,16 +35,16 @@ class RecommendOrderMenuServiceImplTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
 
     @Autowired
-    public RecommendOrderMenuServiceImplTest(RecommendOrderMenuService recommendOrderMenuService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderMainRepository orderMainRepository) {
+    public RecommendOrderMenuServiceImplTest(RecommendOrderMenuService recommendOrderMenuService, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository) {
         this.recommendOrderMenuService = recommendOrderMenuService;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
     }
 
     @Test
@@ -63,10 +63,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test");
@@ -100,10 +100,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu5);
         foodMenuRepository.save(foodMenu6);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test");
@@ -133,10 +133,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
@@ -162,10 +162,10 @@ class RecommendOrderMenuServiceImplTest {
         foodMenuRepository.save(foodMenu2);
         foodMenuRepository.save(foodMenu3);
 
-        OrderMain orderMain = new OrderMain("test", "test", user, restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test1", 5, "test", user, foodMenu1, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
         List<FoodMenu> list = recommendOrderMenuService.recommend(userId, "test123");

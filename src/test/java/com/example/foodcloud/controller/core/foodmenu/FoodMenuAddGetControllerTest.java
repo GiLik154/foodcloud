@@ -24,7 +24,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuAddGetControllerTest {
-
     private final FoodMenuAddController foodMenuAddController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final LoginInterceptor loginInterceptor;

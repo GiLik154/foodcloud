@@ -2,8 +2,8 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.main.domain.OrderMain;
-import com.example.foodcloud.domain.order.main.domain.OrderMainRepository;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -33,16 +33,16 @@ class FoodMenuCountUpdateServiceTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderMainRepository orderMainRepository;
+    private final OrderJoinGroupRepository orderJoinGroupRepository;
 
     @Autowired
-    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, OrderMainRepository orderMainRepository) {
+    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, OrderJoinGroupRepository orderJoinGroupRepository) {
         this.foodMenuCountUpdateService = foodMenuCountUpdateService;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.orderMainRepository = orderMainRepository;
+        this.orderJoinGroupRepository = orderJoinGroupRepository;
     }
 
     @Test
@@ -57,29 +57,31 @@ class FoodMenuCountUpdateServiceTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        OrderMain orderMain = new OrderMain("test", "test", user,  restaurant);
-        orderMainRepository.save(orderMain);
+        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
+        orderJoinGroupRepository.save(orderJoinGroup);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user,  foodMenu, orderMain);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
-        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
         CountDownLatch countDownLatch = new CountDownLatch(100);
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuCountUpdateService.updateOrderCount(foodMenuId);
+                foodMenuCountUpdateService.increaseOrderCount(foodMenuId);
                 countDownLatch.countDown();
             });
         }
         countDownLatch.await();
 
-        assertEquals(100, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
-
-        orderMenuRepository.delete(orderMenu);
-        orderMainRepository.delete(orderMain);
-        foodMenuRepository.delete(foodMenu);
-        restaurantRepository.delete(restaurant);
-        userRepository.delete(user);
+        try {
+            assertEquals(100, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
+        } finally {
+            orderMenuRepository.delete(orderMenu);
+            orderJoinGroupRepository.delete(orderJoinGroup);
+            foodMenuRepository.delete(foodMenu);
+            restaurantRepository.delete(restaurant);
+            userRepository.delete(user);
+        }
     }
 }

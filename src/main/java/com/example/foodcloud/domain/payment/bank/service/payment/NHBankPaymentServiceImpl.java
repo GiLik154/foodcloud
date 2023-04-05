@@ -8,12 +8,21 @@ import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+/**
+ * 결제 서비스 (API 대신 사용)
+ */
 @Service("011")
 @RequiredArgsConstructor
 public class NHBankPaymentServiceImpl implements PaymentService {
     private final OrderMenuPaymentUpdateService orderMenuPaymentUpdateService;
     private final BankAccountRepository bankAccountRepository;
 
+    /**
+     * userId와 bankAccountId를 통해 검증 후
+     * bankAccount를 찾아온다.
+     * 메소드를 따로 뺀 이유는 성공과 실패 케이스를 반화해주기 위해서
+     * 이후 orderMenuPaymentUpdateService에 orderMenuId와 BankAccount를 반환해준다.
+     */
     @Override
     public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
         if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
@@ -25,6 +34,11 @@ public class NHBankPaymentServiceImpl implements PaymentService {
         return "NH bank payment fail";
     }
 
+    /**
+     * userId와 orderMenu를 받아와서
+     * orderMenu에서 Payment의 PK를 찾아와서 검증한다.
+     * 이후 성공과 실패 String을 출력한다.
+     */
     @Override
     public String refund(Long userId, OrderMenu orderMenu) {
         if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, orderMenu.getPayment().getId())) {

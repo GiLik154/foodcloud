@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * 유저를 검증하기 위한 메소드. 중복코드를 줄이기 위해 default로 레포지토리 안에 선언함.
      */
-    default User validateUser(String name) {
+    default User validate(String name) {
         Optional<User> optionalUser = findByName(name);
 
         return optionalUser.orElseThrow(() ->
@@ -22,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByName(String name);
 
-    default User validateUser(Long userId) {
+    default User validate(Long userId) {
         Optional<User> optionalUser = findById(userId);
 
         return optionalUser.orElseThrow(() ->

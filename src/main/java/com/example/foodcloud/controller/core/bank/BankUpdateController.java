@@ -44,12 +44,9 @@ public class BankUpdateController {
     @PostMapping("")
     public String post(@SessionAttribute("userId") Long userId,
                        @RequestParam Long bankAccountId,
-                       @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto,
-                       Model model) {
+                       @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto) {
 
-        model.addAttribute("isUpdate", bankAccountUpdateService.update(userId,
-                bankAccountId,
-                bankAccountUpdateControllerDto.convert()));
+        bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateControllerDto.convert());
 
         return "redirect:/bank/list";
     }

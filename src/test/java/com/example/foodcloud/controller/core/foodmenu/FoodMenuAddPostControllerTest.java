@@ -101,7 +101,7 @@ class FoodMenuAddPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId())
                 .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
@@ -139,7 +139,7 @@ class FoodMenuAddPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId())
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
                 .param("price", "5000")
@@ -176,7 +176,7 @@ class FoodMenuAddPostControllerTest {
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId())
                 .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
@@ -206,7 +206,7 @@ class FoodMenuAddPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId())
                 .file(mockMultipartFile)
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "testName")
@@ -238,9 +238,8 @@ class FoodMenuAddPostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId() + 1L)
                 .file(mockMultipartFile)
-                .param("restaurantId", String.valueOf(restaurant.getId() + 1L))
                 .param("name", "testName")
                 .param("price", "5000")
                 .param("temperature", String.valueOf(Temperature.COLD))

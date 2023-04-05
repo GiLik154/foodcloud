@@ -7,12 +7,12 @@ public class OrderMenuAddServiceDto {
     private final String location;
     private final int count;
     private final Long foodMenuId;
-    private final Long orderMainId;
+    private final Long orderJoinGroupId;
 
-    public OrderMenuAddServiceDto(String location, int count, Long foodMenuId, Long orderMainId) {
+    public OrderMenuAddServiceDto(String location, int count, Long foodMenuId, Long orderJoinGroupId) {
         this.location = location;
         this.count = count;
         this.foodMenuId = foodMenuId;
-        this.orderMainId = orderMainId;
+        this.orderJoinGroupId = orderJoinGroupId;
     }
 }

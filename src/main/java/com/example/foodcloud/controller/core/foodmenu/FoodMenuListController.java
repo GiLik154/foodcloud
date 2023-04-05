@@ -26,7 +26,6 @@ public class FoodMenuListController {
     @GetMapping("")
     public String get(@RequestParam Long restaurantId, Model model) {
         model.addAttribute("foodMenuList", foodMenuRepository.findByRestaurantId(restaurantId));
-
         return "thymeleaf/food-menu/list";
     }
 }

@@ -18,12 +18,14 @@ public class UserJoinServiceImpl implements UserJoinService {
     private final PasswordEncoder bCryptPasswordEncoder;
     private final PointAwardService pointAwardService;
 
-    /** 유저 생성 메소드
+    /**
+     * 유저 생성 메소드
      * 유저의 정보를 JoinServiceDto로 받아온 후
      * 유저의 아이디를 중복체크 함.
      * bCryptPasswordEncoder는 개발자가 쉽게 컨트롤 할 수 없기 때문에 메소드로 따로 작성함
      * 유저의 생성에 성공하면 포인트도 생성해야 하기 때문에
-     * 유저의 고유 번호를 통해 포인트 DB를 생성함. */
+     * 유저의 고유 번호를 통해 포인트 DB를 생성함.
+     */
     public void join(UserJoinServiceDto userJoinServiceDto) {
         User user = new User(userJoinServiceDto.getName(), userJoinServiceDto.getPassword(), userJoinServiceDto.getPhone());
 
@@ -36,6 +38,11 @@ public class UserJoinServiceImpl implements UserJoinService {
         pointAwardService.award(user.getId());
     }
 
+    /**
+     * 유저의 이름이 중복되는지 확인한다.
+     *
+     * @param name 유저가 입력한 이름
+     */
     private void checkDuplicate(String name) {
         if (userRepository.existsByName(name)) {
             throw new UserNameDuplicateException();

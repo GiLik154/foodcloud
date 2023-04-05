@@ -60,9 +60,8 @@ class FoodMenuUpdateServiceImplTest {
         Long foodMenuId = foodMenu.getId();
 
         FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuUpdateServiceDto, file);
+        foodMenuUpdateService.update(foodMenuId, foodMenuUpdateServiceDto, file);
 
-        assertTrue(isUpdate);
         assertEquals("test123", foodMenu.getName());
         assertEquals(3000, foodMenu.getPrice());
         assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
@@ -81,23 +80,23 @@ class FoodMenuUpdateServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId, restaurantId, foodMenuUpdateServiceDto, file);
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
+        foodMenuUpdateService.update(foodMenuId, foodMenuUpdateServiceDto, file);
 
-        assertTrue(isUpdate);
-        assertEquals("test123", foodMenu.getName());
-        assertEquals(3000, foodMenu.getPrice());
-        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
-        assertEquals(Temperature.COLD, foodMenu.getTemperature());
-        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
-        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
-        assertNull(foodMenu.getImagePath());
+        FoodMenu updateFoodMenu = foodMenuRepository.findById(foodMenuId).get();
+
+        assertEquals("updateTest", updateFoodMenu.getName());
+        assertEquals(3000, updateFoodMenu.getPrice());
+        assertEquals(Temperature.HOT, updateFoodMenu.getTemperature());
+        assertEquals(FoodTypes.AMERICANO, updateFoodMenu.getFoodTypes());
+        assertEquals(MeatTypes.BEEF, updateFoodMenu.getMeatType());
+        assertEquals(Vegetables.MANY, updateFoodMenu.getVegetables());
+        assertNull(updateFoodMenu.getImagePath());
     }
 
     @Test
@@ -109,39 +108,22 @@ class FoodMenuUpdateServiceImplTest {
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
 
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isUpdate = foodMenuUpdateService.update(foodMenuId + 1L, restaurantId, foodMenuUpdateServiceDto, file);
+        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
+        foodMenuUpdateService.update(foodMenuId + 1L, foodMenuUpdateServiceDto, file);
 
-        assertFalse(isUpdate);
-    }
+        FoodMenu updateFoodMenu = foodMenuRepository.findById(foodMenuId).get();
 
-    @Test
-    void 음식메뉴_수정_식당고유번호_다름() {
-        File file = mock(File.class);
-
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-        Long foodMenuId = foodMenu.getId();
-
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-
-        NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
-                foodMenuUpdateService.update(foodMenuId, restaurantId + 1L, foodMenuUpdateServiceDto, file)
-        );
-
-        assertEquals("Not found Restaurant", e.getMessage());
+        assertNotEquals("updateTest", updateFoodMenu.getName());
+        assertNotEquals(3000, updateFoodMenu.getPrice());
+        assertNotEquals(Temperature.HOT, updateFoodMenu.getTemperature());
+        assertNotEquals(FoodTypes.AMERICANO, updateFoodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.BEEF, updateFoodMenu.getMeatType());
+        assertNotEquals(Vegetables.MANY, updateFoodMenu.getVegetables());
+        assertNull(updateFoodMenu.getImagePath());
     }
 }

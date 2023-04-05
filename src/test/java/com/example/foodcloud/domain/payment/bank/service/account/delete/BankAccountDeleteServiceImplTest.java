@@ -37,7 +37,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test");
@@ -51,7 +51,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId() + 1L, bankAccount.getId(), "test");
@@ -65,7 +65,7 @@ class BankAccountDeleteServiceImplTest {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
         boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId() + 1L, "test");
@@ -80,7 +80,7 @@ class BankAccountDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 

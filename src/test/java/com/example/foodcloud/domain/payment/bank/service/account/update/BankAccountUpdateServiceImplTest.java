@@ -35,14 +35,13 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.KB);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("updateName", "updateNumber", PaymentCode.KB);
-        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateServiceDto);
+        bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateServiceDto);
 
-        assertTrue(isUpdate);
         assertEquals("updateName", bankAccount.getName());
         assertEquals("updateNumber", bankAccount.getAccountNumber());
         assertEquals(PaymentCode.KB, bankAccount.getPaymentCode());
@@ -54,14 +53,13 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.NH);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", PaymentCode.KB);
-        boolean isUpdate = bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateServiceDto);
+        bankAccountUpdateService.update(userId + 1L, bankAccountId, bankAccountUpdateServiceDto);
 
-        assertFalse(isUpdate);
         assertEquals("testBankName", bankAccount.getName());
         assertEquals("testBankNumber", bankAccount.getAccountNumber());
         assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());
@@ -73,14 +71,13 @@ class BankAccountUpdateServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        BankAccount bankAccount = new BankAccount("testBankName", "testBankNumber", user, PaymentCode.NH);
+        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdateServiceDto bankAccountUpdateServiceDto = new BankAccountUpdateServiceDto("test123", "test123", PaymentCode.KB);
-        boolean isUpdate = bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateServiceDto);
+        bankAccountUpdateService.update(userId, bankAccountId + 1L, bankAccountUpdateServiceDto);
 
-        assertFalse(isUpdate);
         assertEquals("testBankName", bankAccount.getName());
         assertEquals("testBankNumber", bankAccount.getAccountNumber());
         assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());

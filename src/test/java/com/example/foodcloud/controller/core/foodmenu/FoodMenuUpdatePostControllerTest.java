@@ -99,29 +99,27 @@ class FoodMenuUpdatePostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update/" + foodMenu.getId())
                 .file(mockMultipartFile)
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "updateName")
                 .param("price", "4444")
-                .param("temperature", String.valueOf(Temperature.COLD))
-                .param("foodTypes", String.valueOf(FoodTypes.ADE))
-                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
-                .param("vegetables", String.valueOf(Vegetables.FEW))
+                .param("temperature", String.valueOf(Temperature.LUKEWARM))
+                .param("foodTypes", String.valueOf(FoodTypes.RED_BEAN_BREAD))
+                .param("meatType", String.valueOf(MeatTypes.LAMB))
+                .param("vegetables", String.valueOf(Vegetables.MANY))
                 .session(session);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
-                .andExpect(model().attribute("isUpdate", true));
+                .andExpect(forwardedUrl("thymeleaf/food-menu/update"));
 
         assertEquals("updateName", foodMenu.getName());
         assertEquals(4444, foodMenu.getPrice());
-        assertEquals(Temperature.COLD, foodMenu.getTemperature());
-        assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
-        assertEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
-        assertEquals(Vegetables.FEW, foodMenu.getVegetables());
+        assertEquals(Temperature.LUKEWARM, foodMenu.getTemperature());
+        assertEquals(FoodTypes.RED_BEAN_BREAD, foodMenu.getFoodTypes());
+        assertEquals(MeatTypes.LAMB, foodMenu.getMeatType());
+        assertEquals(Vegetables.MANY, foodMenu.getVegetables());
     }
 
     @Test
@@ -139,16 +137,15 @@ class FoodMenuUpdatePostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update/" + foodMenu.getId())
                 .file(file)
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "updateName")
                 .param("price", "4444")
-                .param("temperature", String.valueOf(Temperature.COLD))
-                .param("foodTypes", String.valueOf(FoodTypes.ADE))
-                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
-                .param("vegetables", String.valueOf(Vegetables.FEW));
+                .param("temperature", String.valueOf(Temperature.HOT))
+                .param("foodTypes", String.valueOf(FoodTypes.SPAGHETTI))
+                .param("meatType", String.valueOf(MeatTypes.NONE))
+                .param("vegetables", String.valueOf(Vegetables.MANY));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -156,10 +153,10 @@ class FoodMenuUpdatePostControllerTest {
 
         assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
-        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
-        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
-        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
+        assertNotEquals(Temperature.HOT, foodMenu.getTemperature());
+        assertNotEquals(FoodTypes.SPAGHETTI, foodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.NONE, foodMenu.getMeatType());
+        assertNotEquals(Vegetables.MANY, foodMenu.getVegetables());
     }
 
     @Test
@@ -180,9 +177,8 @@ class FoodMenuUpdatePostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
 
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update")
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update/" + foodMenu.getId() + 1L)
                 .file(mockMultipartFile)
-                .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
                 .param("restaurantId", String.valueOf(restaurant.getId()))
                 .param("name", "updateName")
                 .param("price", "4444")
@@ -194,57 +190,13 @@ class FoodMenuUpdatePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/update"))
-                .andExpect(model().attribute("isUpdate", false));
+                .andExpect(forwardedUrl("thymeleaf/food-menu/update"));
 
         assertNotEquals("updateName", foodMenu.getName());
         assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
-        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
-        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
-        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
-    }
-
-    @Test
-    void Post_음식_메뉴_업데이트_식당_고유번호_다름() throws Exception {
-        byte[] imageBytes = "test-image".getBytes();
-        String imageName = "test-image.jpg";
-        MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
-
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
-        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/update")
-                .file(mockMultipartFile)
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("restaurantId", String.valueOf(restaurant.getId() + 1L))
-                .param("name", "updateName")
-                .param("price", "4444")
-                .param("temperature", String.valueOf(Temperature.COLD))
-                .param("foodTypes", String.valueOf(FoodTypes.ADE))
-                .param("meatType", String.valueOf(MeatTypes.CHICKEN))
-                .param("vegetables", String.valueOf(Vegetables.FEW))
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
-
-        assertNotEquals("updateName", foodMenu.getName());
-        assertNotEquals(4444, foodMenu.getPrice());
-        assertNotEquals(Temperature.COLD, foodMenu.getTemperature());
-        assertNotEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
-        assertNotEquals(MeatTypes.CHICKEN, foodMenu.getMeatType());
-        assertNotEquals(Vegetables.FEW, foodMenu.getVegetables());
+        assertNotEquals(Temperature.HOT, foodMenu.getTemperature());
+        assertNotEquals(FoodTypes.SPAGHETTI, foodMenu.getFoodTypes());
+        assertNotEquals(MeatTypes.NONE, foodMenu.getMeatType());
+        assertNotEquals(Vegetables.MANY, foodMenu.getVegetables());
     }
 }

@@ -43,8 +43,8 @@ public class NotFoundExceptionAdvice {
         return modelAndView;
     }
 
-    @ExceptionHandler(NotFoundOrderMainException.class)
-    public ModelAndView notFoundOrderMainException() {
+    @ExceptionHandler(NotFoundOrderJoinGroupException.class)
+    public ModelAndView notFoundOrderJoinGroupException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
         modelAndView.addObject(MODEL_NAME, KoreanErrorCode.ORDER_MAIN_NOT_FOUND);
 

@@ -27,7 +27,7 @@ public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService 
      * 음식의 종류에 따라 음식 추천
      * foodMenu를 랜덤으로 가지고 와서
      * 그 음식의 FoodTypes을 5개 조회함.
-     * 그 후 5개를 랜덤으로 반환해줌.
+     * 그 후 5개를 랜덤으로 반환해줌. (Collections.shuffle 이용)
      */
     @Override
     public List<FoodMenu> recommend(Long userId, String location) {
@@ -37,28 +37,44 @@ public class RecommendOrderMenuServiceImpl implements RecommendOrderMenuService 
 
         Collections.shuffle(foodMenus);
 
-        return foodMenus.subList(0, limitCount(foodMenus.size()));
+        return foodMenus.subList(0, limitForceFive(foodMenus.size()));
     }
 
+    /**
+     * FoodMenu를
+     * 랜덤으로 하나 반환하는 메소드
+     * (db에서 처리 가능하나, DB에 무리가 많이 가기 때문에
+     * Java에서 처리함)
+     */
     private FoodMenu getRandomFoodMenu(Long userId) {
         Pageable pageable = PageRequest.of(0, 5, JpaSort.unsafe("COUNT(f)").descending());
 
-        List<FoodMenu> foodMenus = orderMenuRepository.countByFoodMenuByUserId(userId, pageable);
+        List<FoodMenu> foodMenus = orderMenuRepository.findByFoodMenuByUserId(userId, pageable);
 
         return foodMenus.get(getRandomInt(foodMenus.size()));
     }
 
-    private int getRandomInt(int limit) {
-        if (limit == 0) {
+    /**
+     * 5개 중에서 랜덤으로
+     * FoodMenu를 찾기 위해
+     * 0~4 사이에서 숫자를 하나 뽑는 메소드
+     * @param count List<FoodMenu>의 사이즈를 limitForceFive의 메소드를 통해 5 이하로 줄임
+     */
+    private int getRandomInt(int count) {
+        if (count == 0) {
             throw new UsernameNotFoundException("Invalid user");
         }
 
         Random random = new SecureRandom();
 
-        return random.nextInt(limit);
+        return random.nextInt(count);
     }
 
-    private int limitCount(int count) {
+    /**
+     * count의 숫자가 5를 넘어가면
+     * 5로 바꿔주는 메소드
+     */
+    private int limitForceFive(int count) {
         if (count > 5) {
             count = 5;
         }

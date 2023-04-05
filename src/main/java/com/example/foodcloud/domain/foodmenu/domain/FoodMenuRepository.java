@@ -21,9 +21,9 @@ public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT f FROM FoodMenu f WHERE f.id = :id")
-    FoodMenu findByIdForUpdate(@Param("id") Long foodMenuId);
+    Optional<FoodMenu> findByIdForUpdate(@Param("id") Long foodMenuId);
 
-    default FoodMenu validateFoodMenu(Long foodMenuId) {
+    default FoodMenu validate(Long foodMenuId) {
         Optional<FoodMenu> foodMenuOptional = findById(foodMenuId);
 
         return foodMenuOptional.orElseThrow(NotFoundFoodMenuException::new);

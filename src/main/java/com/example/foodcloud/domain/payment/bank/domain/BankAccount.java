@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class BankAccount extends Payment {
 
     /**
-     * 이름
+     * 계좌의 등록 이름
      **/
     private String name;
     /**
@@ -23,15 +23,21 @@ public class BankAccount extends Payment {
      **/
     private String accountNumber;
 
-    public BankAccount() {
+    protected BankAccount() {
     }
 
-    public BankAccount(String name, String accountNumber, User user, PaymentCode paymentCode) {
+    /**
+     * BankAccount의 기본 생성자
+     **/
+    public BankAccount(User user, String name, String accountNumber, PaymentCode paymentCode) {
         init(user, paymentCode);
         this.name = name;
         this.accountNumber = accountNumber;
     }
 
+    /**
+     * BankAccount의 업데이트 메소드
+     **/
     public void update(String name, String accountNumber, PaymentCode paymentCode) {
         updatePaymentCode(paymentCode);
         this.name = name;

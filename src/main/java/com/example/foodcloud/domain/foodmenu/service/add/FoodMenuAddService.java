@@ -5,5 +5,5 @@ import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceD
 import java.io.File;
 
 public interface FoodMenuAddService {
-    boolean add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, File file);
+    void add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, File file);
 }

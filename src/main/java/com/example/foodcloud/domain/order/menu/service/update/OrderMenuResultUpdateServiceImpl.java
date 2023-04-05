@@ -16,19 +16,16 @@ public class OrderMenuResultUpdateServiceImpl implements OrderMenuResultUpdateSe
 
     private final OrderMenuRepository orderMenuRepository;
 
+    /**
+     * orderMenuId로 orderMenuId를
+     * 찾아와서 result를 수정함.
+     * @param result OrderResult의  result값.
+     */
     @Override
-    public boolean update(Long orderMenuId, String result) {
+    public void update(Long orderMenuId, String result) {
         Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findById(orderMenuId);
 
-        if (orderMenuOptional.isPresent()) {
-            OrderResult orderResult = OrderResult.valueOf(result);
-
-            OrderMenu orderMenu = orderMenuOptional.get();
-
-            orderMenu.updateResult(orderResult);
-
-            return true;
-        }
-        return false;
+        orderMenuOptional.ifPresent(orderMenu ->
+                orderMenu.updateResult(OrderResult.valueOf(result)));
     }
 }

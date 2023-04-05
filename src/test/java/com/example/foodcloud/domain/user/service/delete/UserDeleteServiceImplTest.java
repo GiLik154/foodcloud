@@ -2,7 +2,6 @@ package com.example.foodcloud.domain.user.service.delete;
 
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.delete.UserDeleteService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -42,7 +41,7 @@ class UserDeleteServiceImplTest {
 
         assertFalse(userRepository.existsById(userId));
         assertThrows(UsernameNotFoundException.class, () ->
-                userRepository.validateUser(userId)
+                userRepository.validate(userId)
         );
     }
 

@@ -29,11 +29,11 @@
 
     <tbody id="orderListBody">
     <tr>
-        <td th:text="${orderMainInfo.id}"></td>
-        <td th:text="${orderMainInfo.location}"></td>
-        <td th:text="${orderMainInfo.time}"></td>
-        <td th:text="${orderMainInfo.result}"></td>
-        <td th:text="${orderMainInfo.restaurant.name}"></td>
+        <td th:text="${OrderJoinGroupInfo.id}"></td>
+        <td th:text="${OrderJoinGroupInfo.location}"></td>
+        <td th:text="${OrderJoinGroupInfo.time}"></td>
+        <td th:text="${OrderJoinGroupInfo.result}"></td>
+        <td th:text="${OrderJoinGroupInfo.restaurant.name}"></td>
     </tr>
     </tbody>
 </table>
@@ -59,7 +59,7 @@
                             <p class="card-text" th:text="${foodMenu.orderCount}"></p>
                             <div class="row justify-content-center">
                                 <div class="col-md-6">
-                                    <form th:action="@{/order/join(restaurantId=${orderMainId})}" method="post">
+                                    <form th:action="@{/order/join(restaurantId=${OrderJoinGroupId})}" method="post">
                                         <input type="hidden" name="id" th:value="${foodMenu.id}" />
                                         <div class="form-group">
                                             <label for="location">주문 장소 </label>

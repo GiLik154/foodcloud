@@ -26,15 +26,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class NewOrderGetControllerTest {
-    private final NewOrderController newOrderController;
+    private final NewOrderCreateController newOrderCreateController;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderGetControllerTest(NewOrderController newOrderController, UserRepository userRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
-        this.newOrderController = newOrderController;
+    public NewOrderGetControllerTest(NewOrderCreateController newOrderCreateController, UserRepository userRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
+        this.newOrderCreateController = newOrderCreateController;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.loginInterceptor = loginInterceptor;
@@ -42,7 +42,7 @@ class NewOrderGetControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(newOrderController)
+        mockMvc = MockMvcBuilders.standaloneSetup(newOrderCreateController)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
