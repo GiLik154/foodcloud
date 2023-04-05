@@ -29,12 +29,6 @@ public class FoodMenuUpdateController {
         return "thymeleaf/food-menu/update";
     }
 
-    /**
-     * 세션으로 userId를 받아야와하고
-     * PathVariable를 통해 foodMenuId를 받아옴
-     * 이후 Dto를 받아오고 @Valid로 검증함
-     * MultipartFile를 File로 바꿔주고 서비스단으로 내림.
-     */
     @PostMapping("/{foodMenuId}")
     public String post(@PathVariable Long foodMenuId,
                        @Valid FoodMenuUpdateControllerDto foodMenuUpdateControllerDto,

@@ -16,11 +16,6 @@ public class OrderMenuResultUpdateServiceImpl implements OrderMenuResultUpdateSe
 
     private final OrderMenuRepository orderMenuRepository;
 
-    /**
-     * orderMenuId로 orderMenuId를
-     * 찾아와서 result를 수정함.
-     * @param result OrderResult의  result값.
-     */
     @Override
     public void update(Long orderMenuId, String result) {
         Optional<OrderMenu> orderMenuOptional = orderMenuRepository.findById(orderMenuId);

@@ -41,7 +41,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, 5000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
+        Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -60,7 +60,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId, -1000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
+        Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -79,7 +79,7 @@ class PointSumServiceImplTest {
         pointRepository.save(point);
 
         boolean isSum = pointSumService.sum(userId + 1L, -1000);
-        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
+        Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertFalse(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -127,7 +127,7 @@ class PointSumServiceImplTest {
         for (int i = 0; i < 5; i++) {
             isSum = pointSumService.sum(userId, 5000);
         }
-        Point pointSum = pointRepository.findByUserIdOrderByIdDescForUpdate(userId);
+        Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertTrue(isSum);
         assertEquals(5, pointSum.getVersion());

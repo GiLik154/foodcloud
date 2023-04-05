@@ -19,15 +19,9 @@ public class PointAwardServiceImpl implements PointAwardService {
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
-    /**
-     * point를 새로 만드는
-     * userId를 통해 user를 찾고
-     * (validate에서 UsernameNotFoundException익셉션 발생할 수 있음)
-     * Point의 생성자를 통해 생성
-     */
     @Override
     public void award(Long userId) {
-        User user = userRepository.validate(userId);
+        User user = userRepository.validateById(userId);
 
         Point awardPoint = new Point(user, PaymentCode.POINT);
 

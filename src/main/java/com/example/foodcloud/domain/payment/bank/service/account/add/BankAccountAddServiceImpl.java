@@ -6,7 +6,6 @@ import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAcc
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +26,7 @@ public class BankAccountAddServiceImpl implements BankAccountAddService {
      */
     @Override
     public void add(Long userId, BankAccountAddServiceDto bankAccountAddServiceDto) {
-        User user = userRepository.validate(userId);
+        User user = userRepository.validateById(userId);
 
         BankAccount bankAccount = new BankAccount(user,
                 bankAccountAddServiceDto.getName(),

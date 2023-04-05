@@ -14,5 +14,5 @@ public interface PointRepository extends JpaRepository<Point, Long> {
 
     @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT p FROM Point p WHERE p.user.id = :userId ORDER BY p.id DESC")
-    Point findByUserIdOrderByIdDescForUpdate(Long userId);
+    Optional<Point> findByUserIdOrderByIdDescForUpdate(Long userId);
 }

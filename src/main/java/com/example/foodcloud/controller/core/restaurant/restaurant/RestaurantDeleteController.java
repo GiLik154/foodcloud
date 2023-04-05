@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/restaurant")
+@RequestMapping("/restaurant/delete")
 public class RestaurantDeleteController {
     private final RestaurantDeleteService restaurantDeleteService;
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping("/delete")
     public String get(@RequestParam Long restaurantId, Model model) {
-        model.addAttribute("restaurantInfo", restaurantRepository.validateRestaurant(restaurantId));
+        model.addAttribute("restaurantInfo", restaurantRepository.validateById(restaurantId));
         return "thymeleaf/restaurant/delete";
     }
 

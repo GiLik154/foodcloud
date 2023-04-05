@@ -34,18 +34,11 @@ public class FoodMenuAddController {
         return kinds.stream().map(FoodTypes::getName).collect(Collectors.toList());
     }
 
-    /**
-     * 세션으로 userId를 받아야와하고
-     * PathVariable를 통해 foodMenuId를 받아옴
-     * 이후 Dto를 받아오고 @Valid로 검증함
-     * MultipartFile를 File로 바꿔주고 서비스단으로 내림.
-     */
     @PostMapping("/{restaurantId}")
     public String post(@SessionAttribute("userId") Long userId,
                        @PathVariable Long restaurantId,
                        @Valid FoodMenuAddControllerDto foodMenuAddControllerDto,
-                       MultipartFile multipartFile,
-                       Model model) throws IOException {
+                       MultipartFile multipartFile) throws IOException {
 
         File file = null;
 
@@ -55,7 +48,7 @@ public class FoodMenuAddController {
             multipartFile.transferTo(file);
         }
 
-        model.addAttribute("isAdd", foodMenuAddService.add(userId, restaurantId, foodMenuAddControllerDto.convert(), file));
+        foodMenuAddService.add(userId, restaurantId, foodMenuAddControllerDto.convert(), file);
 
         return "thymeleaf/food-menu/add";
     }

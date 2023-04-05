@@ -1,7 +1,6 @@
 package com.example.foodcloud.domain.restaurant.domain;
 
 
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.exception.NotFoundRestaurantException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -15,15 +14,13 @@ import java.util.Optional;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Optional<Restaurant> findByUserIdAndId(Long userId, Long restaurantId);
 
-    boolean existsByUserId(Long userId);
-
     boolean existsById(Long restaurantId);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
     Optional<Restaurant> findByIdForUpdate(@Param("id") Long restaurantId);
 
-    default Restaurant validateRestaurant(Long restaurantId) {
+    default Restaurant validateById(Long restaurantId) {
         Optional<Restaurant> restaurantOptional = findById(restaurantId);
 
         return restaurantOptional.orElseThrow(NotFoundRestaurantException::new);
@@ -35,6 +32,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
         }
         throw new NotFoundRestaurantException();
     }
+
+    boolean existsByUserId(Long userId);
 
     List<Restaurant> findByUserId(Long userId);
 }

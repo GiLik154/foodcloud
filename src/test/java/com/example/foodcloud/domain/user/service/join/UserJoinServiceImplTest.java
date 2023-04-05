@@ -35,7 +35,7 @@ class UserJoinServiceImplTest {
         userJoinService.join(userJoinServiceDto);
 
         User user = userRepository.findByName("testName").get();
-        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
+        Point point = pointRepository.findByUserId(user.getId()).get();
 
         assertEquals("testName", user.getName());
         assertNotEquals("testPassword", user.getPassword());

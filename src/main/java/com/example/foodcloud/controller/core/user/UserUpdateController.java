@@ -19,7 +19,7 @@ public class UserUpdateController {
 
     @GetMapping("")
     public String get(@SessionAttribute("userId") Long userId, Model model) {
-        model.addAttribute("userInfo", userRepository.validate(userId));
+        model.addAttribute("userInfo", userRepository.validateById(userId));
         return "thymeleaf/user/update";
     }
 

@@ -3,7 +3,6 @@ package com.example.foodcloud.domain.order.join.service.add;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.join.service.add.dto.OrderJoinGroupAddServiceDto;
-import com.example.foodcloud.domain.order.menu.service.add.OrderMenuAddService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -19,14 +18,13 @@ import java.time.format.DateTimeFormatter;
 @Transactional
 @RequiredArgsConstructor
 public class OrderJoinGroupAddServiceImpl implements OrderJoinGroupAddService {
-    private final OrderMenuAddService orderMenuAddService;
     private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     public Long add(Long userId, OrderJoinGroupAddServiceDto orderJoinGroupAddServiceDto) {
-        User user = userRepository.validate(userId);
-        Restaurant restaurant = restaurantRepository.validateRestaurant(orderJoinGroupAddServiceDto.getRestaurantId());
+        User user = userRepository.validateById(userId);
+        Restaurant restaurant = restaurantRepository.validateById(orderJoinGroupAddServiceDto.getRestaurantId());
 
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup(orderJoinGroupAddServiceDto.getLocation(),
                 getTime(),

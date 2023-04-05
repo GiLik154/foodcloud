@@ -11,10 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderMenuDeleteServiceImpl implements OrderMenuDeleteService {
     private final OrderMenuRepository orderMenuRepository;
 
-    /**
-     * OrderMenu를 삭제하는 메소드
-     * userId와 orderMenuId를 받아와서 삭제함
-     */
     @Override
     public void delete(Long userId, Long orderMenuId) {
         orderMenuRepository.findByUserIdAndId(userId, orderMenuId)

@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/restaurant")
+@RequestMapping("/restaurant/list")
 public class RestaurantListController {
     private final RestaurantRepository restaurantRepository;
 
-    @GetMapping("/list")
+    @GetMapping("")
     public String get(Model model) {
-            model.addAttribute("restaurantList", restaurantRepository.findAll());
-            return "thymeleaf/restaurant/list";
+        model.addAttribute("restaurantList", restaurantRepository.findAll());
+        return "thymeleaf/restaurant/list";
     }
 }

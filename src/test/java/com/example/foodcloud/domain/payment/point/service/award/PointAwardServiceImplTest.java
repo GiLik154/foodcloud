@@ -35,7 +35,7 @@ class PointAwardServiceImplTest {
         userRepository.save(user);
 
         pointAwardService.award(user.getId());
-        Point point = pointRepository.findByUserIdOrderByIdDescForUpdate(user.getId());
+        Point point = pointRepository.findByUserId(user.getId()).get();
 
         assertNotNull(point.getId());
         assertThat(point.getUser()).isEqualTo(user);
@@ -46,7 +46,7 @@ class PointAwardServiceImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        Long id = userRepository.validate("test").getId();
+        Long id = userRepository.validateById("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 pointAwardService.award(id + 1L)

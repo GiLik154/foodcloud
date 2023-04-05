@@ -30,19 +30,11 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private final UserRepository userRepository;
     private final FoodMenuRepository foodMenuRepository;
 
-    /**
-     * User를 validate메소드로 검증해서 받아옴 (유저가 없을 경우 UsernameNotFoundException 익셉션 발생함)
-     * FoodMenu를 validate메소드로 검증해서 받아옴 (음식이 없을 경우  NotFoundFoodMenuException 익셉션 발생함)
-     * OrderJoinGroup를 validateOrderJoinGroupNotCancel로 가져오는데, 결과가 Cancel이 아닌 것만 가지고 옴
-     * (Order가 없을 경우 NotFoundOrderJoinGroupException 익셉션 발생함)
-     * 이후 dto를 통해 OrderMenu를 생성 후 저장함
-     * 식당과 음식의 주문 횟수를 1씩 증가시킴
-     */
     @Override
     public Long add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
-        User user = userRepository.validate(userId);
+        User user = userRepository.validateById(userId);
         FoodMenu foodMenu = foodMenuRepository.validate(orderMenuAddServiceDto.getFoodMenuId());
-        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.validateOrderJoinGroupNotCancel(userId, orderMenuAddServiceDto.getOrderJoinGroupId());
+        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.validateByUserIdAndIdAndNotCancel(userId, orderMenuAddServiceDto.getOrderJoinGroupId());
 
         OrderMenu orderMenu = new OrderMenu(
                 orderMenuAddServiceDto.getLocation(),
@@ -60,10 +52,7 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
         return orderMenu.getId();
     }
-
-    /**
-     * 주문 날짜를 반환해줌
-     */
+    
     private String getTime() {
         LocalDateTime localDateTime = LocalDateTime.now();
 

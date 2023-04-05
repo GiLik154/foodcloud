@@ -31,7 +31,7 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
 
     Optional<OrderMenu> findByIdAndResultNot(Long orderMenuId, OrderResult result);
 
-    default OrderMenu validateOrderMenuForUserIdAndId(Long userId, Long orderMenuId) {
+    default OrderMenu validateByUserIdAndId(Long userId, Long orderMenuId) {
         Optional<OrderMenu> orderMenu = findByUserIdAndId(userId, orderMenuId);
 
         return orderMenu.orElseThrow(NotFoundOrderMenuException::new);

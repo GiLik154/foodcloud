@@ -41,7 +41,7 @@ class UserDeleteServiceImplTest {
 
         assertFalse(userRepository.existsById(userId));
         assertThrows(UsernameNotFoundException.class, () ->
-                userRepository.validate(userId)
+                userRepository.validateById(userId)
         );
     }
 
