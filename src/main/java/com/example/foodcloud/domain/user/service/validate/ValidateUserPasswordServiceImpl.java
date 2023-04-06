@@ -16,7 +16,7 @@ public class ValidateUserPasswordServiceImpl implements ValidateUserPasswordServ
 
     @Override
     public void validate(String name, String password) {
-        User user = userRepository.validateById(name);
+        User user = userRepository.getValidById(name);
 
         if (!user.isValidPassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");
@@ -25,7 +25,7 @@ public class ValidateUserPasswordServiceImpl implements ValidateUserPasswordServ
 
     @Override
     public void validate(Long userId, String password) {
-        User user = userRepository.validateById(userId);
+        User user = userRepository.getValidById(userId);
 
         if (!user.isValidPassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");

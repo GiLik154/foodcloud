@@ -18,7 +18,7 @@ public class RestaurantAddServiceImpl implements RestaurantAddService {
 
     @Override
     public void add(Long userId, RestaurantAddServiceDto restaurantAddServiceDto) {
-        User user = userRepository.validateById(userId);
+        User user = userRepository.getValidById(userId);
 
         Restaurant restaurant = new Restaurant(restaurantAddServiceDto.getName(),
                 restaurantAddServiceDto.getLocation(),

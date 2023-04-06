@@ -40,10 +40,9 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        boolean isSum = pointSumService.sum(userId, 5000);
+        pointSumService.sum(userId, 5000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
-        assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
         assertThat(pointSum.getCalculation()).isEqualTo(5000);
         assertThat(pointSum.getTotalPoint()).isEqualTo(10000);
@@ -59,10 +58,9 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        boolean isSum = pointSumService.sum(userId, -1000);
+        pointSumService.sum(userId, -1000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
-        assertTrue(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
         assertThat(pointSum.getCalculation()).isEqualTo(-1000);
         assertThat(pointSum.getTotalPoint()).isEqualTo(4000);
@@ -78,10 +76,9 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        boolean isSum = pointSumService.sum(userId + 1L, -1000);
+        pointSumService.sum(userId + 1L, -1000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
-        assertFalse(isSum);
         assertThat(pointSum.getUser()).isEqualTo(user);
         assertThat(pointSum.getTotalPoint()).isEqualTo(5000);
     }
@@ -122,14 +119,12 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        boolean isSum = false;
 
         for (int i = 0; i < 5; i++) {
-            isSum = pointSumService.sum(userId, 5000);
+            pointSumService.sum(userId, 5000);
         }
         Point pointSum = pointRepository.findByUserId(userId).get();
 
-        assertTrue(isSum);
         assertEquals(5, pointSum.getVersion());
         assertEquals(user, pointSum.getUser());
         assertEquals(5000, pointSum.getCalculation());

@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -37,11 +36,11 @@ class UserDeleteServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        userDeleteService.delete(userId, "testName", "test");
+        userDeleteService.delete("testName", "test");
 
         assertFalse(userRepository.existsById(userId));
         assertThrows(UsernameNotFoundException.class, () ->
-                userRepository.validateById(userId)
+                userRepository.getValidById(userId)
         );
     }
 
@@ -52,7 +51,7 @@ class UserDeleteServiceImplTest {
         Long userId = user.getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                userDeleteService.delete(userId, "wrongName", "test")
+                userDeleteService.delete("wrongName", "test")
         );
 
         assertTrue(userRepository.existsById(userId));
@@ -66,7 +65,7 @@ class UserDeleteServiceImplTest {
         Long userId = user.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                userDeleteService.delete(userId, "testName","wrongPassword")
+                userDeleteService.delete("testName","wrongPassword")
         );
 
         assertTrue(userRepository.existsById(userId));

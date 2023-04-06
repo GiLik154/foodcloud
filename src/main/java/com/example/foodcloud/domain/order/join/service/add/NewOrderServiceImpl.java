@@ -15,8 +15,8 @@ public class NewOrderServiceImpl implements NewOrderService {
 
     @Override
     public Long order(Long userId, NewOrderServiceDto newOrderServiceDto) {
-        Long orderJoinGroupId = orderJoinGroupAddService.add(userId, newOrderServiceDto.convertMainDto());
+        Long orderJoinGroupId = orderJoinGroupAddService.add(userId, newOrderServiceDto.convertOrderJoinGroupDto());
 
-        return orderMenuAddService.add(userId, newOrderServiceDto.convertMenuDto(orderJoinGroupId));
+        return orderMenuAddService.add(userId, newOrderServiceDto.convertOrderMenuDto(orderJoinGroupId));
     }
 }

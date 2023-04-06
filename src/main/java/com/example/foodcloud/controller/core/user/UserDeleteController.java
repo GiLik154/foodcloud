@@ -19,13 +19,13 @@ public class UserDeleteController {
 
     @GetMapping("")
     public String get(@SessionAttribute("userId") Long userId, Model model) {
-        model.addAttribute("userInfo", userRepository.validateById(userId));
+        model.addAttribute("userInfo", userRepository.getValidById(userId));
         return "thymeleaf/user/delete";
     }
 
     @PostMapping("")
-    public String post(@SessionAttribute("userId") Long userId, String name, String password) {
-        userDeleteService.delete(userId, name, password);
+    public String post(String name, String password) {
+        userDeleteService.delete(name, password);
 
         return "redirect:/user/my-page";
     }

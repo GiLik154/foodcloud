@@ -19,7 +19,7 @@ public class OrderMenuCancelServiceImpl implements OrderMenuCancelService {
     private final OrderMenuRepository orderMenuRepository;
 
     public String cancel(Long userId, Long orderMenuId) {
-        OrderMenu orderMenu = orderMenuRepository.validateByUserIdAndId(userId, orderMenuId);
+        OrderMenu orderMenu = orderMenuRepository.getValidByUserIdAndId(userId, orderMenuId);
 
         orderMenuResultUpdateService.update(orderMenuId, "CANCELED");
 

@@ -16,7 +16,7 @@ public class OrderCancelController {
 
     @GetMapping("/cancel")
     public String get(@RequestParam Long orderMenuId, Model model) {
-        model.addAttribute("orderMenuInfo", orderMenuRepository.validateOrderMenuNotCancel(orderMenuId));
+        model.addAttribute("orderMenuInfo", orderMenuRepository.getValidByIdAndNotCanceled(orderMenuId));
         return "thymeleaf/order/cancel";
     }
 

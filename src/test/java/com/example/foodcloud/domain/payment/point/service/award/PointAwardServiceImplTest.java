@@ -46,7 +46,7 @@ class PointAwardServiceImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        Long id = userRepository.validateById("test").getId();
+        Long id = userRepository.getValidById("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
                 pointAwardService.award(id + 1L)

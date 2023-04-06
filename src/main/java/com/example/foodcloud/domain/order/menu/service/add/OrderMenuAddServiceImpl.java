@@ -32,9 +32,9 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
     @Override
     public Long add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
-        User user = userRepository.validateById(userId);
-        FoodMenu foodMenu = foodMenuRepository.validate(orderMenuAddServiceDto.getFoodMenuId());
-        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.validateByUserIdAndIdAndNotCancel(userId, orderMenuAddServiceDto.getOrderJoinGroupId());
+        User user = userRepository.getValidById(userId);
+        FoodMenu foodMenu = foodMenuRepository.getValidById(orderMenuAddServiceDto.getFoodMenuId());
+        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findValidByUserIdAndIdAndNotCancel(userId, orderMenuAddServiceDto.getOrderJoinGroupId());
 
         OrderMenu orderMenu = new OrderMenu(
                 orderMenuAddServiceDto.getLocation(),

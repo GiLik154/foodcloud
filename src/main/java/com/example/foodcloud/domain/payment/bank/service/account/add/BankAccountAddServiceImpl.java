@@ -26,7 +26,7 @@ public class BankAccountAddServiceImpl implements BankAccountAddService {
      */
     @Override
     public void add(Long userId, BankAccountAddServiceDto bankAccountAddServiceDto) {
-        User user = userRepository.validateById(userId);
+        User user = userRepository.getValidById(userId);
 
         BankAccount bankAccount = new BankAccount(user,
                 bankAccountAddServiceDto.getName(),

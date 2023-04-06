@@ -13,21 +13,19 @@ public interface OrderJoinGroupRepository extends JpaRepository<OrderJoinGroup, 
 
     Optional<OrderJoinGroup> findByUserIdAndId(Long userId, Long orderJoinGroupId);
 
-    boolean existsByUserIdAndId(Long userId, Long orderJoinGroupId);
-
-    Optional<OrderJoinGroup> findByUserIdAndIdAndResultNot(Long userId, Long orderJoinGroupId, OrderResult orderResult);
-
-    Optional<OrderJoinGroup> findByIdAndResultNot(Long orderJoinGroupId, OrderResult orderResult);
-
-    default OrderJoinGroup validateByUserIdAndIdAndNotCancel(Long userId, Long orderJoinGroupId) {
+    default OrderJoinGroup findValidByUserIdAndIdAndNotCancel(Long userId, Long orderJoinGroupId) {
         Optional<OrderJoinGroup> orderJoinGroupOptional = findByUserIdAndIdAndResultNot(userId, orderJoinGroupId, OrderResult.CANCELED);
 
         return orderJoinGroupOptional.orElseThrow(NotFoundOrderJoinGroupException::new);
     }
 
-    default OrderJoinGroup validateByUserIdAndIdAndNotCancel(Long orderJoinGroupId) {
+    Optional<OrderJoinGroup> findByUserIdAndIdAndResultNot(Long userId, Long orderJoinGroupId, OrderResult orderResult);
+
+    default OrderJoinGroup findValidByIdAndNotCancel(Long orderJoinGroupId) {
         Optional<OrderJoinGroup> orderJoinGroupOptional = findByIdAndResultNot(orderJoinGroupId, OrderResult.CANCELED);
 
         return orderJoinGroupOptional.orElseThrow(NotFoundOrderJoinGroupException::new);
     }
+
+    Optional<OrderJoinGroup> findByIdAndResultNot(Long orderJoinGroupId, OrderResult orderResult);
 }

@@ -17,11 +17,11 @@ public class NewOrderServiceDto {
         this.foodMenuId = foodMenuId;
     }
 
-    public OrderJoinGroupAddServiceDto convertMainDto() {
+    public OrderJoinGroupAddServiceDto convertOrderJoinGroupDto() {
         return new OrderJoinGroupAddServiceDto(this.location, this.restaurantId);
     }
 
-    public OrderMenuAddServiceDto convertMenuDto(Long orderJoinGroupId) {
+    public OrderMenuAddServiceDto convertOrderMenuDto(Long orderJoinGroupId) {
         return new OrderMenuAddServiceDto(this.location, this.count, this.foodMenuId, orderJoinGroupId);
     }
 }

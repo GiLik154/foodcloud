@@ -21,7 +21,7 @@ public class PointAwardServiceImpl implements PointAwardService {
 
     @Override
     public void award(Long userId) {
-        User user = userRepository.validateById(userId);
+        User user = userRepository.getValidById(userId);
 
         Point awardPoint = new Point(user, PaymentCode.POINT);
 

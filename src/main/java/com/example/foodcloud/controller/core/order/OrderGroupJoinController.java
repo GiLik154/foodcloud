@@ -25,7 +25,7 @@ public class OrderGroupJoinController {
 
     @GetMapping("/join")
     public String get(@RequestParam Long orderJoinGroupId, Model model) {
-        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.validateByUserIdAndIdAndNotCancel(orderJoinGroupId);
+        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findValidByIdAndNotCancel(orderJoinGroupId);
         List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(orderJoinGroup.getRestaurant().getId());
 
         model.addAttribute("OrderJoinGroupInfo", orderJoinGroup);

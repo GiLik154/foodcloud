@@ -23,8 +23,8 @@ public class OrderJoinGroupAddServiceImpl implements OrderJoinGroupAddService {
     private final RestaurantRepository restaurantRepository;
 
     public Long add(Long userId, OrderJoinGroupAddServiceDto orderJoinGroupAddServiceDto) {
-        User user = userRepository.validateById(userId);
-        Restaurant restaurant = restaurantRepository.validateById(orderJoinGroupAddServiceDto.getRestaurantId());
+        User user = userRepository.getValidById(userId);
+        Restaurant restaurant = restaurantRepository.getValidById(orderJoinGroupAddServiceDto.getRestaurantId());
 
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup(orderJoinGroupAddServiceDto.getLocation(),
                 getTime(),

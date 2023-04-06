@@ -23,7 +23,7 @@ public interface FoodMenuRepository extends JpaRepository<FoodMenu, Long> {
     @Query("SELECT f FROM FoodMenu f WHERE f.id = :id")
     Optional<FoodMenu> findByIdForUpdate(@Param("id") Long foodMenuId);
 
-    default FoodMenu validate(Long foodMenuId) {
+    default FoodMenu getValidById(Long foodMenuId) {
         Optional<FoodMenu> foodMenuOptional = findById(foodMenuId);
 
         return foodMenuOptional.orElseThrow(NotFoundFoodMenuException::new);

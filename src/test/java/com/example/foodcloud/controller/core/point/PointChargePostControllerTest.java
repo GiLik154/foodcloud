@@ -72,8 +72,7 @@ class PointChargePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/point/charge-check"))
-                .andExpect(model().attribute("isCharge", true));
+                .andExpect(forwardedUrl("thymeleaf/point/charge-check"));
 
         assertEquals(8000, point.getTotalPoint());
         assertEquals(3000, point.getCalculation());
@@ -97,8 +96,7 @@ class PointChargePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/point/charge-check"))
-                .andExpect(model().attribute("isCharge", false));
+                .andExpect(forwardedUrl("thymeleaf/point/charge-check"));
 
         assertEquals(5000, point.getTotalPoint());
         assertEquals(5000, point.getCalculation());

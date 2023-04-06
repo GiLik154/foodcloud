@@ -48,7 +48,6 @@ class OrderMenuResultUpdateServiceImplTest {
     void 오더메뉴_업데이트_정상_작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -63,9 +62,8 @@ class OrderMenuResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId, "COOKING");
+        orderMenuResultUpdateService.update(orderMenuId, "COOKING");
 
-        assertTrue(isUpdate);
         assertEquals(OrderResult.COOKING, orderMenu.getResult());
     }
 
@@ -73,7 +71,6 @@ class OrderMenuResultUpdateServiceImplTest {
     void 오더메뉴_업데이트_오더메뉴_고유번호_다름() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -88,9 +85,8 @@ class OrderMenuResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isUpdate = orderMenuResultUpdateService.update(orderMenuId +1L, "COOKING");
+        orderMenuResultUpdateService.update(orderMenuId +1L, "COOKING");
 
-        assertFalse(isUpdate);
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
     }
 }

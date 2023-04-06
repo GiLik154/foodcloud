@@ -15,6 +15,6 @@ public class FoodMenuCountUpdateServiceImpl implements FoodMenuCountUpdateServic
     @Override
     public void increaseOrderCount(Long foodMenuId) {
         foodMenuRepository.findByIdForUpdate(foodMenuId)
-                .ifPresent(FoodMenu::updateOrderMenu);
+                .ifPresent(FoodMenu::incrementOrderCount);
     }
 }

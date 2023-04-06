@@ -19,14 +19,13 @@ public class OrderDeleteController {
 
     @GetMapping("/delete")
     public String get(Long orderMenuId, Model model) {
-        model.addAttribute("orderMenu", orderMenuRepository.validateOrderMenuNotCancel(orderMenuId));
+        model.addAttribute("orderMenu", orderMenuRepository.getValidByIdAndNotCanceled(orderMenuId));
         return "thymeleaf/order/delete";
     }
 
     @PostMapping("/delete")
     public String post(@SessionAttribute Long userId,
-                       Long orderMenuId,
-                       Model model) {
+                       Long orderMenuId) {
 
         orderMenuDeleteService.delete(userId, orderMenuId);
 

@@ -47,9 +47,8 @@ class OrderJoinGroupDeleteServiceImplTest {
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
         orderJoinGroupRepository.save(orderJoinGroup);
 
-        boolean isDelete = orderJoinGroupDeleteService.delete(userId, orderJoinGroup.getId());
+        orderJoinGroupDeleteService.delete(userId, orderJoinGroup.getId());
 
-        assertTrue(isDelete);
         assertFalse(orderJoinGroupRepository.existsById(orderJoinGroup.getId()));
     }
 
@@ -65,9 +64,8 @@ class OrderJoinGroupDeleteServiceImplTest {
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
         orderJoinGroupRepository.save(orderJoinGroup);
 
-        boolean isDelete = orderJoinGroupDeleteService.delete(userId + 1L, orderJoinGroup.getId());
+        orderJoinGroupDeleteService.delete(userId + 1L, orderJoinGroup.getId());
 
-        assertFalse(isDelete);
         assertTrue(orderJoinGroupRepository.existsById(orderJoinGroup.getId()));
     }
 
@@ -83,9 +81,8 @@ class OrderJoinGroupDeleteServiceImplTest {
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
         orderJoinGroupRepository.save(orderJoinGroup);
 
-        boolean isDelete = orderJoinGroupDeleteService.delete(userId, orderJoinGroup.getId() + 1L);
+        orderJoinGroupDeleteService.delete(userId, orderJoinGroup.getId() + 1L);
 
-        assertFalse(isDelete);
         assertTrue(orderJoinGroupRepository.existsById(orderJoinGroup.getId()));
     }
 }

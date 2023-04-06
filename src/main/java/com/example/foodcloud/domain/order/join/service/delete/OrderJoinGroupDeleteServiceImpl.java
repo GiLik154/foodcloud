@@ -1,9 +1,12 @@
 package com.example.foodcloud.domain.order.join.service.delete;
 
+import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -12,13 +15,9 @@ public class OrderJoinGroupDeleteServiceImpl implements OrderJoinGroupDeleteServ
     private final OrderJoinGroupRepository orderJoinGroupRepository;
 
     @Override
-    public boolean delete(Long userId, Long orderJoinGroupId) {
-        if (orderJoinGroupRepository.existsByUserIdAndId(userId, orderJoinGroupId)) {
+    public void delete(Long userId, Long orderJoinGroupId) {
+        Optional<OrderJoinGroup> orderJoinGroupOptional = orderJoinGroupRepository.findByUserIdAndId(userId, orderJoinGroupId);
 
-            orderJoinGroupRepository.deleteById(orderJoinGroupId);
-
-            return true;
-        }
-        return false;
+        orderJoinGroupOptional.ifPresent(orderJoinGroupRepository::delete);
     }
 }

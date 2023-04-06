@@ -9,6 +9,7 @@ import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
@@ -100,6 +101,44 @@ class PayGetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/payment/pay"))
                 .andExpect(model().attribute("orderMenu", orderMenu));
+    }
+
+    @Test
+    void 결제_Get_Point_결제() throws Exception {
+        User user = new User("testUserName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        Point point = new Point(user, PaymentCode.POINT);
+        pointRepository.save(point);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userId", user.getId());
+
+        MockHttpServletRequestBuilder builder = get("/payment/pay/point")
+                .session(session);
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(point.getId()));
+    }
+
+    @Test
+    void 결제_Get__결제() throws Exception {
+        User user = new User("testUserName", "testPassword", "testPhone");
+        userRepository.save(user);
+
+        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.KB);
+        bankAccountRepository.save(bankAccount);
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("userId", user.getId());
+
+        MockHttpServletRequestBuilder builder = get("/payment/pay/bank")
+                .session(session);
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(bankAccount.getId()));
     }
 
     @Test

@@ -62,9 +62,8 @@ class OrderMenuDeleteServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isDelete = orderMenuDeleteService.delete(userId, orderMenuId);
+        orderMenuDeleteService.delete(userId, orderMenuId);
 
-        assertTrue(isDelete);
         assertFalse(orderMenuRepository.findById(orderMenuId).isPresent());
     }
 
@@ -87,9 +86,8 @@ class OrderMenuDeleteServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isDelete = orderMenuDeleteService.delete(userId +1L, orderMenuId);
+        orderMenuDeleteService.delete(userId +1L, orderMenuId);
 
-        assertFalse(isDelete);
         assertTrue(orderMenuRepository.findById(orderMenuId).isPresent());
     }
 
@@ -112,9 +110,8 @@ class OrderMenuDeleteServiceImplTest {
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
-        boolean isDelete = orderMenuDeleteService.delete(userId, orderMenuId + 1L);
+        orderMenuDeleteService.delete(userId, orderMenuId + 1L);
 
-        assertFalse(isDelete);
         assertTrue(orderMenuRepository.findById(orderMenuId).isPresent());
     }
 }

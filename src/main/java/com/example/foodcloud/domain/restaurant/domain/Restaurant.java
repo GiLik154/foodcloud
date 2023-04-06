@@ -63,7 +63,7 @@ public class Restaurant {
     /**
      * 식당 주문 횟수 ++ 메소드
      */
-    public void updateOrderCount() {
+    public void incrementOrderCount() {
         this.orderCount++;
     }
 }

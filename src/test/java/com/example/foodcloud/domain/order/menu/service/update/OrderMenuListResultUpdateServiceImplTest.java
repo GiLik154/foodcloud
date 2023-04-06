@@ -48,7 +48,6 @@ class OrderMenuListResultUpdateServiceImplTest {
     void 오더메뉴_업데이트_정상_작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -64,7 +63,7 @@ class OrderMenuListResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu1);
         orderMenuRepository.save(orderMenu2);
 
-        orderMenuListResultUpdateService.update(orderJoinGroup.getId(), "COOKING");
+        orderMenuListResultUpdateService.update(orderJoinGroup.getId(), OrderResult.COOKING);
 
         assertEquals(OrderResult.COOKING, orderMenu1.getResult());
         assertEquals(OrderResult.COOKING, orderMenu2.getResult());
@@ -74,7 +73,6 @@ class OrderMenuListResultUpdateServiceImplTest {
     void 오더메뉴_업데이트_오더메뉴_고유번호_다름() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -90,7 +88,7 @@ class OrderMenuListResultUpdateServiceImplTest {
         orderMenuRepository.save(orderMenu1);
         orderMenuRepository.save(orderMenu2);
 
-        orderMenuListResultUpdateService.update(orderJoinGroup.getId() + 1L, "COOKING");
+        orderMenuListResultUpdateService.update(orderJoinGroup.getId() + 1L, OrderResult.COOKING);
 
         assertNotEquals(OrderResult.COOKING, orderMenu1.getResult());
         assertNotEquals(OrderResult.COOKING, orderMenu2.getResult());

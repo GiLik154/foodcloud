@@ -19,7 +19,7 @@ public class RestaurantUpdateController {
 
     @GetMapping("")
     public String get(@RequestParam Long restaurantId, Model model) {
-        model.addAttribute("restaurantInfo", restaurantRepository.validateById(restaurantId));
+        model.addAttribute("restaurantInfo", restaurantRepository.getValidById(restaurantId));
         return "thymeleaf/restaurant/update";
     }
 

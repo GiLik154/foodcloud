@@ -15,11 +15,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -42,9 +41,8 @@ class FoodMenuAddServiceImplTest {
     }
 
     @Test
-    void 음식메뉴_추가_정상작동() throws IOException {
+    void 음식메뉴_추가_정상작동() {
         File file = new File("test.jpg");
-        file.createNewFile();
 
         User user = new User("test", "test", "test");
         userRepository.save(user);
@@ -55,10 +53,9 @@ class FoodMenuAddServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
+        foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
-        assertTrue(isAdd);
         assertEquals("test", foodMenu.getName());
         assertEquals(5000, foodMenu.getPrice());
         assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
@@ -81,10 +78,9 @@ class FoodMenuAddServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
+        foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
-        assertTrue(isAdd);
         assertEquals("test", foodMenu.getName());
         assertEquals(5000, foodMenu.getPrice());
         assertEquals(FoodTypes.ADE, foodMenu.getFoodTypes());
@@ -107,9 +103,11 @@ class FoodMenuAddServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isAdd = foodMenuAddService.add(userId + 1L, restaurantId, foodMenuAddServiceDto, file);
+        foodMenuAddService.add(userId + 1L, restaurantId, foodMenuAddServiceDto, file);
 
-        assertFalse(isAdd);
+        List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
+
+        assertTrue(foodMenus.isEmpty());
     }
 
     @Test
@@ -125,8 +123,10 @@ class FoodMenuAddServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        boolean isAdd = foodMenuAddService.add(userId, restaurantId + 1L, foodMenuAddServiceDto, file);
+        foodMenuAddService.add(userId, restaurantId + 1L, foodMenuAddServiceDto, file);
 
-        assertFalse(isAdd);
+        List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
+
+        assertTrue(foodMenus.isEmpty());
     }
 }

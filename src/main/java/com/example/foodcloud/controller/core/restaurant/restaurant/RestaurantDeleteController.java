@@ -14,13 +14,13 @@ public class RestaurantDeleteController {
     private final RestaurantDeleteService restaurantDeleteService;
     private final RestaurantRepository restaurantRepository;
 
-    @GetMapping("/delete")
+    @GetMapping("")
     public String get(@RequestParam Long restaurantId, Model model) {
-        model.addAttribute("restaurantInfo", restaurantRepository.validateById(restaurantId));
+        model.addAttribute("restaurantInfo", restaurantRepository.getValidById(restaurantId));
         return "thymeleaf/restaurant/delete";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("")
     public String post(@SessionAttribute("userId") Long userId,
                        @RequestParam Long restaurantId,
                        String password) {

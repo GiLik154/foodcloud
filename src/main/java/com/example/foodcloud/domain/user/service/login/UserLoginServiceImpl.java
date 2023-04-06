@@ -17,7 +17,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
     @Override
     public Long login(String name, String password) {
-        User user = userRepository.validateById(name);
+        User user = userRepository.getValidById(name);
 
         if (!user.isValidPassword(bCryptPasswordEncoder, password)) {
             throw new BadCredentialsException("Invalid password");

@@ -16,6 +16,6 @@ public class RestaurantCountUpdateServiceImpl implements RestaurantCountUpdateSe
     @Override
     public void increaseOrderCount(Long restaurantId) {
         restaurantRepository.findByIdForUpdate(restaurantId)
-                .ifPresent(Restaurant::updateOrderCount);
+                .ifPresent(Restaurant::incrementOrderCount);
     }
 }
