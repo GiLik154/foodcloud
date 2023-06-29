@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.payment.point.service.sum;
 
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
-import com.example.foodcloud.domain.payment.point.service.PointSumService;
+import com.example.foodcloud.domain.payment.point.service.PointCalculator;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;
@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PointSumServiceImplTest {
-    private final PointSumService pointSumService;
+class PointCalculatorImplTest {
+    private final PointCalculator pointCalculator;
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    PointSumServiceImplTest(PointSumService pointSumService, PointRepository pointRepository, UserRepository userRepository) {
-        this.pointSumService = pointSumService;
+    PointCalculatorImplTest(PointCalculator pointCalculator, PointRepository pointRepository, UserRepository userRepository) {
+        this.pointCalculator = pointCalculator;
         this.pointRepository = pointRepository;
         this.userRepository = userRepository;
     }
@@ -41,7 +41,7 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        pointSumService.sum(userId, 5000);
+        pointCalculator.sum(userId, 5000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -59,7 +59,7 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        pointSumService.sum(userId, -1000);
+        pointCalculator.sum(userId, -1000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -77,7 +77,7 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        pointSumService.sum(userId + 1L, -1000);
+        pointCalculator.sum(userId + 1L, -1000);
         Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertThat(pointSum.getUser()).isEqualTo(user);
@@ -94,7 +94,7 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        assertThrows(ArithmeticException.class, () -> pointSumService.sum(userId, Integer.MAX_VALUE));
+        assertThrows(ArithmeticException.class, () -> pointCalculator.sum(userId, Integer.MAX_VALUE));
     }
 
     @Test
@@ -107,7 +107,7 @@ class PointSumServiceImplTest {
         point.updatePoint(5000);
         pointRepository.save(point);
 
-        assertThrows(NotEnoughPointException.class, () -> pointSumService.sum(userId, Integer.MIN_VALUE));
+        assertThrows(NotEnoughPointException.class, () -> pointCalculator.sum(userId, Integer.MIN_VALUE));
     }
 
     @Test
@@ -122,7 +122,7 @@ class PointSumServiceImplTest {
 
 
         for (int i = 0; i < 5; i++) {
-            pointSumService.sum(userId, 5000);
+            pointCalculator.sum(userId, 5000);
         }
         Point pointSum = pointRepository.findByUserId(userId).get();
 

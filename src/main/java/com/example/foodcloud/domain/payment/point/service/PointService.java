@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PointService implements PointAwardService, PointSumService {
+public class PointService implements PointRegister, PointCalculator {
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
@@ -26,9 +26,8 @@ public class PointService implements PointAwardService, PointSumService {
     }
 
     @Override
-    public boolean sum(Long userId, int price) {
+    public void sum(Long userId, int price) {
         pointRepository.findByUserIdOrderByIdDescForUpdate(userId).
                 ifPresent(point -> point.updatePoint(price));
-        return true;
     }
 }

@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.payment.point.service.award;
 
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
-import com.example.foodcloud.domain.payment.point.service.PointAwardService;
+import com.example.foodcloud.domain.payment.point.service.PointRegister;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PointAwardServiceImplTest {
-    private final PointAwardService pointAwardService;
+class PointRegisterImplTest {
+    private final PointRegister pointRegister;
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    PointAwardServiceImplTest(PointAwardService pointAwardService, PointRepository pointRepository, UserRepository userRepository) {
-        this.pointAwardService = pointAwardService;
+    PointRegisterImplTest(PointRegister pointRegister, PointRepository pointRepository, UserRepository userRepository) {
+        this.pointRegister = pointRegister;
         this.pointRepository = pointRepository;
         this.userRepository = userRepository;
     }
@@ -35,7 +35,7 @@ class PointAwardServiceImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        pointAwardService.award(user.getId());
+        pointRegister.award(user.getId());
         Point point = pointRepository.findByUserId(user.getId()).get();
 
         assertNotNull(point.getId());
@@ -50,7 +50,7 @@ class PointAwardServiceImplTest {
         Long id = userRepository.getValidById("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                pointAwardService.award(id + 1L)
+                pointRegister.award(id + 1L)
         );
 
         assertEquals("Invalid user", e.getMessage());

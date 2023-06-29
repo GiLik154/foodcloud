@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.payment.point.service;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface PointAwardService {
+public interface PointRegister {
     /**
      * 유저의 ID를 통해 유저가 존재하는지 획인한다.
      * 존재하면 유저를 통해 Point의 객체를 생성한다.

@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.point;
 
 import com.example.foodcloud.controller.core.point.dto.PointDto;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
-import com.example.foodcloud.domain.payment.point.service.PointSumService;
+import com.example.foodcloud.domain.payment.point.service.PointCalculator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import javax.validation.Valid;
 @RequestMapping("/point/charge")
 @RequiredArgsConstructor
 public class PointChargeController {
-    private final PointSumService pointSumService;
+    private final PointCalculator pointCalculator;
     private final PointRepository pointRepository;
 
     @GetMapping("")
@@ -29,7 +29,7 @@ public class PointChargeController {
 
     @PostMapping("")
     public String post(@SessionAttribute Long userId, @Valid PointDto pointDto) {
-        pointSumService.sum(userId, pointDto.getPoint());
+        pointCalculator.sum(userId, pointDto.getPoint());
         return "thymeleaf/point/charge-check";
     }
 }

@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.user.service.join;
 
-import com.example.foodcloud.domain.payment.point.service.PointAwardService;
+import com.example.foodcloud.domain.payment.point.service.PointRegister;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserJoinServiceImpl implements UserJoinService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final PointAwardService pointAwardService;
+    private final PointRegister pointRegister;
 
     public void join(UserJoinServiceDto userJoinServiceDto) {
         User user = new User(userJoinServiceDto.getName(), userJoinServiceDto.getPassword(), userJoinServiceDto.getPhone());
@@ -27,7 +27,7 @@ public class UserJoinServiceImpl implements UserJoinService {
 
         userRepository.save(user);
 
-        pointAwardService.award(user.getId());
+        pointRegister.award(user.getId());
     }
 
     private void checkDuplicate(String name) {

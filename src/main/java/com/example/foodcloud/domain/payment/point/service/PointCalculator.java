@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment.point.service;
 
-public interface PointSumService {
+public interface PointCalculator {
     /**
      * userId를 통해서 유저의 point가 존재하는지 확인한다.
      * updatePoin에 point를 넘겨줘서 잔액을 수정한다.
@@ -9,5 +9,5 @@ public interface PointSumService {
      * @param userId 유저의 아이디
      * @param price  수정되야 할 가격
      */
-    boolean sum(Long userId, int price);
+    void sum(Long userId, int price);
 }
