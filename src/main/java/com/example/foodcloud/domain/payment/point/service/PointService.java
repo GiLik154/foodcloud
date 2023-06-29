@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.point.service.award;
+package com.example.foodcloud.domain.payment.point.service;
 
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
@@ -9,13 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * point를 새로 만드는 서비스
- */
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class PointAwardServiceImpl implements PointAwardService {
+public class PointService implements PointAwardService, PointSumService {
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
 
@@ -26,5 +23,12 @@ public class PointAwardServiceImpl implements PointAwardService {
         Point awardPoint = new Point(user, PaymentCode.POINT);
 
         pointRepository.save(awardPoint);
+    }
+
+    @Override
+    public boolean sum(Long userId, int price) {
+        pointRepository.findByUserIdOrderByIdDescForUpdate(userId).
+                ifPresent(point -> point.updatePoint(price));
+        return true;
     }
 }

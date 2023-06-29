@@ -2,6 +2,7 @@ package com.example.foodcloud.domain.payment.point.service.award;
 
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
+import com.example.foodcloud.domain.payment.point.service.PointAwardService;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
