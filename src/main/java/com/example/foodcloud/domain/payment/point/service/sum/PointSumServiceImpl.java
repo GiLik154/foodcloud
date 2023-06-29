@@ -11,8 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class PointSumServiceImpl implements PointSumService {
     private final PointRepository pointRepository;
 
-    public void sum(Long userId, int price) {
+    public boolean sum(Long userId, int price) {
         pointRepository.findByUserIdOrderByIdDescForUpdate(userId).
                 ifPresent(point -> point.updatePoint(price));
+        return true;
     }
 }

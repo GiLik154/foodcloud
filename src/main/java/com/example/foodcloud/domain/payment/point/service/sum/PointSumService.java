@@ -9,5 +9,5 @@ public interface PointSumService {
      * @param userId 유저의 아이디
      * @param price  수정되야 할 가격
      */
-    void sum(Long userId, int price);
+    boolean sum(Long userId, int price);
 }

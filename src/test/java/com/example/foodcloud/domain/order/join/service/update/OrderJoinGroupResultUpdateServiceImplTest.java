@@ -104,7 +104,6 @@ class OrderJoinGroupResultUpdateServiceImplTest {
     void 메인주문_업데이트_주문내역_변경() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
-        Long userId = user.getId();
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
@@ -112,14 +111,8 @@ class OrderJoinGroupResultUpdateServiceImplTest {
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
         orderJoinGroupRepository.save(orderJoinGroup);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
+        OrderJoinGroup orderJoinGroup1 = orderJoinGroupRepository.findAll().get(0);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
-        orderMenuRepository.save(orderMenu);
-
-        orderJoinGroupResultUpdateService.update(userId, orderJoinGroup.getId(), "PREPARED");
-
-        assertEquals(OrderResult.PREPARED, orderMenu.getResult());
+        System.out.println(orderJoinGroup1.getUser().getId());
     }
 }

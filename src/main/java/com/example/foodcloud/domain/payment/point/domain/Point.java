@@ -40,10 +40,15 @@ public class Point extends Payment {
      * 0 보다 작아지면 익셉션을 통해 핸들링을 한다.
      **/
     public void updatePoint(int calculationPoints) {
+        valid(calculationPoints);
+
+        this.calculation = calculationPoints;
+        this.totalPoint = Math.addExact(this.totalPoint, calculationPoints);
+    }
+
+    private void valid(int calculationPoints){
         if (Math.addExact(this.totalPoint, calculationPoints) < 0) {
             throw new NotEnoughPointException("Points are less than zero.");
         }
-        this.calculation = calculationPoints;
-        this.totalPoint = Math.addExact(this.totalPoint, calculationPoints);
     }
 }

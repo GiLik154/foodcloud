@@ -4,6 +4,8 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.Getter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 
@@ -29,6 +31,7 @@ public class OrderJoinGroup {
      * 주문한 유저
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     private User user;
     /**
      * 주문한 식당

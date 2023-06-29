@@ -83,6 +83,9 @@ class OrderJoinGroupAddServiceImplTest {
         userRepository.save(user);
         Long userId = user.getId();
 
+        String a = "a";
+        System.out.println(a.hashCode() + "ㅁㄴㅇㄹ");
+
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
