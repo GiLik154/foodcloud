@@ -12,5 +12,5 @@ public interface PointRegister {
      * @throws UsernameNotFoundException 유저의 ID를 통해 유저가 존재하는지
      *                                   획인할때 존재하지 않으면 발생
      */
-    void award(Long userId);
+    void register(Long userId);
 }

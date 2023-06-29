@@ -27,7 +27,7 @@ public class UserJoinServiceImpl implements UserJoinService {
 
         userRepository.save(user);
 
-        pointRegister.award(user.getId());
+        pointRegister.register(user.getId());
     }
 
     private void checkDuplicate(String name) {

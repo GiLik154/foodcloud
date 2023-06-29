@@ -23,7 +23,7 @@ public class PointMainPageController {
     public String get(@SessionAttribute Long userId, Model model) {
 
         Point point = pointRepository.findByUserId(userId).orElseGet(() -> {
-            pointRegister.award(userId);
+            pointRegister.register(userId);
             return pointRepository.findByUserId(userId)
                     .orElseThrow(NotFoundPointException::new);
         });

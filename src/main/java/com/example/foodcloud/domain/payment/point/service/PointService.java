@@ -17,7 +17,7 @@ public class PointService implements PointRegister, PointCalculator {
     private final UserRepository userRepository;
 
     @Override
-    public void award(Long userId) {
+    public void register(Long userId) {
         User user = userRepository.getValidById(userId);
 
         Point awardPoint = new Point(user, PaymentCode.POINT);

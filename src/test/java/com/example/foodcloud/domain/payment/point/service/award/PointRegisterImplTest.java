@@ -35,7 +35,7 @@ class PointRegisterImplTest {
         User user = new User("test", "test", "tset");
         userRepository.save(user);
 
-        pointRegister.award(user.getId());
+        pointRegister.register(user.getId());
         Point point = pointRepository.findByUserId(user.getId()).get();
 
         assertNotNull(point.getId());
@@ -50,7 +50,7 @@ class PointRegisterImplTest {
         Long id = userRepository.getValidById("test").getId();
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                pointRegister.award(id + 1L)
+                pointRegister.register(id + 1L)
         );
 
         assertEquals("Invalid user", e.getMessage());
