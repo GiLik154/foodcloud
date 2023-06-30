@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.bank;
 
+import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -34,22 +35,26 @@ class BankDeletePostControllerTest {
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
+
     private MockMvc mockMvc;
 
     @Autowired
-    public BankDeletePostControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder) {
+    public BankDeletePostControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.bankDeleteController = bankDeleteController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.passwordEncoder = passwordEncoder;
+        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankDeleteController)
-                .setControllerAdvice(userExceptionAdvice)
+                .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
@@ -72,8 +77,7 @@ class BankDeletePostControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isDelete=true"))
-                .andExpect(model().attribute("isDelete", true));
+                .andExpect(redirectedUrl("/bank/list"));
 
         assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
     }
@@ -108,17 +112,14 @@ class BankDeletePostControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
 
-        System.out.println(user.getId());
-
         MockHttpServletRequestBuilder builder = post("/bank/delete")
                 .param("password", "testPassword")
                 .param("bankAccountId", String.valueOf(bankAccount.getId()))
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isDelete=false"))
-                .andExpect(model().attribute("isDelete", false));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
@@ -164,9 +165,8 @@ class BankDeletePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list?isDelete=false"))
-                .andExpect(model().attribute("isDelete", false));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }

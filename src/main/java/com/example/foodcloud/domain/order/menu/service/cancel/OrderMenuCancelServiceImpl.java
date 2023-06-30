@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.order.menu.service.cancel;
 
-import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
+import com.example.foodcloud.domain.payment.payments.PaymentService;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.menu.service.update.OrderMenuResultUpdateService;

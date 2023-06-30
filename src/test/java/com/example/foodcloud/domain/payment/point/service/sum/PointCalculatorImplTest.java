@@ -38,7 +38,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         pointCalculator.sum(userId, 5000);
@@ -56,7 +56,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         pointCalculator.sum(userId, -1000);
@@ -74,7 +74,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         pointCalculator.sum(userId + 1L, -1000);
@@ -91,7 +91,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         assertThrows(ArithmeticException.class, () -> pointCalculator.sum(userId, Integer.MAX_VALUE));
@@ -104,7 +104,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         assertThrows(NotEnoughPointException.class, () -> pointCalculator.sum(userId, Integer.MIN_VALUE));
@@ -117,7 +117,7 @@ class PointCalculatorImplTest {
         Long userId = user.getId();
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
 

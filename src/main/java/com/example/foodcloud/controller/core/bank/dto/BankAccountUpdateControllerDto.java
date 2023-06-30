@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
-import com.example.foodcloud.domain.payment.bank.service.account.update.dto.BankAccountUpdateServiceDto;
+import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountUpdaterCommend;
 import com.example.foodcloud.enums.PaymentCode;
 import lombok.Getter;
 
@@ -21,8 +21,8 @@ public class BankAccountUpdateControllerDto {
         this.paymentCode = paymentCode;
     }
 
-    public BankAccountUpdateServiceDto convert() {
-        return new BankAccountUpdateServiceDto(this.name, this.accountNumber, PaymentCode.valueOfCode(paymentCode));
+    public BankAccountUpdaterCommend convert() {
+        return new BankAccountUpdaterCommend(this.name, this.accountNumber, PaymentCode.valueOfCode(paymentCode));
     }
 }
 

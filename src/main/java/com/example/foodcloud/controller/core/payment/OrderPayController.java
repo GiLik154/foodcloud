@@ -3,7 +3,7 @@ package com.example.foodcloud.controller.core.payment;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
+import com.example.foodcloud.domain.payment.payments.PaymentService;
 import com.example.foodcloud.domain.payment.point.domain.Point;
 import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.exception.NotFoundBankCodeException;

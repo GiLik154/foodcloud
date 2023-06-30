@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.core.bank.dto.BankAccountUpdateControllerDto;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.update.BankAccountUpdateService;
+import com.example.foodcloud.domain.payment.bank.service.account.BankAccountUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/bank/update")
 public class BankUpdateController {
-    private final BankAccountUpdateService bankAccountUpdateService;
+    private final BankAccountUpdater bankAccountUpdater;
     private final BankAccountRepository bankAccountRepository;
 
     @GetMapping("")
@@ -31,7 +31,7 @@ public class BankUpdateController {
                        @RequestParam Long bankAccountId,
                        @Valid BankAccountUpdateControllerDto bankAccountUpdateControllerDto) {
 
-        bankAccountUpdateService.update(userId, bankAccountId, bankAccountUpdateControllerDto.convert());
+        bankAccountUpdater.update(userId, bankAccountId, bankAccountUpdateControllerDto.convert());
 
         return "redirect:/bank/list";
     }

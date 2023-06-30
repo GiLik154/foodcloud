@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.delete.BankAccountDeleteService;
+import com.example.foodcloud.domain.payment.bank.service.account.BankAccountDeleter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping(value = "/bank/delete")
 public class BankDeleteController {
-    private final BankAccountDeleteService bankAccountDeleteService;
+    private final BankAccountDeleter bankAccountDeleter;
     private final BankAccountRepository bankAccountRepository;
 
     @GetMapping("")
@@ -24,8 +24,8 @@ public class BankDeleteController {
     }
 
     @PostMapping("")
-    public String post(@SessionAttribute("userId") Long userId, @RequestParam Long bankAccountId, String password, Model model) {
-        model.addAttribute("isDelete", bankAccountDeleteService.delete(userId, bankAccountId, password));
+    public String post(@SessionAttribute("userId") Long userId, @RequestParam Long bankAccountId, String password) {
+        bankAccountDeleter.delete(userId, bankAccountId, password);
 
         return "redirect:/bank/list";
     }

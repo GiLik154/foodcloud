@@ -2,9 +2,11 @@ package com.example.foodcloud.domain.payment.bank.service.account.delete;
 
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.bank.service.account.BankAccountDeleter;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;
+import com.example.foodcloud.exception.NotFoundBankAccountException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -18,15 +20,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BankAccountDeleteServiceImplTest {
-    private final BankAccountDeleteService bankAccountDeleteService;
+class BankAccountDeleterImplTest {
+    private final BankAccountDeleter bankAccountDeleter;
     private final BankAccountRepository bankAccountRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public BankAccountDeleteServiceImplTest(BankAccountDeleteService bankAccountDeleteService, BankAccountRepository bankAccountRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
-        this.bankAccountDeleteService = bankAccountDeleteService;
+    public BankAccountDeleterImplTest(BankAccountDeleter bankAccountDeleter, BankAccountRepository bankAccountRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+        this.bankAccountDeleter = bankAccountDeleter;
         this.bankAccountRepository = bankAccountRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -40,9 +42,8 @@ class BankAccountDeleteServiceImplTest {
         BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
 
-        boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId(), "test");
+        bankAccountDeleter.delete(user.getId(), bankAccount.getId(), "test");
 
-        assertTrue(isDelete);
         assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
@@ -50,13 +51,15 @@ class BankAccountDeleteServiceImplTest {
     void 계좌_삭제_유저고유번호_다름() { //
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
+        Long userId = user.getId() + 1L;
 
         BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
+        Long bankAccountId = bankAccount.getId();
 
-        boolean isDelete = bankAccountDeleteService.delete(user.getId() + 1L, bankAccount.getId(), "test");
+        assertThrows(NotFoundBankAccountException.class, () ->
+                bankAccountDeleter.delete(userId, bankAccountId, "test"));
 
-        assertFalse(isDelete);
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
@@ -64,13 +67,15 @@ class BankAccountDeleteServiceImplTest {
     void 계좌_삭제_계좌고유번호_다름() {
         User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
         userRepository.save(user);
+        Long userId = user.getId();
 
         BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
         bankAccountRepository.save(bankAccount);
+        Long bankAccountId = bankAccount.getId() + 1L;
 
-        boolean isDelete = bankAccountDeleteService.delete(user.getId(), bankAccount.getId() + 1L, "test");
+        assertThrows(NotFoundBankAccountException.class, () ->
+                bankAccountDeleter.delete(userId, bankAccountId, "test"));
 
-        assertFalse(isDelete);
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
@@ -85,7 +90,7 @@ class BankAccountDeleteServiceImplTest {
         Long bankAccountId = bankAccount.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                bankAccountDeleteService.delete(userId, bankAccountId, "test123")
+                bankAccountDeleter.delete(userId, bankAccountId, "test123")
         );
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));

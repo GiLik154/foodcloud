@@ -1,16 +1,14 @@
-package com.example.foodcloud.domain.payment.bank.service.payment.refund;
+package com.example.foodcloud.domain.payment.bank.service.service.refund;
 
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.payment.PaymentService;
+import com.example.foodcloud.domain.payment.payments.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,12 +27,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PointRefundServiceTest {
+class NHBankRefundServiceTest {
     private final Map<String, PaymentService> bankPaymentService;
     private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
@@ -42,10 +39,9 @@ class PointRefundServiceTest {
     private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
-    private final PointRepository pointRepository;
 
     @Autowired
-    public PointRefundServiceTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, PointRepository pointRepository) {
+    public NHBankRefundServiceTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository) {
         this.bankPaymentService = bankPaymentService;
         this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
@@ -53,20 +49,15 @@ class PointRefundServiceTest {
         this.orderJoinGroupRepository = orderJoinGroupRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.pointRepository = pointRepository;
     }
 
-    private final String BANK_CODE = "000";
+    private final String BANK_CODE = "011";
 
     @Test
-    void Point_환불_정상작동() {
+    void NH_환불_정상작동() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
-
-        Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(6000);
-        pointRepository.save(point);
 
         BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
@@ -81,24 +72,18 @@ class PointRefundServiceTest {
         orderJoinGroupRepository.save(orderJoinGroup);
 
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(bankAccount);
         orderMenuRepository.save(orderMenu);
 
         String result = bankPaymentService.get(BANK_CODE).refund(userId, orderMenu);
 
-        assertEquals("25000 price Point refund succeed", result);
-        assertEquals(31000, point.getTotalPoint());
-        assertEquals(25000, point.getCalculation());
+        assertEquals("25000 price NH bank refund succeed", result);
     }
-
     @Test
-    void Point_환불_아이디_고유번호_다름() {
+    void NH_환불_아이디_고유번호_다름() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
-
-        Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
-        pointRepository.save(point);
 
         BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
         bankAccountRepository.save(bankAccount);
@@ -113,12 +98,11 @@ class PointRefundServiceTest {
         orderJoinGroupRepository.save(orderJoinGroup);
 
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        orderMenu.completeOrderWithPayment(bankAccount);
         orderMenuRepository.save(orderMenu);
 
         String result = bankPaymentService.get(BANK_CODE).refund(userId + 1L, orderMenu);
 
-        assertEquals("Point refund fail", result);
-        assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals("NH bank refund fail", result);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
-import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
+import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountRegisterCommend;
 import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 
@@ -19,10 +19,10 @@ class BankAccountAddControllerDtoTest {
     @Test
     void Post_계좌_추가_Dto_Convert() {
         BankAccountAddControllerDto bankAccountAddControllerDto = new BankAccountAddControllerDto("testName", "123456789", "004");
-        BankAccountAddServiceDto bankAccountAddServiceDto = bankAccountAddControllerDto.convert();
+        BankAccountRegisterCommend bankAccountRegisterCommend = bankAccountAddControllerDto.convert();
 
-        assertEquals("testName", bankAccountAddServiceDto.getName());
-        assertEquals("123456789", bankAccountAddServiceDto.getAccountNumber());
-        assertEquals(PaymentCode.KB, bankAccountAddServiceDto.getPaymentCode());
+        assertEquals("testName", bankAccountRegisterCommend.getName());
+        assertEquals("123456789", bankAccountRegisterCommend.getAccountNumber());
+        assertEquals(PaymentCode.KB, bankAccountRegisterCommend.getPaymentCode());
     }
 }

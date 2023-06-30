@@ -28,6 +28,6 @@ public class PointService implements PointRegister, PointCalculator {
     @Override
     public void sum(Long userId, int price) {
         pointRepository.findByUserIdOrderByIdDescForUpdate(userId).
-                ifPresent(point -> point.updatePoint(price));
+                ifPresent(point -> point.update(price));
     }
 }

@@ -60,7 +60,7 @@ class PointChargePostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         MockHttpSession session = new MockHttpSession();
@@ -84,7 +84,7 @@ class PointChargePostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         MockHttpSession session = new MockHttpSession();
@@ -108,7 +108,7 @@ class PointChargePostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         MockHttpServletRequestBuilder builder = post("/point/charge")
@@ -128,7 +128,7 @@ class PointChargePostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         MockHttpSession session = new MockHttpSession();
@@ -153,7 +153,7 @@ class PointChargePostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(5000);
+        point.update(5000);
         pointRepository.save(point);
 
         MockHttpSession session = new MockHttpSession();

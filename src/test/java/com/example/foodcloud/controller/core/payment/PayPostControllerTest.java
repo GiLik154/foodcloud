@@ -363,7 +363,7 @@ class PayPostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(6000);
+        point.update(6000);
         pointRepository.save(point);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);
@@ -405,7 +405,7 @@ class PayPostControllerTest {
         userRepository.save(user);
 
         Point point = new Point(user, PaymentCode.POINT);
-        point.updatePoint(3000);
+        point.update(3000);
         pointRepository.save(point);
 
         Restaurant restaurant = new Restaurant("test", "test", "test", user);

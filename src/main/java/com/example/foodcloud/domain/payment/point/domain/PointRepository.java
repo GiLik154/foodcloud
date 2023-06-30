@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface PointRepository extends JpaRepository<Point, Long> {
     boolean existsByUserId(Long userId);
+
     Optional<Point> findByUserId(Long userId);
 
     @Lock(LockModeType.OPTIMISTIC)

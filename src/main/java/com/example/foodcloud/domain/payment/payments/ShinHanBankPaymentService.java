@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.payment;
+package com.example.foodcloud.domain.payment.payments;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service("088")
 @RequiredArgsConstructor
-public class ShinHanBankPaymentServiceImpl implements PaymentService {
+public class ShinHanBankPaymentService implements PaymentService {
     private final OrderMenuPaymentUpdateService orderMenuPaymentUpdateService;
     private final BankAccountRepository bankAccountRepository;
 
@@ -34,6 +34,6 @@ public class ShinHanBankPaymentServiceImpl implements PaymentService {
     }
 
     private BankAccount getBankAccount(Long bankAccountId) {
-        return bankAccountRepository.findById(bankAccountId).orElseThrow(NotFoundBankAccountException::new);
+        return bankAccountRepository.findById(bankAccountId).orElseThrow(() -> new NotFoundBankAccountException("Not exist bank account"));
     }
 }

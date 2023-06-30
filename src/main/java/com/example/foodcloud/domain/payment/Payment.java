@@ -20,11 +20,13 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     /**
      * 낙관적 락을 위한 version
      */
     @Version
     private Long version;
+
     /**
      * 유저는 여러개의 결제수단을 가질 수 있다.
      * 따라서 ManyToOne으로 객체를 받아와야 함.

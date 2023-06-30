@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.payment;
+package com.example.foodcloud.domain.payment.payments;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service("000")
 @RequiredArgsConstructor
-public class PointPaymentServiceImpl implements PaymentService {
+public class PointPaymentService implements PaymentService {
     private final OrderMenuPaymentUpdateService orderMenuPaymentUpdateService;
     private final PointCalculator pointCalculator;
     private final PointRepository pointRepository;

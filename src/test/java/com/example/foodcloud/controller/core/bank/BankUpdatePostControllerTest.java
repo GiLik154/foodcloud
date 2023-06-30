@@ -1,13 +1,10 @@
 package com.example.foodcloud.controller.core.bank;
 
+import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.bank.dto.BankAccountAddControllerDto;
-import com.example.foodcloud.controller.core.bank.dto.BankAccountUpdateControllerDto;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
 import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.add.dto.BankAccountAddServiceDto;
-import com.example.foodcloud.domain.payment.bank.service.account.update.dto.BankAccountUpdateServiceDto;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;
@@ -35,6 +32,9 @@ class BankUpdatePostControllerTest {
     private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
+
+    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
+
     private MockMvc mockMvc;
 
     @Autowired
@@ -42,19 +42,20 @@ class BankUpdatePostControllerTest {
                                         UserExceptionAdvice userExceptionAdvice,
                                         LoginInterceptor loginInterceptor,
                                         UserRepository userRepository,
-                                        BankAccountRepository bankAccountRepository) {
+                                        BankAccountRepository bankAccountRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
 
         this.bankUpdateController = bankUpdateController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
+        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankUpdateController)
-                .setControllerAdvice(userExceptionAdvice)
+                .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
                 .addInterceptors(loginInterceptor)
                 .build();
     }
@@ -105,8 +106,8 @@ class BankUpdatePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list"));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"));
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());
@@ -132,8 +133,8 @@ class BankUpdatePostControllerTest {
                 .session(session);
 
         mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/bank/list"));
+                .andExpect(status().isOk())
+                .andExpect(forwardedUrl("thymeleaf/error/error-page"));
 
         assertNotEquals("updateBankName", bankAccount.getName());
         assertNotEquals("updateBankNumber", bankAccount.getAccountNumber());

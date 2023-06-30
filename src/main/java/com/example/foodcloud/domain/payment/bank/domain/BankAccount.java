@@ -13,11 +13,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class BankAccount extends Payment {
-
     /**
      * 계좌의 등록 이름
      **/
     private String name;
+
     /**
      * 계좌번호
      **/

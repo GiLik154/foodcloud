@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.core.bank.dto.BankAccountAddControllerDto;
-import com.example.foodcloud.domain.payment.bank.service.account.add.BankAccountAddService;
+import com.example.foodcloud.domain.payment.bank.service.account.BankAccountRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/bank")
 public class BankAddController {
-    private final BankAccountAddService bankAccountAddService;
+    private final BankAccountRegister bankAccountRegister;
 
     @GetMapping("/add")
     public String get() {
@@ -27,7 +27,7 @@ public class BankAddController {
     @PostMapping("/add")
     public String post(@SessionAttribute("userId") Long userId,
                        @Valid BankAccountAddControllerDto bankAccountAddControllerDto) {
-        bankAccountAddService.add(userId, bankAccountAddControllerDto.convert());
+        bankAccountRegister.register(userId, bankAccountAddControllerDto.convert());
 
         return "thymeleaf/bank/add";
     }
