@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.core.bank.dto.BankAccountAddControllerDto;
-import com.example.foodcloud.domain.payment.bank.service.account.BankAccountRegister;
+import com.example.foodcloud.domain.payment.service.bank.BankAccountRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

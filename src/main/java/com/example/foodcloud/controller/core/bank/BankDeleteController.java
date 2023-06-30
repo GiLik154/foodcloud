@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.bank;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.BankAccountDeleter;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.bank.BankAccountDeleter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

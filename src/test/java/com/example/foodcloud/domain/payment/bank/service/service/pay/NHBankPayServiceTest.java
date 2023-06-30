@@ -1,8 +1,8 @@
 package com.example.foodcloud.domain.payment.bank.service.service.pay;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.payments.PaymentService;
+import com.example.foodcloud.domain.payment.domain.BankAccount;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;

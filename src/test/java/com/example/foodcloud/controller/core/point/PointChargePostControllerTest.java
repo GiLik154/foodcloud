@@ -2,8 +2,8 @@ package com.example.foodcloud.controller.core.point;
 
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
+import com.example.foodcloud.domain.payment.domain.Point;
+import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
@@ -75,7 +75,7 @@ class PointChargePostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/point/charge-check"));
 
         assertEquals(8000, point.getTotalPoint());
-        assertEquals(3000, point.getCalculation());
+        assertEquals(3000, point.getRecentPoint());
     }
 
     @Test
@@ -99,7 +99,7 @@ class PointChargePostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/point/charge-check"));
 
         assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals(5000, point.getRecentPoint());
     }
 
     @Test
@@ -119,7 +119,7 @@ class PointChargePostControllerTest {
                 .andExpect(redirectedUrl("/user/login"));
 
         assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals(5000, point.getRecentPoint());
     }
 
     @Test
@@ -144,7 +144,7 @@ class PointChargePostControllerTest {
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
 
         assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals(5000, point.getRecentPoint());
     }
 
     @Test
@@ -169,6 +169,6 @@ class PointChargePostControllerTest {
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
 
         assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals(5000, point.getRecentPoint());
     }
 }

@@ -1,8 +1,8 @@
 package com.example.foodcloud.domain.payment.point.service.sum;
 
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
-import com.example.foodcloud.domain.payment.point.service.PointCalculator;
+import com.example.foodcloud.domain.payment.domain.Point;
+import com.example.foodcloud.domain.payment.domain.PointRepository;
+import com.example.foodcloud.domain.payment.service.point.PointCalculator;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;
@@ -45,7 +45,7 @@ class PointCalculatorImplTest {
         Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertThat(pointSum.getUser()).isEqualTo(user);
-        assertThat(pointSum.getCalculation()).isEqualTo(5000);
+        assertThat(pointSum.getRecentPoint()).isEqualTo(5000);
         assertThat(pointSum.getTotalPoint()).isEqualTo(10000);
     }
 
@@ -63,7 +63,7 @@ class PointCalculatorImplTest {
         Point pointSum = pointRepository.findByUserId(userId).get();
 
         assertThat(pointSum.getUser()).isEqualTo(user);
-        assertThat(pointSum.getCalculation()).isEqualTo(-1000);
+        assertThat(pointSum.getRecentPoint()).isEqualTo(-1000);
         assertThat(pointSum.getTotalPoint()).isEqualTo(4000);
     }
 
@@ -128,7 +128,7 @@ class PointCalculatorImplTest {
 
         assertEquals(5, pointSum.getVersion());
         assertEquals(user, pointSum.getUser());
-        assertEquals(5000, pointSum.getCalculation());
+        assertEquals(5000, pointSum.getRecentPoint());
         assertEquals(30000, pointSum.getTotalPoint());
     }
 

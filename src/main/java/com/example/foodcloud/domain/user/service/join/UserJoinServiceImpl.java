@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.user.service.join;
 
-import com.example.foodcloud.domain.payment.point.service.PointRegister;
+import com.example.foodcloud.domain.payment.service.point.PointRegister;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;

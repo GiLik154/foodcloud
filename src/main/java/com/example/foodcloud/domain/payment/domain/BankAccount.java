@@ -1,6 +1,5 @@
-package com.example.foodcloud.domain.payment.bank.domain;
+package com.example.foodcloud.domain.payment.domain;
 
-import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.example.foodcloud.domain.payment.bank.service.account;
+package com.example.foodcloud.domain.payment.service.bank;
 
-import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountRegisterCommend;
+import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegisterCommend;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface BankAccountRegister {

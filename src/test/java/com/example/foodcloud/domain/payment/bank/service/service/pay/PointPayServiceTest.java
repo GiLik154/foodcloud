@@ -1,16 +1,16 @@
 package com.example.foodcloud.domain.payment.bank.service.service.pay;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.payments.PaymentService;
+import com.example.foodcloud.domain.payment.domain.BankAccount;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
+import com.example.foodcloud.domain.payment.domain.Point;
+import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -90,7 +90,7 @@ class PointPayServiceTest {
         assertEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("5000 price Point payment succeed", result);
         assertEquals(1000, point.getTotalPoint());
-        assertEquals(-5000, point.getCalculation());
+        assertEquals(-5000, point.getRecentPoint());
     }
 
     @Test
@@ -125,7 +125,7 @@ class PointPayServiceTest {
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("Point payment fail", result);
         assertEquals(5000, point.getTotalPoint());
-        assertEquals(5000, point.getCalculation());
+        assertEquals(5000, point.getRecentPoint());
     }
 
     @Test
@@ -165,6 +165,6 @@ class PointPayServiceTest {
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
         assertEquals("Out of bounds for point Points are less than zero.", exception.getMessage());
         assertEquals(1000, point.getTotalPoint());
-        assertEquals(1000, point.getCalculation());
+        assertEquals(1000, point.getRecentPoint());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment;
+package com.example.foodcloud.domain.payment.domain;
 
 
 import com.example.foodcloud.domain.user.domain.User;

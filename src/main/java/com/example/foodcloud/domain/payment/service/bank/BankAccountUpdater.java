@@ -1,6 +1,6 @@
-package com.example.foodcloud.domain.payment.bank.service.account;
+package com.example.foodcloud.domain.payment.service.bank;
 
-import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountUpdaterCommend;
+import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 
 public interface BankAccountUpdater {

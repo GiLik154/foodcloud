@@ -1,7 +1,7 @@
-package com.example.foodcloud.domain.payment.point.service;
+package com.example.foodcloud.domain.payment.service.point;
 
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
+import com.example.foodcloud.domain.payment.domain.Point;
+import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;

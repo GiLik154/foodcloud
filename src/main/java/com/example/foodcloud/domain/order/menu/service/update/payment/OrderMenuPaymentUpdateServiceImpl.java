@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.order.menu.service.update.payment;
 
-import com.example.foodcloud.domain.payment.Payment;
+import com.example.foodcloud.domain.payment.domain.Payment;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
-package com.example.foodcloud.domain.payment.payments;
+package com.example.foodcloud.domain.payment.service.payments;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.domain.BankAccount;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;

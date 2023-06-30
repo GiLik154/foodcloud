@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.point.domain;
+package com.example.foodcloud.domain.payment.domain;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

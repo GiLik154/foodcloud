@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.bank.dto;
 
-import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountUpdaterCommend;
+import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
 import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 

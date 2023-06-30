@@ -1,9 +1,9 @@
 package com.example.foodcloud.domain.payment.bank.service.account.update;
 
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.BankAccountUpdater;
-import com.example.foodcloud.domain.payment.bank.service.account.dto.BankAccountUpdaterCommend;
+import com.example.foodcloud.domain.payment.domain.BankAccount;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.bank.BankAccountUpdater;
+import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;

@@ -1,10 +1,10 @@
-package com.example.foodcloud.domain.payment.payments;
+package com.example.foodcloud.domain.payment.service.payments;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
-import com.example.foodcloud.domain.payment.point.domain.Point;
-import com.example.foodcloud.domain.payment.point.domain.PointRepository;
-import com.example.foodcloud.domain.payment.point.service.PointCalculator;
+import com.example.foodcloud.domain.payment.domain.Point;
+import com.example.foodcloud.domain.payment.domain.PointRepository;
+import com.example.foodcloud.domain.payment.service.point.PointCalculator;
 import com.example.foodcloud.exception.NotFoundPointException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

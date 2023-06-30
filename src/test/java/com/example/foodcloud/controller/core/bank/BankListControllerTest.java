@@ -2,8 +2,8 @@ package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccount;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.domain.BankAccount;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;

@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.account;
+package com.example.foodcloud.domain.payment.service.bank;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

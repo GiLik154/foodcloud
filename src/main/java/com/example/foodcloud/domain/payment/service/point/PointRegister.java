@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.point.service;
+package com.example.foodcloud.domain.payment.service.point;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

@@ -1,8 +1,8 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.core.bank.dto.BankAccountUpdateControllerDto;
-import com.example.foodcloud.domain.payment.bank.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.bank.service.account.BankAccountUpdater;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.bank.BankAccountUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

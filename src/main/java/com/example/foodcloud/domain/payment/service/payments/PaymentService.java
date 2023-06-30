@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.payments;
+package com.example.foodcloud.domain.payment.service.payments;
 
 import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
 

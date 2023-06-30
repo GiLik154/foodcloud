@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.account.dto;
+package com.example.foodcloud.domain.payment.service.bank.commend;
 
 import com.example.foodcloud.enums.PaymentCode;
 import lombok.Getter;

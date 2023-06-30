@@ -1,6 +1,5 @@
-package com.example.foodcloud.domain.payment.point.domain;
+package com.example.foodcloud.domain.payment.domain;
 
-import com.example.foodcloud.domain.payment.Payment;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
@@ -23,7 +22,7 @@ public class Point extends Payment {
     /**
      * 최근 결제 가격
      **/
-    private int calculation;
+    private int recentPoint;
 
     protected Point() {
     }
@@ -36,18 +35,18 @@ public class Point extends Payment {
     }
 
     /**
-     * 오버플로우를 막고, 0보다 작아지는 것을 막는다.
-     * 0 보다 작아지면 익셉션을 통해 핸들링을 한다.
+     * 포인트를 추가할 때,
+     * 검증 후에 추가됨.
      **/
-    public void update(int calculationPoints) {
-        valid(calculationPoints);
+    public void update(int point) {
+        valid(point);
 
-        this.calculation = calculationPoints;
-        this.totalPoint = Math.addExact(this.totalPoint, calculationPoints);
+        this.recentPoint = point;
+        this.totalPoint = Math.addExact(this.totalPoint, point);
     }
 
-    private void valid(int calculationPoints){
-        if (Math.addExact(this.totalPoint, calculationPoints) < 0) {
+    private void valid(int point) {
+        if (Math.addExact(this.totalPoint, point) < 0) {
             throw new NotEnoughPointException("Points are less than zero.");
         }
     }
