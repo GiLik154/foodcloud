@@ -59,6 +59,6 @@ class RestaurantAddServiceImplTest {
                 restaurantAddService.add(userId + 1L, restaurantAddServiceDto)
         );
 
-        assertEquals("Invalid user", e.getMessage());
+        assertEquals("User not found", e.getMessage());
     }
 }

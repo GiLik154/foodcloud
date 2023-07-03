@@ -8,6 +8,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,14 +24,13 @@ public class OrderJoinGroupAddServiceImpl implements OrderJoinGroupAddService {
     private final RestaurantRepository restaurantRepository;
 
     public Long add(Long userId, OrderJoinGroupAddServiceDto orderJoinGroupAddServiceDto) {
-        User user = userRepository.getValidById(userId);
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Restaurant restaurant = restaurantRepository.getValidById(orderJoinGroupAddServiceDto.getRestaurantId());
 
         OrderJoinGroup orderJoinGroup = new OrderJoinGroup(orderJoinGroupAddServiceDto.getLocation(),
                 getTime(),
                 user,
-                restaurant
-        );
+                restaurant);
 
         orderJoinGroupRepository.save(orderJoinGroup);
 

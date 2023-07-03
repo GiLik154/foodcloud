@@ -11,27 +11,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     void deleteByName(String name);
 
-    /**
-     * 유저를 검증하기 위한 메소드. 중복코드를 줄이기 위해 default로 레포지토리 안에 선언함.
-     */
-    default User getValidById(String name) {
-        Optional<User> optionalUser = findByName(name);
-
-        return optionalUser.orElseThrow(() ->
-                new UsernameNotFoundException("Invalid user")
-        );
-    }
-
     Optional<User> findByName(String name);
 
-    default User getValidById(Long userId) {
-        Optional<User> optionalUser = findById(userId);
-
-        return optionalUser.orElseThrow(() ->
-                new UsernameNotFoundException("Invalid user")
-        );
-    }
-
     @Override
-    Optional<User> findById(Long aLong);
+    Optional<User> findById(Long userId);
 }

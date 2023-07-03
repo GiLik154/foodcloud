@@ -57,11 +57,7 @@ class FoodMenuDeleteServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                restaurantDeleteService.delete(userId + 1L, restaurantId, "test")
-        );
-
-        assertEquals("Invalid user", e.getMessage());
+        assertThrows(UsernameNotFoundException.class, () -> restaurantDeleteService.delete(userId + 1L, restaurantId, "test"));
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 

@@ -6,9 +6,10 @@ import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegi
 import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.validate.ValidateUserPasswordService;
+import com.example.foodcloud.domain.user.service.validate.UserValidation;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class BankAccountService implements BankAccountRegister, BankAccountDeleter, BankAccountUpdater {
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
-    private final ValidateUserPasswordService validateUserPasswordService;
+    private final UserValidation userValidation;
 
     @Override
     public void register(Long userId, BankAccountRegisterCommend bankAccountRegisterCommend) {
-        User user = userRepository.getValidById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         BankAccount bankAccount = new BankAccount(user,
                 bankAccountRegisterCommend.getName(),
@@ -38,7 +40,7 @@ public class BankAccountService implements BankAccountRegister, BankAccountDelet
             throw new NotFoundBankAccountException("Not exist bank account");
         }
 
-        validateUserPasswordService.validate(userId, password);
+        userValidation.validate(userId, password);
 
         bankAccountRepository.deleteById(bankAccountId);
     }

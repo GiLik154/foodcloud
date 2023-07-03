@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.user.dto;
 
-import com.example.foodcloud.domain.user.service.join.dto.UserJoinServiceDto;
+import com.example.foodcloud.domain.user.service.commend.UserJoinerCommend;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ public class UserJoinControllerDto {
         this.joinPhone = joinPhone;
     }
 
-    public UserJoinServiceDto convert() {
-        return new UserJoinServiceDto(this.joinName, this.joinPassword, this.joinPhone);
+    public UserJoinerCommend convert() {
+        return new UserJoinerCommend(this.joinName, this.joinPassword, this.joinPhone);
     }
 }

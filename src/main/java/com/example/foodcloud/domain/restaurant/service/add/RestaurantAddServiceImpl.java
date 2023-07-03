@@ -6,6 +6,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +19,8 @@ public class RestaurantAddServiceImpl implements RestaurantAddService {
 
     @Override
     public void add(Long userId, RestaurantAddServiceDto restaurantAddServiceDto) {
-        User user = userRepository.getValidById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         Restaurant restaurant = new Restaurant(restaurantAddServiceDto.getName(),
                 restaurantAddServiceDto.getLocation(),

@@ -19,11 +19,19 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/**").permitAll()
-                .anyRequest().authenticated();
-        return http.build();
+        return http.csrf()
+                .and()
+                    .formLogin()
+                    .loginPage("/user/login")
+                    .defaultSuccessUrl("/user/my-page")
+                .and()
+                    .logout()
+                    .logoutUrl("/logout")
+                .and()
+                    .authorizeRequests()
+                    .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                    .build();
     }
 }

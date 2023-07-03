@@ -20,11 +20,11 @@
   </div>
   <div class="border_clear">아이디</div>
   <div class="border">
-    <div class="value" th:text="${userInfo.name}"></div>
+    <div class="value" th:text="${user.name}"></div>
   </div>
   <div class="border_clear">휴대폰번호</div>
   <div class="border">
-    <div class="value" th:text="${userInfo.phone}"></div>
+    <div class="value" th:text="${user.phone}"></div>
   </div>
   <div class="reset">
     <button type="button" onclick="location.href='/user/delete'" class="btn btn-danger">탈퇴하기</button>

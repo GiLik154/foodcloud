@@ -12,6 +12,7 @@ import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpd
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,8 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
     @Override
     public Long add(Long userId, OrderMenuAddServiceDto orderMenuAddServiceDto) {
-        User user = userRepository.getValidById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         FoodMenu foodMenu = foodMenuRepository.getValidById(orderMenuAddServiceDto.getFoodMenuId());
         OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findValidByUserIdAndIdAndNotCancel(userId, orderMenuAddServiceDto.getOrderJoinGroupId());
 

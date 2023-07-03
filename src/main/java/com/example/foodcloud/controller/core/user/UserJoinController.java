@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.user;
 
 import com.example.foodcloud.controller.core.user.dto.UserJoinControllerDto;
-import com.example.foodcloud.domain.user.service.join.UserJoinService;
+import com.example.foodcloud.domain.user.service.UserRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/user/join")
 public class UserJoinController {
-    private final UserJoinService userJoinService;
+    private final UserRegister userRegister;
 
     @GetMapping("")
     public String get() {
@@ -23,7 +23,7 @@ public class UserJoinController {
     @PostMapping("")
     public String post(@Valid UserJoinControllerDto userJoinControllerDto, Model model) {
 
-        userJoinService.join(userJoinControllerDto.convert());
+        userRegister.register(userJoinControllerDto.convert());
 
         model.addAttribute("isJoin", true);
 
