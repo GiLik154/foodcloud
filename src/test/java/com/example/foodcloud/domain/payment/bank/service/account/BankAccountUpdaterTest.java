@@ -50,7 +50,7 @@ class BankAccountUpdaterTest {
     }
 
     @Test
-    void 계좌_업데이트_계정고유번호_다름() {
+    void 유저의_고유번호가_다르면_익셉션이_발생해야함() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId() + 1L;
@@ -60,6 +60,7 @@ class BankAccountUpdaterTest {
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdaterCommend bankAccountUpdaterCommend = new BankAccountUpdaterCommend("test123", "test123", PaymentCode.KB);
+
         assertThrows(NotFoundBankAccountException.class, () ->
                 bankAccountUpdater.update(userId, bankAccountId, bankAccountUpdaterCommend));
 
@@ -69,7 +70,7 @@ class BankAccountUpdaterTest {
     }
 
     @Test
-    void 계좌_업데이트_계좌고유번호_다름() {
+    void 계좌의_고유번호가_다르면_익셉션이_발생해야함() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
@@ -79,6 +80,7 @@ class BankAccountUpdaterTest {
         Long bankAccountId = bankAccount.getId() + 1L;
 
         BankAccountUpdaterCommend bankAccountUpdaterCommend = new BankAccountUpdaterCommend("test123", "test123", PaymentCode.KB);
+
         assertThrows(NotFoundBankAccountException.class, () ->
                 bankAccountUpdater.update(userId, bankAccountId, bankAccountUpdaterCommend));
 

@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class UserJoinerCommend {
     /**
-     * 유저의 StringId
+     * 유저의 이름
      */
-    private final String name;
+    private final String username;
     /**
      * 유저의 비밀번호
      */
@@ -17,8 +17,8 @@ public class UserJoinerCommend {
      */
     private final String phone;
 
-    public UserJoinerCommend(String name, String password, String phone) {
-        this.name = name;
+    public UserJoinerCommend(String username, String password, String phone) {
+        this.username = username;
         this.password = password;
         this.phone = phone;
     }

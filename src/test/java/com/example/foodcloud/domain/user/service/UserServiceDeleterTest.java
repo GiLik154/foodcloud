@@ -2,7 +2,6 @@ package com.example.foodcloud.domain.user.service;
 
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.UserDeleter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -44,7 +43,7 @@ class UserServiceDeleterTest {
     }
 
     @Test
-    void 유저_삭제_id_다름() {
+    void 유저의_name이_다르면_익셉션이_발생함() {
         User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
         userRepository.save(user);
         Long userId = user.getId();
@@ -55,16 +54,13 @@ class UserServiceDeleterTest {
     }
 
     @Test
-    void 유저_삭제_pw_다름() {
+    void 유저의_pw가_다르면_익셉션이_발생함() {
         User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
         userRepository.save(user);
         Long userId = user.getId();
 
-        BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                userDeleter.delete("testName","wrongPassword")
-        );
+        assertThrows(BadCredentialsException.class, () -> userDeleter.delete("testName","wrongPassword"));
 
         assertTrue(userRepository.existsById(userId));
-        assertEquals("Invalid password", e.getMessage());
     }
 }

@@ -15,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDeleter, UserRegister, UserLogin, UserUpdater {
+public class UserService implements UserDeleter, UserRegister, UserUpdater {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final PointRegister pointRegister;
 
     @Override
     public void register(UserJoinerCommend userJoinerCommend) {
-        User user = new com.example.foodcloud.domain.user.domain.User(userJoinerCommend.getName(), userJoinerCommend.getPassword(), userJoinerCommend.getPhone());
+        User user = new User(userJoinerCommend.getUsername(), userJoinerCommend.getPassword(), userJoinerCommend.getPhone());
 
-        checkDuplicate(userJoinerCommend.getName());
+        checkDuplicate(userJoinerCommend.getUsername());
 
         user.encodePassword(bCryptPasswordEncoder);
 
@@ -33,36 +33,31 @@ public class UserService implements UserDeleter, UserRegister, UserLogin, UserUp
         pointRegister.register(user.getId());
     }
 
-    private void checkDuplicate(String name) {
-        if (userRepository.existsByName(name)) {
-            throw new UserNameDuplicateException();
-        }
+    private void checkDuplicate(String username) {
+        if (userRepository.existsByName(username)) throw new UserNameDuplicateException();
     }
 
     @Override
-    public void delete(String name, String password) {
-        User user = userRepository.findByName(name).orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+    public void update(String username, String newPhone) {
+        User user = userFindByName(username);
 
-        valid(user, password);
-
-        userRepository.deleteByName(name);
+        user.update(newPhone);
     }
 
     @Override
-    public Long login(String name, String password) {
-        User user = userRepository.findByName(name).orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+    public void delete(String username, String password) {
+        User user = userFindByName(username);
 
         valid(user, password);
 
-        return user.getId();
+        userRepository.deleteByName(username);
     }
 
     private void valid(User user, String password){
         if (!user.isValidPassword(bCryptPasswordEncoder, password)) throw new BadCredentialsException("Invalid password");
     }
 
-    @Override
-    public void update(Long userId, String newPhone) {
-        userRepository.findById(userId).ifPresent(user -> user.update(newPhone));
+    private User userFindByName(String username){
+        return userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User name not found"));
     }
 }

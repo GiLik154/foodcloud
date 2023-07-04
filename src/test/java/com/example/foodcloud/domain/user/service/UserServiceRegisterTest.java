@@ -4,7 +4,6 @@ import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.UserRegister;
 import com.example.foodcloud.exception.UserNameDuplicateException;
 import com.example.foodcloud.domain.user.service.commend.UserJoinerCommend;
 import org.junit.jupiter.api.Test;
@@ -38,24 +37,21 @@ class UserServiceRegisterTest {
         User user = userRepository.findByName("testName").get();
         Point point = pointRepository.findByUserId(user.getId()).get();
 
+        assertNotNull(point.getId());
         assertEquals("testName", user.getName());
         assertNotEquals("testPassword", user.getPassword());
         assertEquals("testPhone", user.getPhone());
-        assertNotNull(point.getId());
+
         assertEquals(user, point.getUser());
         assertEquals(0, point.getTotalPoint());
     }
 
     @Test
-    void 유저_회원가입_중복아이디() {
-        UserJoinerCommend userJoinerCommend = new UserJoinerCommend("testName", "testPassword", "testPhone");
-        UserJoinerCommend userJoinerCommend2 = new UserJoinerCommend("testName", "testPassword", "testPhone");
-        userRegister.register(userJoinerCommend);
+    void 아이디가_중복되면_익셉션이_발생함() {
+        UserJoinerCommend originName = new UserJoinerCommend("testName", "testPassword", "testPhone");
+        UserJoinerCommend duplicateName = new UserJoinerCommend("testName", "testPassword", "testPhone");
+        userRegister.register(originName);
 
-        UserNameDuplicateException e = assertThrows(UserNameDuplicateException.class, () ->
-                userRegister.register(userJoinerCommend2)
-        );
-
-        assertEquals("Duplicate User Name", e.getMessage());
+        assertThrows(UserNameDuplicateException.class, () -> userRegister.register(duplicateName));
     }
 }

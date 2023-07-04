@@ -2,7 +2,6 @@ package com.example.foodcloud.domain.user.service;
 
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.UserUpdater;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -30,7 +29,7 @@ class UserServiceUpdaterTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        userUpdater.update(userId, "test123");
+        userUpdater.update("test", "test123");
 
         User updateTest = userRepository.findById(userId).get();
 
@@ -40,12 +39,12 @@ class UserServiceUpdaterTest {
     }
 
     @Test
-    void 유저_업데이트_유저고유번호_다름() {
+    void 유저의_고유변호가_다르면_익셉션_발생() {
         User user = new User("test", "test", "test");
         userRepository.save(user);
         Long userId = user.getId();
 
-        userUpdater.update(userId + 1, "test123");
+        userUpdater.update("wrongName", "test123");
 
         User updateTest = userRepository.findById(userId).get();
 

@@ -21,7 +21,7 @@ class UserServiceJoinControllerDtoTest {
         UserJoinControllerDto userJoinControllerDto = new UserJoinControllerDto("testName", "testPassword", "testPhone");
         UserJoinerCommend userJoinerCommend = userJoinControllerDto.convert();
 
-        assertEquals("testName", userJoinerCommend.getName());
+        assertEquals("testName", userJoinerCommend.getUsername());
         assertEquals("testPassword", userJoinerCommend.getPassword());
         assertEquals("testPhone", userJoinerCommend.getPhone());
     }
