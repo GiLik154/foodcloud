@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.restaurant.service.update;
 
 
-public interface RestaurantCountUpdateService {
+public interface RestaurantCountUpdater {
     /**
      * 식당의 ID로 식당이 존재하는지 확인한다.
      * 존재하면 해당 식당의 주문 수량을 1 증가시킨다

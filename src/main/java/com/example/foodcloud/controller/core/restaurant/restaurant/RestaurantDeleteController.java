@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
-import com.example.foodcloud.domain.restaurant.service.delete.RestaurantDeleteService;
+import com.example.foodcloud.domain.restaurant.service.delete.RestaurantDeleter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/restaurant/delete")
 public class RestaurantDeleteController {
-    private final RestaurantDeleteService restaurantDeleteService;
+    private final RestaurantDeleter restaurantDeleter;
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping("")
@@ -25,7 +25,7 @@ public class RestaurantDeleteController {
                        @RequestParam Long restaurantId,
                        String password) {
 
-        restaurantDeleteService.delete(userId, restaurantId, password);
+        restaurantDeleter.delete(userId, restaurantId, password);
 
         return "redirect:/restaurant/list";
     }

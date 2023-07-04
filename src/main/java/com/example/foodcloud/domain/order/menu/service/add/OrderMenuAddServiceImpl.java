@@ -8,7 +8,7 @@ import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
-import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpdateService;
+import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpdater;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class OrderMenuAddServiceImpl implements OrderMenuAddService {
     private final FoodMenuCountUpdateService foodMenuCountUpdateService;
-    private final RestaurantCountUpdateService restaurantCountUpdateService;
+    private final RestaurantCountUpdater restaurantCountUpdater;
     private final OrderMenuRepository orderMenuRepository;
     private final OrderJoinGroupRepository orderJoinGroupRepository;
     private final UserRepository userRepository;
@@ -49,7 +49,7 @@ public class OrderMenuAddServiceImpl implements OrderMenuAddService {
 
         orderMenuRepository.save(orderMenu);
 
-        restaurantCountUpdateService.increaseOrderCount(foodMenu.getRestaurant().getId());
+        restaurantCountUpdater.increaseOrderCount(foodMenu.getRestaurant().getId());
         foodMenuCountUpdateService.increaseOrderCount(foodMenu.getId());
 
         return orderMenu.getId();

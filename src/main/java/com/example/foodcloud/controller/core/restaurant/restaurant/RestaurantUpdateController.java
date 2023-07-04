@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 import com.example.foodcloud.controller.core.restaurant.restaurant.dto.RestaurantUpdateControllerDto;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
-import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdateService;
+import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/restaurant/update")
 public class RestaurantUpdateController {
-    private final RestaurantUpdateService restaurantUpdateService;
+    private final RestaurantUpdater restaurantUpdater;
     private final RestaurantRepository restaurantRepository;
 
     @GetMapping("")
@@ -28,7 +28,7 @@ public class RestaurantUpdateController {
                        @RequestParam Long restaurantId,
                        @Valid RestaurantUpdateControllerDto restaurantUpdateControllerDto) {
 
-        restaurantUpdateService.update(userId, restaurantId, restaurantUpdateControllerDto.convert());
+        restaurantUpdater.update(userId, restaurantId, restaurantUpdateControllerDto.convert());
 
         return "thymeleaf/restaurant/update";
     }

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RestaurantDeleteServiceImpl implements RestaurantDeleteService {
+public class RestaurantDeleterImpl implements RestaurantDeleter {
     private final RestaurantRepository restaurantRepository;
     private final UserValidation userValidation;
 

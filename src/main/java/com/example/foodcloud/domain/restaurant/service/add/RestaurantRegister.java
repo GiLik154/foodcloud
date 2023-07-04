@@ -3,7 +3,7 @@ package com.example.foodcloud.domain.restaurant.service.add;
 import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface RestaurantAddService {
+public interface RestaurantRegister {
     /**
      * 유저의 ID로 유저가 존재하는지 확인한다.
      * 존재하면 DTO와 유저를 통해 Restaurant 갹체를 생성한다.

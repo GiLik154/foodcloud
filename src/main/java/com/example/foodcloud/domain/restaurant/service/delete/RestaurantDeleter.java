@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.restaurant.service.delete;
 
 import org.springframework.security.authentication.BadCredentialsException;
 
-public interface RestaurantDeleteService {
+public interface RestaurantDeleter {
     /**
      * 유저의 ID를 사용해서 패스워드를 비교한다.
      * 패스워드가 일치하면 식당의 ID로 식당이 존재하는지 확인한다.

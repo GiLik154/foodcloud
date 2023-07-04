@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.restaurant.service.update;
 
 import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
 
-public interface RestaurantUpdateService {
+public interface RestaurantUpdater {
     /**
      * 유저의 아이디와 식당의 아이디로 식당이 존재하는지 확인한다.
      * 존재하면 restaurantUpdateServiceDto를 통해서 정보를 수장한다.

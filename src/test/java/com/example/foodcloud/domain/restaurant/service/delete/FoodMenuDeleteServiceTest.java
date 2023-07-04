@@ -18,15 +18,15 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuDeleteServiceImplTest {
-    private final RestaurantDeleteService restaurantDeleteService;
+class FoodMenuDeleteServiceTest {
+    private final RestaurantDeleter restaurantDeleter;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public FoodMenuDeleteServiceImplTest(RestaurantDeleteService restaurantDeleteService, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
-        this.restaurantDeleteService = restaurantDeleteService;
+    public FoodMenuDeleteServiceTest(RestaurantDeleter restaurantDeleter, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+        this.restaurantDeleter = restaurantDeleter;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -42,7 +42,7 @@ class FoodMenuDeleteServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        restaurantDeleteService.delete(userId, restaurantId, "test");
+        restaurantDeleter.delete(userId, restaurantId, "test");
 
         assertFalse(restaurantRepository.existsById(restaurantId));
     }
@@ -57,7 +57,7 @@ class FoodMenuDeleteServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        assertThrows(UsernameNotFoundException.class, () -> restaurantDeleteService.delete(userId + 1L, restaurantId, "test"));
+        assertThrows(UsernameNotFoundException.class, () -> restaurantDeleter.delete(userId + 1L, restaurantId, "test"));
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 
@@ -78,7 +78,7 @@ class FoodMenuDeleteServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 //when
         
-        restaurantDeleteService.delete(userId, restaurantId + 1L, "test");
+        restaurantDeleter.delete(userId, restaurantId + 1L, "test");
 //then
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
@@ -94,7 +94,7 @@ class FoodMenuDeleteServiceImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                restaurantDeleteService.delete(userId, restaurantId, "test123")
+                restaurantDeleter.delete(userId, restaurantId, "test123")
         );
 
         assertTrue(restaurantRepository.existsById(restaurantId));

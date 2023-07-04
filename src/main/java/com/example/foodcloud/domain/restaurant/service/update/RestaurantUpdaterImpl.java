@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RestaurantUpdateServiceImpl implements RestaurantUpdateService {
+public class RestaurantUpdaterImpl implements RestaurantUpdater {
     private final RestaurantRepository restaurantRepository;
 
     @Override

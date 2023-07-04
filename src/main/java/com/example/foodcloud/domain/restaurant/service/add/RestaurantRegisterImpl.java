@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RestaurantAddServiceImpl implements RestaurantAddService {
+public class RestaurantRegisterImpl implements RestaurantRegister {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 

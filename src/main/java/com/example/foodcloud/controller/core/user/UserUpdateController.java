@@ -3,7 +3,10 @@ package com.example.foodcloud.controller.core.user;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.domain.user.service.UserUpdater;
+import com.example.foodcloud.security.login.UserDetail;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +33,11 @@ public class UserUpdateController {
     }
 
     @PostMapping("")
-    public String post(@SessionAttribute("userId") Long userId, String phone) {
-        userUpdater.update(userId, phone);
+    public String post(String phone) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetail userDetail = (UserDetail) authentication.getPrincipal();
+
+        userUpdater.update(userDetail.getUsername(), phone);
 
         return "redirect:/user/my-page";
     }

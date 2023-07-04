@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class RestaurantAddServiceImplTest {
-    private final RestaurantAddService restaurantAddService;
+class RestaurantRegisterTest {
+    private final RestaurantRegister restaurantRegister;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public RestaurantAddServiceImplTest(RestaurantAddService restaurantAddService, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.restaurantAddService = restaurantAddService;
+    public RestaurantRegisterTest(RestaurantRegister restaurantRegister, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.restaurantRegister = restaurantRegister;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
     }
@@ -37,7 +37,7 @@ class RestaurantAddServiceImplTest {
         Long userId = user.getId();
 
         RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test", "test");
-        restaurantAddService.add(userId, restaurantAddServiceDto);
+        restaurantRegister.add(userId, restaurantAddServiceDto);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
@@ -56,7 +56,7 @@ class RestaurantAddServiceImplTest {
         RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test",  "test");
 
         UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                restaurantAddService.add(userId + 1L, restaurantAddServiceDto)
+                restaurantRegister.add(userId + 1L, restaurantAddServiceDto)
         );
 
         assertEquals("User not found", e.getMessage());

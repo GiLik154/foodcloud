@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RestaurantCountUpdateServiceImpl implements RestaurantCountUpdateService {
+public class RestaurantCountUpdaterImpl implements RestaurantCountUpdater {
     private final RestaurantRepository restaurantRepository;
 
     @Override
