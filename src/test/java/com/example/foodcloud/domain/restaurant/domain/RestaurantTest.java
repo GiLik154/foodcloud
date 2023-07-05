@@ -1,13 +1,13 @@
 package com.example.foodcloud.domain.restaurant.domain;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantTest {
-    private final User user = UserFixtures.fixtures().build();
+    private final User user = UserFixture.fixture().build();
 
     @Test
     void 최상의_생성_테스트() {

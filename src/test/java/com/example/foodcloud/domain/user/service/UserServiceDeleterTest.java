@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.user.service;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저_삭제_정상작동() {
-        User user = UserFixtures.fixtures()
+        User user = UserFixture.fixture()
                 .encoding(bCryptPasswordEncoder, "testPassword")
                 .build();
         userRepository.save(user);
@@ -47,7 +47,7 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저의_name이_다르면_익셉션이_발생함() {
-        User user = UserFixtures.fixtures()
+        User user = UserFixture.fixture()
                 .encoding(bCryptPasswordEncoder, "testPassword")
                 .build();
         userRepository.save(user);
@@ -60,7 +60,7 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저의_pw가_다르면_익셉션이_발생함() {
-        User user = UserFixtures.fixtures()
+        User user = UserFixture.fixture()
                 .encoding(bCryptPasswordEncoder, "testPassword")
                 .build();
         userRepository.save(user);

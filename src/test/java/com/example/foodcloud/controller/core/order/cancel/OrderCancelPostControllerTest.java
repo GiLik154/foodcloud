@@ -6,10 +6,10 @@ import com.example.foodcloud.controller.core.order.OrderCancelController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
@@ -51,7 +51,7 @@ class OrderCancelPostControllerTest {
     private final PointRepository pointRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
@@ -59,14 +59,14 @@ class OrderCancelPostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    OrderCancelPostControllerTest(OrderCancelController orderCancelController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    OrderCancelPostControllerTest(OrderCancelController orderCancelController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.orderCancelController = orderCancelController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
@@ -99,10 +99,10 @@ class OrderCancelPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenu.completeOrderWithPayment(kbBank);
         orderMenuRepository.save(orderMenu);
 
@@ -139,10 +139,10 @@ class OrderCancelPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenu.completeOrderWithPayment(nhBank);
         orderMenuRepository.save(orderMenu);
 
@@ -179,10 +179,10 @@ class OrderCancelPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 
@@ -215,10 +215,10 @@ class OrderCancelPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenu.completeOrderWithPayment(point);
         orderMenuRepository.save(orderMenu);
 
@@ -255,10 +255,10 @@ class OrderCancelPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 

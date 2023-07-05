@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.user.service;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ class UserServiceUpdaterTest {
 
     @Test
     void 유저_업데이트_정상작동() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
 
         userUpdater.update("testName", "newPhone");
@@ -41,7 +41,7 @@ class UserServiceUpdaterTest {
 
     @Test
     void 유저의_고유변호가_다르면_익셉션_발생() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
 
         assertThrows(UsernameNotFoundException.class, () ->

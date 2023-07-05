@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.payment;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.service.payments.PaymentService;

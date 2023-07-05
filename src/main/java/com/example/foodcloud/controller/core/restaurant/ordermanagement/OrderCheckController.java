@@ -1,8 +1,8 @@
 package com.example.foodcloud.controller.core.restaurant.ordermanagement;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.service.update.OrderMenuResultUpdateService;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.ordermenu.service.update.OrderMenuResultUpdateService;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

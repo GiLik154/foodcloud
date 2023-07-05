@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment.service.point.service;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.point.PointCalculator;
@@ -33,7 +33,7 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_추가_정상작동() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -51,7 +51,7 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_차감_정상작동() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -69,7 +69,7 @@ class PointCalculatorTest {
 
     @Test
     void 유저의_아이디가_다르면_익셉션_발생() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -86,7 +86,7 @@ class PointCalculatorTest {
 
     @Test
     void 오버플로시_익셉션_발생() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -99,7 +99,7 @@ class PointCalculatorTest {
 
     @Test
     void 잔고가_모자라면_익셉션_발생() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -112,7 +112,7 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_추가_버전_정상작동() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 

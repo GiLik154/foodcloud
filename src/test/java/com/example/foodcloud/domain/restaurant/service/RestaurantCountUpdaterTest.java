@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.restaurant.service;
 
-import com.example.foodcloud.RestaurantFixtures;
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -33,10 +33,10 @@ class RestaurantCountUpdaterTest {
 
     @Test
     void 식당의_주문횟수_동시성_테스트() throws InterruptedException {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 

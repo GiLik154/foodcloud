@@ -8,10 +8,10 @@ import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -49,7 +49,7 @@ class PayPostControllerTest {
     private final BankAccountRepository bankAccountRepository;
     private final PointRepository pointRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final LoginInterceptor loginInterceptor;
@@ -59,13 +59,13 @@ class PayPostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public PayPostControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice, PointExceptionAdvice pointExceptionAdvice) {
+    public PayPostControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice, PointExceptionAdvice pointExceptionAdvice) {
         this.orderPayController = orderPayController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.loginInterceptor = loginInterceptor;
@@ -96,10 +96,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -136,10 +136,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -176,10 +176,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -216,10 +216,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -256,10 +256,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -296,10 +296,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -331,10 +331,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -372,10 +372,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -414,10 +414,10 @@ class PayPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 

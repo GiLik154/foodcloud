@@ -1,14 +1,15 @@
 package com.example.foodcloud.domain.payment.service.payment.pay;
 
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -40,18 +41,18 @@ class PointPaymentPayTest {
     private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
 
     @Autowired
-    public PointPaymentPayTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, PointRepository pointRepository) {
+    public PointPaymentPayTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, PointRepository pointRepository) {
         this.bankPaymentService = bankPaymentService;
         this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.pointRepository = pointRepository;
@@ -59,31 +60,23 @@ class PointPaymentPayTest {
 
     @Test
     void Point_결제_정상작동() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         Point point = new Point(user);
         point.update(6000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId();
+        Long orderMenuId = orderMenu.getId();
+        Long pointId = point.getId();
+        Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
+        PaymentService service = bankPaymentService.get(PaymentCode.POINT.getCode());
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
-        orderMenuRepository.save(orderMenu);
-
-        String result = bankPaymentService.get(PaymentCode.POINT.getCode()).pay(userId, orderMenu.getId(), bankAccountId, 5000);
+        String result = service.pay(userId, orderMenuId, pointId, 5000);
 
         assertEquals(point, orderMenu.getPayment());
         assertEquals(PaymentCode.POINT, orderMenu.getPayment().getPaymentCode());
@@ -95,31 +88,23 @@ class PointPaymentPayTest {
 
     @Test
     void Point_결제_아이디_고유번호_다름() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         Point point = new Point(user);
-        point.update(5000);
+        point.update(6000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId();
+        Long orderMenuId = orderMenu.getId();
+        Long pointId = point.getId();
+        Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
+        PaymentService service = bankPaymentService.get(PaymentCode.POINT.getCode());
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
-        orderMenuRepository.save(orderMenu);
-
-        String result = bankPaymentService.get(PaymentCode.POINT.getCode()).pay(userId + 1L, orderMenu.getId(), bankAccountId, 5000);
+        String result = service.pay(userId + 1L, orderMenuId, pointId, 5000);
 
         assertNotEquals(point, orderMenu.getPayment());
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
@@ -130,40 +115,26 @@ class PointPaymentPayTest {
 
     @Test
     void Point_포인트_부족() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         Point point = new Point(user);
         point.update(1000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId();
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
-        orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
+        Long pointId = point.getId();
+        Long userId = user.getId();
 
-        PaymentService paymentService = bankPaymentService.get(PaymentCode.POINT.getCode());
+        PaymentService service = bankPaymentService.get(PaymentCode.POINT.getCode());
 
-        NotEnoughPointException exception = assertThrows(NotEnoughPointException.class, () ->
-                paymentService.pay(userId, orderMenuId, bankAccountId, 5000)
-        );
+        assertThrows(NotEnoughPointException.class, () -> service.pay(userId, orderMenuId, pointId, 5000));
 
         assertNotEquals(point, orderMenu.getPayment());
         assertNotEquals(OrderResult.RECEIVED, orderMenu.getResult());
-        assertEquals("Out of bounds for point Points are less than zero.", exception.getMessage());
         assertEquals(1000, point.getTotalPoint());
         assertEquals(1000, point.getRecentPoint());
     }

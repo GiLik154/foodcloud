@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.restaurant.service;
 
-import com.example.foodcloud.RestaurantFixtures;
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -36,11 +36,11 @@ class RestaurantDeleterTest {
 
     @Test
     void 식당_삭제_정상작동() {
-        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
 
         Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
@@ -52,11 +52,11 @@ class RestaurantDeleterTest {
 
     @Test
     void 유저의_고유번호가_다르면_익셉션_발생() {
-        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
@@ -66,11 +66,11 @@ class RestaurantDeleterTest {
 
     @Test
     void 식당의_고유번호가_다르면_삭제되지_않음() {
-        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
 
         Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
@@ -82,11 +82,11 @@ class RestaurantDeleterTest {
 
     @Test
     void 유저의_비밀번호가_다르면_익셉션_발생() {
-        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
 
         Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();

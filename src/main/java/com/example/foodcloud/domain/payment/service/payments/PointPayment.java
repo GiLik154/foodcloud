@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.payment.service.payments;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.service.update.payment.OrderMenuPaymentUpdateService;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.point.PointCalculator;
@@ -17,7 +17,7 @@ public class PointPayment implements PaymentService {
     private final PointRepository pointRepository;
 
     @Override
-    public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
+    public String pay(Long userId, Long orderMenuId, Long paymentId, int price) {
         if (pointRepository.existsByUserId(userId)) {
             pointCalculator.sum(userId, price * -1);
 

@@ -2,10 +2,10 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -33,16 +33,16 @@ class FoodMenuCountUpdateServiceTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
 
     @Autowired
-    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, OrderJoinGroupRepository orderJoinGroupRepository) {
+    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
         this.foodMenuCountUpdateService = foodMenuCountUpdateService;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
     }
 
     @Test
@@ -57,10 +57,10 @@ class FoodMenuCountUpdateServiceTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
@@ -78,7 +78,7 @@ class FoodMenuCountUpdateServiceTest {
             assertEquals(100, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
         } finally {
             orderMenuRepository.delete(orderMenu);
-            orderJoinGroupRepository.delete(orderJoinGroup);
+            groupBuyListRepository.delete(groupBuyList);
             foodMenuRepository.delete(foodMenu);
             restaurantRepository.delete(restaurant);
             userRepository.delete(user);

@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.order.dto;
 
-import com.example.foodcloud.domain.order.join.service.add.dto.NewOrderServiceDto;
+import com.example.foodcloud.domain.groupbuylist.service.add.dto.NewOrderServiceDto;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;

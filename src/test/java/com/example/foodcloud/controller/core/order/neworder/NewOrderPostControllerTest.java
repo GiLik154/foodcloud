@@ -6,10 +6,10 @@ import com.example.foodcloud.controller.core.order.NewOrderCreateController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -45,20 +45,20 @@ class NewOrderPostControllerTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderPostControllerTest(NewOrderCreateController newOrderCreateController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public NewOrderPostControllerTest(NewOrderCreateController newOrderCreateController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.newOrderCreateController = newOrderCreateController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
@@ -97,17 +97,17 @@ class NewOrderPostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/payment/pay/*"));
 
-        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findByUserId(user.getId()).get(0);
-        OrderMenu orderMenu = orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).get(0);
+        GroupBuyList groupBuyList = groupBuyListRepository.findByUserId(user.getId()).get(0);
+        OrderMenu orderMenu = orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).get(0);
 
-        assertEquals("testInputLocation", orderJoinGroup.getLocation());
-        assertEquals(OrderResult.PAYMENT_WAITING, orderJoinGroup.getResult());
-        assertEquals(user, orderJoinGroup.getUser());
-        assertEquals(restaurant, orderJoinGroup.getRestaurant());
+        assertEquals("testInputLocation", groupBuyList.getLocation());
+        assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
+        assertEquals(user, groupBuyList.getUser());
+        assertEquals(restaurant, groupBuyList.getRestaurant());
         assertEquals("testInputLocation", orderMenu.getLocation());
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
-        assertEquals(orderJoinGroup, orderMenu.getOrderJoinGroup());
+        assertEquals(groupBuyList, orderMenu.getGroupBuyList());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
     }
 

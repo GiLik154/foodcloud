@@ -4,10 +4,10 @@ import com.example.foodcloud.controller.core.order.OrderDeleteController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -41,18 +41,18 @@ class OrderDeletePostControllerTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderDeletePostControllerTest(OrderDeleteController orderDeleteController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, LoginInterceptor loginInterceptor) {
+    public OrderDeletePostControllerTest(OrderDeleteController orderDeleteController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, LoginInterceptor loginInterceptor) {
         this.orderDeleteController = orderDeleteController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.loginInterceptor = loginInterceptor;
     }
 
@@ -74,10 +74,10 @@ class OrderDeletePostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -105,10 +105,10 @@ class OrderDeletePostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
 
         MockHttpServletRequestBuilder builder = post("/order/delete")
@@ -132,10 +132,10 @@ class OrderDeletePostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -163,10 +163,10 @@ class OrderDeletePostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
 
         MockHttpSession session = new MockHttpSession();

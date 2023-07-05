@@ -3,10 +3,10 @@ package com.example.foodcloud.controller.core.payment;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
@@ -43,20 +43,20 @@ class PayGetControllerTest {
     private final BankAccountRepository bankAccountRepository;
     private final PointRepository pointRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public PayGetControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
+    public PayGetControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
         this.orderPayController = orderPayController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.loginInterceptor = loginInterceptor;
@@ -83,10 +83,10 @@ class PayGetControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -155,10 +155,10 @@ class PayGetControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
+        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
         MockHttpServletRequestBuilder builder = get("/payment/pay/" + orderMenuId)

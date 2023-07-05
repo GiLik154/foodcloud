@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.restaurant.service;
 
-import com.example.foodcloud.RestaurantFixtures;
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -32,11 +32,11 @@ class RestaurantUpdaterTest {
 
     @Test
     void 식당_정보_업데이트_정상작동() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
@@ -50,11 +50,11 @@ class RestaurantUpdaterTest {
 
     @Test
     void 유저의_고유번호가_다르먼_업데이트_되지_않음() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
@@ -68,11 +68,11 @@ class RestaurantUpdaterTest {
 
     @Test
     void 식당의_고유번호가_다르면_업데이트_되지_않음() {
-        User user = UserFixtures.fixtures().build();
+        User user = UserFixture.fixture().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        Restaurant restaurant = RestaurantFixture.fixture(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 

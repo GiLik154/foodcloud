@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment.domain;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PointTest {
-    private final User user = UserFixtures.fixtures().build();
+    private final User user = UserFixture.fixture().build();
 
     @Test
     void 최상의_생성_테스트() {

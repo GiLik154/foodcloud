@@ -3,9 +3,9 @@ package com.example.foodcloud.controller.core.order;
 import com.example.foodcloud.controller.core.order.dto.OrderGroupJoinControllerDto;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.service.add.OrderMenuAddService;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.service.add.OrderMenuAddService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,16 +19,16 @@ import java.util.List;
 @RequestMapping(value = "/order")
 public class OrderGroupJoinController {
     private final OrderMenuAddService orderMenuAddService;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final FoodMenuRepository foodMenuRepository;
 
 
     @GetMapping("/join")
     public String get(@RequestParam Long orderJoinGroupId, Model model) {
-        OrderJoinGroup orderJoinGroup = orderJoinGroupRepository.findValidByIdAndNotCancel(orderJoinGroupId);
-        List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(orderJoinGroup.getRestaurant().getId());
+        GroupBuyList groupBuyList = groupBuyListRepository.findValidByIdAndNotCancel(orderJoinGroupId);
+        List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(groupBuyList.getRestaurant().getId());
 
-        model.addAttribute("OrderJoinGroupInfo", orderJoinGroup);
+        model.addAttribute("OrderJoinGroupInfo", groupBuyList);
         model.addAttribute("foodMenuList", foodMenu);
         return "thymeleaf/order/join";
     }

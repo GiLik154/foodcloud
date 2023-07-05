@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.payment.domain;
 
-import com.example.foodcloud.UserFixtures;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankAccountTest {
-    private final User user = UserFixtures.fixtures().build();
+    private final User user = UserFixture.fixture().build();
 
     @ParameterizedTest
     @ValueSource(strings = {"KB", "NH", "SHIN_HAN"})

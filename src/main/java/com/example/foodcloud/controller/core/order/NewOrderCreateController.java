@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.order;
 
 import com.example.foodcloud.controller.core.order.dto.NewOrderCreateControllerDto;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.service.add.NewOrderService;
+import com.example.foodcloud.domain.groupbuylist.service.add.NewOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

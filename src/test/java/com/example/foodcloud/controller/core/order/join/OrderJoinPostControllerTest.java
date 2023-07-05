@@ -6,10 +6,10 @@ import com.example.foodcloud.controller.core.order.OrderGroupJoinController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
-import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -45,20 +45,20 @@ class OrderJoinPostControllerTest {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final OrderJoinGroupRepository orderJoinGroupRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
     private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderJoinPostControllerTest(OrderGroupJoinController orderGroupJoinController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, OrderJoinGroupRepository orderJoinGroupRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public OrderJoinPostControllerTest(OrderGroupJoinController orderGroupJoinController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.orderGroupJoinController = orderGroupJoinController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
-        this.orderJoinGroupRepository = orderJoinGroupRepository;
+        this.groupBuyListRepository = groupBuyListRepository;
         this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
@@ -83,8 +83,8 @@ class OrderJoinPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
@@ -93,7 +93,7 @@ class OrderJoinPostControllerTest {
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(orderJoinGroup.getId()))
+                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()))
                 .session(session);
 
 
@@ -101,12 +101,12 @@ class OrderJoinPostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/payment/pay/*"));
 
-        OrderMenu orderMenu = orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).get(0);
+        OrderMenu orderMenu = orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).get(0);
 
         assertEquals("testInputLocation", orderMenu.getLocation());
         assertEquals(OrderResult.PAYMENT_WAITING, orderMenu.getResult());
         assertEquals(user, orderMenu.getUser());
-        assertEquals(orderJoinGroup, orderMenu.getOrderJoinGroup());
+        assertEquals(groupBuyList, orderMenu.getGroupBuyList());
         assertEquals(foodMenu, orderMenu.getFoodMenu());
     }
 
@@ -121,20 +121,20 @@ class OrderJoinPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
         MockHttpServletRequestBuilder builder = post("/order/join")
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(orderJoinGroup.getId()));
+                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/login"));
 
-        assertTrue(orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).isEmpty());
+        assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }
 
     @Test
@@ -148,8 +148,8 @@ class OrderJoinPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId() + 1L);
@@ -158,7 +158,7 @@ class OrderJoinPostControllerTest {
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(orderJoinGroup.getId()))
+                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()))
                 .session(session);
 
         mockMvc.perform(builder)
@@ -166,7 +166,7 @@ class OrderJoinPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_INFO_NOT_FOUND.getResult()));
 
-        assertTrue(orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).isEmpty());
+        assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }
 
     @Test
@@ -180,8 +180,8 @@ class OrderJoinPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
@@ -190,7 +190,7 @@ class OrderJoinPostControllerTest {
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
                 .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
-                .param("orderJoinGroupId", String.valueOf(orderJoinGroup.getId()))
+                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()))
                 .session(session);
 
         mockMvc.perform(builder)
@@ -198,7 +198,7 @@ class OrderJoinPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND));
 
-        assertTrue(orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).isEmpty());
+        assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }
 
     @Test
@@ -212,8 +212,8 @@ class OrderJoinPostControllerTest {
         FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
         foodMenuRepository.save(foodMenu);
 
-        OrderJoinGroup orderJoinGroup = new OrderJoinGroup("test", "test", user, restaurant);
-        orderJoinGroupRepository.save(orderJoinGroup);
+        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute("userId", user.getId());
@@ -222,7 +222,7 @@ class OrderJoinPostControllerTest {
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
                 .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(orderJoinGroup.getId() + 1L))
+                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId() + 1L))
                 .session(session);
 
         mockMvc.perform(builder)
@@ -230,6 +230,6 @@ class OrderJoinPostControllerTest {
                 .andExpect(forwardedUrl("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MAIN_NOT_FOUND));
 
-        assertTrue(orderMenuRepository.findByOrderJoinGroupId(orderJoinGroup.getId()).isEmpty());
+        assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }
 }

@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.order;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.order.menu.service.delete.OrderMenuDeleteService;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.ordermenu.service.delete.OrderMenuDeleteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

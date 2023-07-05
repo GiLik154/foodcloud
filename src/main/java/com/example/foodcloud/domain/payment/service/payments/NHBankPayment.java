@@ -1,9 +1,9 @@
 package com.example.foodcloud.domain.payment.service.payments;
 
-import com.example.foodcloud.domain.order.menu.domain.OrderMenu;
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
-import com.example.foodcloud.domain.order.menu.service.update.payment.OrderMenuPaymentUpdateService;
+import com.example.foodcloud.domain.ordermenu.service.update.payment.OrderMenuPaymentUpdateService;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +15,10 @@ public class NHBankPayment implements PaymentService {
     private final BankAccountRepository bankAccountRepository;
 
     @Override
-    public String pay(Long userId, Long orderMenuId, Long bankAccountId, int price) {
-        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
+    public String pay(Long userId, Long orderMenuId, Long paymentId, int price) {
+        if (bankAccountRepository.existsBankAccountByUserIdAndId(userId, paymentId)) {
 
-            orderMenuPaymentUpdateService.update(orderMenuId, getBankAccount(bankAccountId));
+            orderMenuPaymentUpdateService.update(orderMenuId, getBankAccount(paymentId));
 
             return price + " price NH bank payment succeed";
         }
