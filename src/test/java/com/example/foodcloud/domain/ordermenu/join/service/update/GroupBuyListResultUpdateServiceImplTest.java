@@ -3,11 +3,9 @@ package com.example.foodcloud.domain.ordermenu.join.service.update;
 import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.groupbuylist.service.update.OrderJoinGroupResultUpdateService;
-import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -83,3 +81,5 @@ class GroupBuyListResultUpdateServiceImplTest {
         assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
     }
 }
+
+//todo 엔티티 수정하면서 깨지는 부분 모두 수정해야함
