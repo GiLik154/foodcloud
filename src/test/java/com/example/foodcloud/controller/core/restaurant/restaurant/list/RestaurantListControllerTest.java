@@ -67,7 +67,7 @@ class RestaurantListControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(forwardedUrl("thymeleaf/restaurant/list"))
-                .andExpect(model().attribute("restaurantList", restaurantRepository.getValidByUserId(user.getId())));
+                .andExpect(model().attribute("restaurantList", restaurantRepository.findByUserId(user.getId())));
     }
 
     @Test

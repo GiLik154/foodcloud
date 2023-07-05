@@ -29,7 +29,7 @@ public class BankAccount extends Payment {
      * BankAccount의 기본 생성자
      **/
     public BankAccount(User user, String name, String accountNumber, PaymentCode paymentCode) {
-        init(user, paymentCode);
+        super(user, paymentCode);
         this.name = name;
         this.accountNumber = accountNumber;
     }

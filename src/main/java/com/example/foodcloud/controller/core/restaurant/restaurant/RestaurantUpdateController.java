@@ -1,8 +1,10 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 import com.example.foodcloud.controller.core.restaurant.restaurant.dto.RestaurantUpdateControllerDto;
+import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
-import com.example.foodcloud.domain.restaurant.service.update.RestaurantUpdater;
+import com.example.foodcloud.domain.restaurant.service.RestaurantUpdater;
+import com.example.foodcloud.exception.NotFoundRestaurantException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,8 @@ public class RestaurantUpdateController {
 
     @GetMapping("")
     public String get(@RequestParam Long restaurantId, Model model) {
-        model.addAttribute("restaurantInfo", restaurantRepository.getValidById(restaurantId));
+        Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new NotFoundRestaurantException("Not found Restaurant"));
+        model.addAttribute("restaurantInfo", restaurant);
         return "thymeleaf/restaurant/update";
     }
 

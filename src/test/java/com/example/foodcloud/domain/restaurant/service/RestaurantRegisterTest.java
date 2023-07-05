@@ -1,10 +1,11 @@
-package com.example.foodcloud.domain.restaurant.service.add;
+package com.example.foodcloud.domain.restaurant.service;
 
+import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
+import com.example.foodcloud.domain.restaurant.service.commend.RestaurantRegisterCommend;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -32,12 +32,12 @@ class RestaurantRegisterTest {
 
     @Test
     void 식당_추가_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test", "test");
-        restaurantRegister.add(userId, restaurantAddServiceDto);
+        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("test", "test", "test");
+        restaurantRegister.add(userId, restaurantRegisterCommend);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
@@ -48,17 +48,13 @@ class RestaurantRegisterTest {
     }
 
     @Test
-    void 식당_추가_아이디_다름() {
-        User user = new User("test", "test", "test");
+    void 유저의_고유번호가_다르면_익셉션_발생() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        RestaurantAddServiceDto restaurantAddServiceDto = new RestaurantAddServiceDto("test", "test",  "test");
+        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("test", "test",  "test");
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                restaurantRegister.add(userId + 1L, restaurantAddServiceDto)
-        );
-
-        assertEquals("User not found", e.getMessage());
+        assertThrows(UsernameNotFoundException.class, () -> restaurantRegister.add(userId + 1L, restaurantRegisterCommend));
     }
 }

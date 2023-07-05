@@ -31,7 +31,7 @@ public class Point extends Payment {
      * 포인트의 기본 생성자
      **/
     public Point(User user, PaymentCode paymentCode) {
-        init(user, paymentCode);
+        super(user, paymentCode);
     }
 
     /**

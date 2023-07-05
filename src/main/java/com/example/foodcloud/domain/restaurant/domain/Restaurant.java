@@ -11,26 +11,31 @@ public class Restaurant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     /**
      * 식당의 이름
      */
     @Column(nullable = false)
     private String name;
+
     /**
      * 식당의 장소
      */
     @Column(nullable = false)
     private String location;
-    /**
-     * 식당 주문 횟수
-     */
-    @Column(nullable = false)
-    private int orderCount;
+
     /**
      * 식당 운영 시간
      */
     @Column(length = 11)
     private String businessHours;
+
+    /**
+     * 식당 주문 횟수
+     */
+    @Column(nullable = false)
+    private int orderCount;
+
     /**
      * 식당을 등록한 유저
      */

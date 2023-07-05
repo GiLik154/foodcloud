@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.restaurant.service.update;
+package com.example.foodcloud.domain.restaurant.service;
 
 
 public interface RestaurantCountUpdater {

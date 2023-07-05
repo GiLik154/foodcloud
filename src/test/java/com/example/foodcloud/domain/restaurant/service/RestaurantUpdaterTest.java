@@ -1,13 +1,12 @@
-package com.example.foodcloud.domain.restaurant.service.update;
+package com.example.foodcloud.domain.restaurant.service;
 
+import com.example.foodcloud.RestaurantFixtures;
 import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import com.example.foodcloud.domain.restaurant.service.commend.RestaurantUpdaterCommend;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -31,26 +30,18 @@ class RestaurantUpdaterTest {
         this.userRepository = userRepository;
     }
 
-    private User user;
-    private Restaurant restaurant;
-
-    @BeforeEach
-    public void init(){
-        user = UserFixtures.anUserFixtures().build();
-
-        restaurant = new Restaurant("testName", "testLocation", "testHours", user);
-    }
-
     @Test
     void 식당_정보_업데이트_정상작동() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
-        restaurantRepository.save(restaurant);
-
         Long userId = user.getId();
+
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("newName", "newLocation", "newHours");
-        restaurantUpdater.update(userId, restaurantId, restaurantUpdateServiceDto);
+        RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");
+        restaurantUpdater.update(userId, restaurantId, restaurantUpdaterCommend);
 
         assertEquals("newName", restaurant.getName());
         assertEquals("newLocation", restaurant.getLocation());
@@ -59,35 +50,37 @@ class RestaurantUpdaterTest {
 
     @Test
     void 유저의_고유번호가_다르먼_업데이트_되지_않음() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
-        restaurantRepository.save(restaurant);
-
         Long userId = user.getId();
+
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("newName", "newLocation", "newHours");
-        restaurantUpdater.update(userId + 1L, restaurantId, restaurantUpdateServiceDto);
+        RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");
+        restaurantUpdater.update(userId + 1L, restaurantId, restaurantUpdaterCommend);
 
-        assertEquals("testName", restaurant.getName());
+        assertEquals("testRestaurantName", restaurant.getName());
         assertEquals("testLocation", restaurant.getLocation());
         assertEquals("testHours", restaurant.getBusinessHours());
     }
 
     @Test
     void 식당의_고유번호가_다르면_업데이트_되지_않음() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
-        restaurantRepository.save(restaurant);
-
         Long userId = user.getId();
+
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
+        restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        RestaurantUpdateServiceDto restaurantUpdateServiceDto = new RestaurantUpdateServiceDto("newName", "newLocation", "newHours");
-        restaurantUpdater.update(userId, restaurantId + 1L, restaurantUpdateServiceDto);
+        RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");
+        restaurantUpdater.update(userId, restaurantId + 1L, restaurantUpdaterCommend);
 
-        assertEquals("testName", restaurant.getName());
+        assertEquals("testRestaurantName", restaurant.getName());
         assertEquals("testLocation", restaurant.getLocation());
         assertEquals("testHours", restaurant.getBusinessHours());
     }
-
-    //todo 여기서부터 다시 시작
 }

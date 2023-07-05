@@ -47,7 +47,7 @@ public class Payment {
      * payment 클래스에 기본적으로 필요한
      * 정보들 초기화
      */
-    public void init(User user, PaymentCode paymentCode) {
+    public Payment(User user, PaymentCode paymentCode) {
         this.user = user;
         this.paymentCode = paymentCode;
     }

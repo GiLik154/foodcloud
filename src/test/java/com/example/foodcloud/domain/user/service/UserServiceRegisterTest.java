@@ -37,11 +37,11 @@ class UserServiceRegisterTest {
         User user = userRepository.findByName("testName").get();
         Point point = pointRepository.findByUserId(user.getId()).get();
 
-        assertNotNull(point.getId());
         assertEquals("testName", user.getName());
         assertNotEquals("testPassword", user.getPassword());
         assertEquals("testPhone", user.getPhone());
 
+        assertNotNull(point.getId());
         assertEquals(user, point.getUser());
         assertEquals(0, point.getTotalPoint());
     }

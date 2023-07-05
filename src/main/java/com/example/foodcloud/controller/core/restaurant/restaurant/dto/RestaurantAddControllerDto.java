@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant.dto;
 
-import com.example.foodcloud.domain.restaurant.service.add.dto.RestaurantAddServiceDto;
+import com.example.foodcloud.domain.restaurant.service.commend.RestaurantRegisterCommend;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
@@ -23,7 +23,7 @@ public class RestaurantAddControllerDto {
         this.closeHours = closeHours;
     }
 
-    public RestaurantAddServiceDto convert(){
-        return new RestaurantAddServiceDto(this.name, this.location, this.openHours + "-" + this.closeHours);
+    public RestaurantRegisterCommend convert(){
+        return new RestaurantRegisterCommend(this.name, this.location, this.openHours + "-" + this.closeHours);
     }
 }

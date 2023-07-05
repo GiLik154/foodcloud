@@ -8,7 +8,7 @@ import com.example.foodcloud.domain.order.menu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroup;
 import com.example.foodcloud.domain.order.join.domain.OrderJoinGroupRepository;
 import com.example.foodcloud.domain.order.menu.service.add.dto.OrderMenuAddServiceDto;
-import com.example.foodcloud.domain.restaurant.service.update.RestaurantCountUpdater;
+import com.example.foodcloud.domain.restaurant.service.RestaurantCountUpdater;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import lombok.RequiredArgsConstructor;

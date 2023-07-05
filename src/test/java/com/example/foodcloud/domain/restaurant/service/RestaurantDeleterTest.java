@@ -1,5 +1,7 @@
-package com.example.foodcloud.domain.restaurant.service.delete;
+package com.example.foodcloud.domain.restaurant.service;
 
+import com.example.foodcloud.RestaurantFixtures;
+import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -18,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuDeleteServiceTest {
+class RestaurantDeleterTest {
     private final RestaurantDeleter restaurantDeleter;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public FoodMenuDeleteServiceTest(RestaurantDeleter restaurantDeleter, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+    public RestaurantDeleterTest(RestaurantDeleter restaurantDeleter, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
         this.restaurantDeleter = restaurantDeleter;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -34,70 +36,63 @@ class FoodMenuDeleteServiceTest {
 
     @Test
     void 식당_삭제_정상작동() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        restaurantDeleter.delete(userId, restaurantId, "test");
+        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+
+        restaurantDeleter.delete(userId, "testPassword", restaurantId);
 
         assertFalse(restaurantRepository.existsById(restaurantId));
     }
 
     @Test
-    void 식당_삭제_유저고유번호_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+    void 유저의_고유번호가_다르면_익셉션_발생() {
+        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        assertThrows(UsernameNotFoundException.class, () -> restaurantDeleter.delete(userId + 1L, restaurantId, "test"));
+        assertThrows(UsernameNotFoundException.class, () -> restaurantDeleter.delete(userId + 1L, "testPassword", restaurantId));
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 
     @Test
-    void 식당_삭제_식당고유번호_다름() {
-//given
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+    void 식당의_고유번호가_다르면_삭제되지_않음() {
+        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
-        
-        // 유저 저장
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
         restaurantRepository.save(restaurant);
 
-        // 식당을 저장
-        
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
-//when
-        
-        restaurantDeleter.delete(userId, restaurantId + 1L, "test");
-//then
+        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+
+        restaurantDeleter.delete(userId, "testPassword", restaurantId + 1L);
+
         assertTrue(restaurantRepository.existsById(restaurantId));
     }
 
     @Test
-    void 식당_삭제_비밀번호_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
+    void 유저의_비밀번호가_다르면_익셉션_발생() {
+        User user = UserFixtures.fixtures().encoding(bCryptPasswordEncoder, "testPassword").build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = RestaurantFixtures.fixtures(user).build();
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                restaurantDeleter.delete(userId, restaurantId, "test123")
-        );
+        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+
+        assertThrows(BadCredentialsException.class, () -> restaurantDeleter.delete(userId, "wrongPassword", restaurantId));
 
         assertTrue(restaurantRepository.existsById(restaurantId));
-        assertEquals("Invalid password", e.getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.foodcloud.domain.user.service;
 
+import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -32,11 +33,13 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저_삭제_정상작동() {
-        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
+        User user = UserFixtures.fixtures()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        userDeleter.delete("testName", "test");
+        userDeleter.delete("testUserName", "testPassword");
 
         assertFalse(userRepository.existsById(userId));
         assertFalse(userRepository.existsByName("testName"));
@@ -44,7 +47,9 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저의_name이_다르면_익셉션이_발생함() {
-        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
+        User user = UserFixtures.fixtures()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -55,11 +60,13 @@ class UserServiceDeleterTest {
 
     @Test
     void 유저의_pw가_다르면_익셉션이_발생함() {
-        User user = new User("testName", bCryptPasswordEncoder.encode("test"), "testPhone");
+        User user = UserFixtures.fixtures()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        assertThrows(BadCredentialsException.class, () -> userDeleter.delete("testName","wrongPassword"));
+        assertThrows(BadCredentialsException.class, () -> userDeleter.delete("testUserName","wrongPassword"));
 
         assertTrue(userRepository.existsById(userId));
     }

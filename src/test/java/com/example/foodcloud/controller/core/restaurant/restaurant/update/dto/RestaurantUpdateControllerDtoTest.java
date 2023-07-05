@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant.update.dto;
 
 import com.example.foodcloud.controller.core.restaurant.restaurant.dto.RestaurantUpdateControllerDto;
-import com.example.foodcloud.domain.restaurant.service.update.dto.RestaurantUpdateServiceDto;
+import com.example.foodcloud.domain.restaurant.service.commend.RestaurantUpdaterCommend;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,10 +19,10 @@ class RestaurantUpdateControllerDtoTest {
     @Test
     void Post_식당_수정_Dto_Convert() {
         RestaurantUpdateControllerDto restaurantUpdateControllerDto = new RestaurantUpdateControllerDto("testName", "testLocation", "testHours");
-        RestaurantUpdateServiceDto restaurantUpdateServiceDto = restaurantUpdateControllerDto.convert();
+        RestaurantUpdaterCommend restaurantUpdaterCommend = restaurantUpdateControllerDto.convert();
 
-        assertEquals("testName", restaurantUpdateServiceDto.getName());
-        assertEquals("testLocation", restaurantUpdateServiceDto.getLocation());
-        assertEquals("testHours", restaurantUpdateServiceDto.getBusinessHours());
+        assertEquals("testName", restaurantUpdaterCommend.getName());
+        assertEquals("testLocation", restaurantUpdaterCommend.getLocation());
+        assertEquals("testHours", restaurantUpdaterCommend.getBusinessHours());
     }
 }

@@ -1,19 +1,15 @@
 package com.example.foodcloud;
 
 import com.example.foodcloud.domain.user.domain.User;
-import com.example.foodcloud.domain.user.domain.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.event.RecordApplicationEvents;
 
 public class UserFixtures {
-    private String name = "testName";
-    private String password = "testPassword";
-    private String phone = "testPhone";
+    private String name = "testUserName";
+    private String password = "testUserPassword";
+    private String phone = "testUserPhone";
 
 
-    public static UserFixtures anUserFixtures() {
+    public static UserFixtures fixtures() {
         return new UserFixtures();
     }
 
@@ -24,6 +20,11 @@ public class UserFixtures {
 
     public UserFixtures password(String password) {
         this.password = password;
+        return this;
+    }
+
+    public UserFixtures encoding(PasswordEncoder passwordEncoder, String password) {
+        this.password = passwordEncoder.encode(password);
         return this;
     }
 
