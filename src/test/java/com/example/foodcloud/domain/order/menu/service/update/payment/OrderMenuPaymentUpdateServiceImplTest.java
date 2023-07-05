@@ -69,7 +69,7 @@ class OrderMenuPaymentUpdateServiceImplTest {
         OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, orderJoinGroup);
         orderMenuRepository.save(orderMenu);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         pointRepository.save(point);
 
         orderMenuPaymentUpdateService.update(orderMenu.getId(), point);

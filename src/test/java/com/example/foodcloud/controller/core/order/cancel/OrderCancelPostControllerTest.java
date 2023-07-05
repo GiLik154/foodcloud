@@ -206,7 +206,7 @@ class OrderCancelPostControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         pointRepository.save(point);
 
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);

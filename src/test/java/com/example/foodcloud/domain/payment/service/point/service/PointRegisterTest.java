@@ -1,5 +1,6 @@
-package com.example.foodcloud.domain.payment.point.service;
+package com.example.foodcloud.domain.payment.service.point.service;
 
+import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.point.PointRegister;
@@ -32,7 +33,7 @@ class PointRegisterTest {
 
     @Test
     void 포인트_가입_정상작동() {
-        User user = new User("test", "test", "tset");
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
 
         pointRegister.register(user.getId());
@@ -43,8 +44,8 @@ class PointRegisterTest {
     }
 
     @Test
-    void 포인트_가입_아이디_없음() {
-        User user = new User("test", "test", "tset");
+    void 유저의_고유변호가_다르면_익셉션_발생() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
 
         Long id = userRepository.findByName("test").get().getId();

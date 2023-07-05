@@ -15,38 +15,58 @@ public class FoodMenu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     /**
      * 음식의 이름
      */
+    @Column(nullable = false)
     private String name;
+
     /**
      * 음식의 가격
      */
+    @Column(nullable = false)
     private int price;
+
     /**
      * 음식의 주문 횟수
      */
+    @Column(nullable = false)
     private int orderCount;
+
     /**
      * 음식의 온도
      */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Temperature temperature;
+
     /**
      * 음식의 타입
      */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private FoodTypes foodTypes;
+
     /**
      * 음식의 고기 종류
      */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private MeatTypes meatType;
+
     /**
      * 음식의 야채 양
      */
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Vegetables vegetables;
+
     /**
      * 음식의 이미지 path
      */
     private String imagePath;
+
     /**
      * 음식이 등록된 식당
      */

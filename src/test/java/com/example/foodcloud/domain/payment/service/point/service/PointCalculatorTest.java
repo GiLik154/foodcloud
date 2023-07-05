@@ -1,11 +1,11 @@
-package com.example.foodcloud.domain.payment.point.service;
+package com.example.foodcloud.domain.payment.service.point.service;
 
+import com.example.foodcloud.UserFixtures;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.point.PointCalculator;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +33,11 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_추가_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -51,11 +51,11 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_차감_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -68,12 +68,12 @@ class PointCalculatorTest {
     }
 
     @Test
-    void 포인트_차감_아이디_없음() {
-        User user = new User("test", "test", "test");
+    void 유저의_아이디가_다르면_익셉션_발생() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -85,12 +85,12 @@ class PointCalculatorTest {
     }
 
     @Test
-    void 포인트_추가_오버플로() {
-        User user = new User("test", "test", "test");
+    void 오버플로시_익셉션_발생() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -98,12 +98,12 @@ class PointCalculatorTest {
     }
 
     @Test
-    void 포인트_차감_잔고없음() {
-        User user = new User("test", "test", "test");
+    void 잔고가_모자라면_익셉션_발생() {
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -112,11 +112,11 @@ class PointCalculatorTest {
 
     @Test
     void 포인트_추가_버전_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = UserFixtures.fixtures().build();
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 

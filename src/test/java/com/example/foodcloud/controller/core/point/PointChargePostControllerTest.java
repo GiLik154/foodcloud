@@ -7,7 +7,6 @@ import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
-import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,7 +58,7 @@ class PointChargePostControllerTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -83,7 +82,7 @@ class PointChargePostControllerTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -107,7 +106,7 @@ class PointChargePostControllerTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -127,7 +126,7 @@ class PointChargePostControllerTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -152,7 +151,7 @@ class PointChargePostControllerTest {
         User user = new User("test", "test", "test");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 

@@ -5,7 +5,6 @@ import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +49,7 @@ class PointChargeGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         pointRepository.save(point);
 
         MockHttpSession session = new MockHttpSession();
@@ -70,7 +69,7 @@ class PointChargeGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         pointRepository.save(point);
 
         MockHttpServletRequestBuilder builder = get("/point/charge");

@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.service.pay;
+package com.example.foodcloud.domain.payment.service.payment.pay;
 
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
@@ -63,7 +63,7 @@ class PointPaymentPayTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(6000);
         pointRepository.save(point);
 
@@ -99,7 +99,7 @@ class PointPaymentPayTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
 
@@ -134,7 +134,7 @@ class PointPaymentPayTest {
         userRepository.save(user);
         Long userId = user.getId();
 
-        Point point = new Point(user, PaymentCode.POINT);
+        Point point = new Point(user);
         point.update(1000);
         pointRepository.save(point);
 

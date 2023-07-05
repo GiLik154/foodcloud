@@ -7,7 +7,7 @@ public class RestaurantFixtures {
     private String name = "testRestaurantName";
     private String location = "testLocation";
     private String businessHours = "testHours";
-    private User user;
+    private final User user;
 
     private RestaurantFixtures(User user) {
         this.user = user;
@@ -29,11 +29,6 @@ public class RestaurantFixtures {
 
     public RestaurantFixtures businessHours(String businessHours) {
         this.businessHours = businessHours;
-        return this;
-    }
-
-    public RestaurantFixtures user(User user) {
-        this.user = user;
         return this;
     }
 

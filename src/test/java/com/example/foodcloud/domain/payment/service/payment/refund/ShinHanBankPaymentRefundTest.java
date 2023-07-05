@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.payment.bank.service.service.refund;
+package com.example.foodcloud.domain.payment.service.payment.refund;
 
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;

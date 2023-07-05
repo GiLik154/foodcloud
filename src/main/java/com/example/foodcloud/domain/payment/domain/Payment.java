@@ -38,6 +38,7 @@ public class Payment {
      * 결제수단의 코드
      * (ex. 000 = 포인트, 004 = 농협)
      */
+    @Column(nullable = false)
     private PaymentCode paymentCode;
 
     protected Payment() {
