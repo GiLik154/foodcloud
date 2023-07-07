@@ -27,10 +27,9 @@ class UserServiceUpdaterTest {
 
     @Test
     void 유저_업데이트_정상작동() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        userRepository.save(UserFixture.fixture().build());
 
-        userUpdater.update("testName", "newPhone");
+        userUpdater.update("testUserName", "newPhone");
 
         User updateTest = userRepository.findByName("testName").get();
 
@@ -41,8 +40,7 @@ class UserServiceUpdaterTest {
 
     @Test
     void 유저의_고유변호가_다르면_익셉션_발생() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        userRepository.save(UserFixture.fixture().build());
 
         assertThrows(UsernameNotFoundException.class, () ->
                 userUpdater.update("wrongName", "test123"));

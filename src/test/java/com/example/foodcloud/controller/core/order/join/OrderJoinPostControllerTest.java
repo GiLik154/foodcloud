@@ -1,5 +1,7 @@
 package com.example.foodcloud.controller.core.order.join;
 
+import com.example.foodcloud.FoodMenuFixture;
+import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.order.OrderGroupJoinController;
@@ -26,12 +28,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -80,10 +79,10 @@ class OrderJoinPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
@@ -118,10 +117,10 @@ class OrderJoinPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpServletRequestBuilder builder = post("/order/join")
@@ -145,10 +144,10 @@ class OrderJoinPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
@@ -177,10 +176,10 @@ class OrderJoinPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
@@ -209,10 +208,10 @@ class OrderJoinPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();

@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.groupbuylist.service.add;
 
 import com.example.foodcloud.domain.groupbuylist.service.add.dto.NewOrderServiceDto;
-import com.example.foodcloud.domain.ordermenu.service.add.OrderMenuAddService;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class NewOrderServiceImpl implements NewOrderService {
     private final OrderJoinGroupAddService orderJoinGroupAddService;
-    private final OrderMenuAddService orderMenuAddService;
+    private final OrderMenuRegister orderMenuRegister;
 
     @Override
     public Long order(Long userId, NewOrderServiceDto newOrderServiceDto) {
         Long orderJoinGroupId = orderJoinGroupAddService.add(userId, newOrderServiceDto.convertOrderJoinGroupDto());
 
-        return orderMenuAddService.add(userId, newOrderServiceDto.convertOrderMenuDto(orderJoinGroupId));
+        return orderMenuRegister.register(userId, newOrderServiceDto.convertOrderMenuDto(orderJoinGroupId));
     }
 }

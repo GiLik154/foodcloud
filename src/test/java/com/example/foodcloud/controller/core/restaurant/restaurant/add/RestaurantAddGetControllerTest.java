@@ -1,6 +1,7 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant.add;
 
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -48,7 +49,7 @@ class RestaurantAddGetControllerTest {
 
     @Test
     void 식당_추가_정상출력() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpSession session = new MockHttpSession();
@@ -64,7 +65,7 @@ class RestaurantAddGetControllerTest {
 
     @Test
     void 식당_추가_세션_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpServletRequestBuilder builder = get("/restaurant/add");

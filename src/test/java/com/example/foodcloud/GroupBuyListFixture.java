@@ -3,16 +3,9 @@ package com.example.foodcloud;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.user.domain.User;
-import com.example.foodcloud.enums.OrderResult;
-
-import java.time.LocalDateTime;
 
 public class GroupBuyListFixture {
-    private String location;
-
-    private LocalDateTime localDate;
-
-    private OrderResult result;
+    private String location = "testLocation";
 
     private User user;
 
@@ -32,11 +25,6 @@ public class GroupBuyListFixture {
         return this;
     }
 
-    public GroupBuyListFixture localDate(LocalDateTime localDate) {
-        this.localDate = localDate;
-        return this;
-    }
-
     public GroupBuyListFixture user(User user) {
         this.user = user;
         return this;
@@ -48,6 +36,6 @@ public class GroupBuyListFixture {
     }
 
     public GroupBuyList build() {
-        return new GroupBuyList(this.location, this.localDate, this.user, this.restaurant);
+        return new GroupBuyList(this.location, this.user, this.restaurant);
     }
 }

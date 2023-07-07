@@ -32,12 +32,10 @@ class RestaurantUpdaterTest {
 
     @Test
     void 식당_정보_업데이트_정상작동() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
+        Long userId = user.getId();
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");
@@ -50,12 +48,10 @@ class RestaurantUpdaterTest {
 
     @Test
     void 유저의_고유번호가_다르먼_업데이트_되지_않음() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
+        Long userId = user.getId();
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");
@@ -68,12 +64,10 @@ class RestaurantUpdaterTest {
 
     @Test
     void 식당의_고유번호가_다르면_업데이트_되지_않음() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
+        Long userId = user.getId();
         Long restaurantId = restaurant.getId();
 
         RestaurantUpdaterCommend restaurantUpdaterCommend = new RestaurantUpdaterCommend("newName", "newLocation", "newHours");

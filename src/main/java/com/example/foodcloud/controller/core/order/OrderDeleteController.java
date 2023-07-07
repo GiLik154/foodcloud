@@ -1,7 +1,10 @@
 package com.example.foodcloud.controller.core.order;
 
+import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.delete.OrderMenuDeleteService;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuDeleter;
+import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.exception.NotFoundOrderMenuException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +17,14 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
 public class OrderDeleteController {
-    private final OrderMenuDeleteService orderMenuDeleteService;
+    private final OrderMenuDeleter orderMenuDeleter;
     private final OrderMenuRepository orderMenuRepository;
 
     @GetMapping("/delete")
     public String get(Long orderMenuId, Model model) {
-        model.addAttribute("orderMenu", orderMenuRepository.getValidByIdAndNotCanceled(orderMenuId));
+        OrderMenu orderMenu = orderMenuRepository.findByIdAndResultNot(orderMenuId, OrderResult.CANCELED).orElseThrow(NotFoundOrderMenuException::new);
+
+        model.addAttribute("orderMenu", orderMenu);
         return "thymeleaf/order/delete";
     }
 
@@ -27,7 +32,7 @@ public class OrderDeleteController {
     public String post(@SessionAttribute Long userId,
                        Long orderMenuId) {
 
-        orderMenuDeleteService.delete(userId, orderMenuId);
+        orderMenuDeleter.delete(userId, orderMenuId);
 
         return "thymeleaf/order/delete-check";
     }

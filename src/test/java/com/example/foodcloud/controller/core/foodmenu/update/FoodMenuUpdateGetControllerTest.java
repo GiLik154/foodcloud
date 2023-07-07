@@ -1,5 +1,8 @@
 package com.example.foodcloud.controller.core.foodmenu.update;
 
+import com.example.foodcloud.FoodMenuFixture;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuUpdateController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -9,10 +12,6 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +58,13 @@ class FoodMenuUpdateGetControllerTest {
 
     @Test
     void Get_음식_메뉴_업데이트_정상_출력() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();
@@ -82,13 +81,13 @@ class FoodMenuUpdateGetControllerTest {
 
     @Test
     void GGet_음식_메뉴_업데이트_세션_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
         MockHttpServletRequestBuilder builder = get("/food-menu/update/" + foodMenu.getId());
@@ -100,13 +99,13 @@ class FoodMenuUpdateGetControllerTest {
 
     @Test
     void Get_음식_메뉴_업데이트_고유번호_다름() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
         MockHttpSession session = new MockHttpSession();

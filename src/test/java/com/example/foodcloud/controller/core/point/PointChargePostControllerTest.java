@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.point;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.Point;
@@ -9,8 +10,6 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,7 +54,7 @@ class PointChargePostControllerTest {
 
     @Test
     void Post_포인트_충전_정상작동() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);
@@ -79,7 +78,7 @@ class PointChargePostControllerTest {
 
     @Test
     void Post_포인트_충전_유저_고유번호_다름() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);
@@ -103,7 +102,7 @@ class PointChargePostControllerTest {
 
     @Test
     void Post_포인트_충전_세션_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);
@@ -123,7 +122,7 @@ class PointChargePostControllerTest {
 
     @Test
     void Post_포인트_충전_금액이_0보다_작음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);
@@ -148,7 +147,7 @@ class PointChargePostControllerTest {
 
     @Test
     void Post_포인트_충전_금액이_300만보다_큼() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);

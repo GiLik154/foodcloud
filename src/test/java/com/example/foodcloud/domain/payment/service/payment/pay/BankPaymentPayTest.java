@@ -61,14 +61,15 @@ class BankPaymentPayTest {
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
+
         PaymentCode code = PaymentCode.valueOf(paymentCode);
         PaymentService service = bankPaymentService.get(code.getCode());
 
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user, code).build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).paymentCode(code).build());
 
-        Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();
         Long orderMenuId = orderMenu.getId();
+        Long userId = user.getId();
 
         String result = service.pay(userId, orderMenuId, bankAccountId, INIT_PRICE);
 
@@ -85,11 +86,10 @@ class BankPaymentPayTest {
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
         PaymentCode code = PaymentCode.valueOf(paymentCode);
         PaymentService service = bankPaymentService.get(code.getCode());
-
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user, code).build());
 
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
@@ -112,11 +112,10 @@ class BankPaymentPayTest {
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
         PaymentCode code = PaymentCode.valueOf(paymentCode);
         PaymentService service = bankPaymentService.get(code.getCode());
-
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user, code).build());
 
         Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();

@@ -1,5 +1,6 @@
 package com.example.foodcloud.domain.foodmenu.service.update;
 
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -10,10 +11,6 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -47,20 +44,20 @@ class FoodMenuCountUpdateServiceTest {
 
     @Test
     void 푸드메뉴_업데이트_동시성_테스트() throws InterruptedException {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenuRepository.save(orderMenu);
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);

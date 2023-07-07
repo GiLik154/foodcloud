@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.foodmenu.list;
 
+import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuListController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -57,7 +58,7 @@ class FoodMenuListControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
@@ -78,7 +79,7 @@ class FoodMenuListControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();

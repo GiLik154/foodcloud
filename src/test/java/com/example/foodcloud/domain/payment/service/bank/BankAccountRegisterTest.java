@@ -1,10 +1,11 @@
 package com.example.foodcloud.domain.payment.service.bank;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
+import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegisterCommend;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegisterCommend;
 import com.example.foodcloud.enums.PaymentCode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class BankAccountRegisterTest {
 
     @Test
     void 계좌_추가_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -51,7 +52,7 @@ class BankAccountRegisterTest {
 
     @Test
     void 계좌_추가_유저_없음() {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 

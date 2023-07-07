@@ -1,5 +1,6 @@
 package com.example.foodcloud.domain.payment.service.bank;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
@@ -13,7 +14,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
@@ -32,7 +34,7 @@ class BankAccountUpdaterTest {
 
     @Test
     void 계좌_업데이트_정상작동() {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
@@ -50,7 +52,7 @@ class BankAccountUpdaterTest {
 
     @Test
     void 유저의_고유번호가_다르면_익셉션이_발생해야함() {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId() + 1L;
 
@@ -70,7 +72,7 @@ class BankAccountUpdaterTest {
 
     @Test
     void 계좌의_고유번호가_다르면_익셉션이_발생해야함() {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 

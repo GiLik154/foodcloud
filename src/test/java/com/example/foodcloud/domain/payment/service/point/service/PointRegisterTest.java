@@ -33,8 +33,7 @@ class PointRegisterTest {
 
     @Test
     void 포인트_가입_정상작동() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         pointRegister.register(user.getId());
         Point point = pointRepository.findByUserId(user.getId()).get();
@@ -45,13 +44,12 @@ class PointRegisterTest {
 
     @Test
     void 유저의_고유변호가_다르면_익셉션_발생() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
-        Long id = userRepository.findByName("test").get().getId();
+        Long userId = user.getId();
 
-        assertThrows(UsernameNotFoundException.class, () -> pointRegister.register(id + 1L));
+        assertThrows(UsernameNotFoundException.class, () -> pointRegister.register(userId + 1L));
 
-        assertThat(pointRepository.existsById(id)).isFalse();
+        assertThat(pointRepository.existsById(userId)).isFalse();
     }
 }

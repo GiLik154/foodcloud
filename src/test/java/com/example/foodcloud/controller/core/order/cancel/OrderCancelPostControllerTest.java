@@ -1,5 +1,8 @@
 package com.example.foodcloud.controller.core.order.cancel;
 
+import com.example.foodcloud.FoodMenuFixture;
+import com.example.foodcloud.GroupBuyListFixture;
+import com.example.foodcloud.OrderMenuFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.order.OrderCancelController;
@@ -21,10 +24,6 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.PaymentCode;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,13 +95,13 @@ class OrderCancelPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(kbBank);
         orderMenuRepository.save(orderMenu);
 
@@ -136,13 +135,13 @@ class OrderCancelPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(nhBank);
         orderMenuRepository.save(orderMenu);
 
@@ -176,13 +175,13 @@ class OrderCancelPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 
@@ -212,13 +211,13 @@ class OrderCancelPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(point);
         orderMenuRepository.save(orderMenu);
 
@@ -252,13 +251,13 @@ class OrderCancelPostControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(shBank);
         orderMenuRepository.save(orderMenu);
 

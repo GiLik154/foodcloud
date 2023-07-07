@@ -16,49 +16,32 @@ public class GroupBuyList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 주문한 장소
-     */
+    /** 주문한 장소 */
     @Column(nullable = false)
     private String location;
 
-    /**
-     * 주문한 시간
-     */
-    @Column(nullable = false)
+    /** 주문한 시간 */
     @CreatedDate
     private LocalDateTime time;
 
-    /**
-     * 주문한 유저
-     */
-    @Column(nullable = false)
+    /** 주문한 유저 */
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    /**
-     * 주문한 식당
-     */
-    @Column(nullable = false)
+    /** 주문한 식당 */
     @ManyToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
-    /**
-     * 주문한 처리 결과
-     */
-    @Column(nullable = false)
+    /** 주문한 처리 결과 */
     @Enumerated(EnumType.STRING)
     private OrderResult result;
 
     protected GroupBuyList() {
     }
 
-    /**
-     * 기본 생성자
-     */
-    public GroupBuyList(String location, LocalDateTime time, User user, Restaurant restaurant) {
+    /** 기본 생성자 */
+    public GroupBuyList(String location, User user, Restaurant restaurant) {
         this.location = location;
-        this.time = time;
         this.user = user;
         this.restaurant = restaurant;
         this.result = OrderResult.PAYMENT_WAITING;

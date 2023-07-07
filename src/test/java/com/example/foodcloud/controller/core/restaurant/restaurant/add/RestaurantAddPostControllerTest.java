@@ -1,6 +1,7 @@
 package com.example.foodcloud.controller.core.restaurant.restaurant.add;
 
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
@@ -21,7 +22,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -57,7 +59,7 @@ class RestaurantAddPostControllerTest {
 
     @Test
     void Post_식당_추가_정상작동() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpSession session = new MockHttpSession();
@@ -83,7 +85,7 @@ class RestaurantAddPostControllerTest {
 
     @Test
     void Post_식당_추가_세션_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpServletRequestBuilder builder = post("/restaurant/add")
@@ -101,7 +103,7 @@ class RestaurantAddPostControllerTest {
 
     @Test
     void Post_식당_추가_유저_고유번호_다름() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpSession session = new MockHttpSession();
@@ -124,7 +126,7 @@ class RestaurantAddPostControllerTest {
 
     @Test
     void Post_식당_추가_파라미터_null() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpSession session = new MockHttpSession();

@@ -1,27 +1,22 @@
 package com.example.foodcloud.domain.payment.service.payment.pay;
 
 import com.example.foodcloud.*;
-import com.example.foodcloud.domain.payment.domain.BankAccount;
-import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
+import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.PaymentCode;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import com.example.foodcloud.exception.NotEnoughPointException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +90,7 @@ class PointPaymentPayTest {
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         Point point = new Point(user);
-        point.update(6000);
+        point.update(5000);
         pointRepository.save(point);
 
         Long orderMenuId = orderMenu.getId();

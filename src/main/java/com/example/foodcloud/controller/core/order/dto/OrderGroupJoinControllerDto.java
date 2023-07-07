@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.order.dto;
 
-import com.example.foodcloud.domain.ordermenu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
 import lombok.Getter;
 
 @Getter
@@ -15,7 +15,7 @@ public class OrderGroupJoinControllerDto {
         this.foodMenuId = foodMenuId;
     }
 
-    public OrderMenuAddServiceDto convert(Long orderJoinGroupId) {
-        return new OrderMenuAddServiceDto(this.location, this.count, this.foodMenuId, orderJoinGroupId);
+    public OrderMenuRegisterCommend convert(Long orderJoinGroupId) {
+        return new OrderMenuRegisterCommend(this.location, this.count, this.foodMenuId, orderJoinGroupId);
     }
 }

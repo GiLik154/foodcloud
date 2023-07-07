@@ -1,7 +1,7 @@
 package com.example.foodcloud.domain.payment.service.payments;
 
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
-import com.example.foodcloud.domain.ordermenu.service.update.payment.OrderMenuPaymentUpdateService;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuUpdater;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.point.PointCalculator;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service("000")
 @RequiredArgsConstructor
 public class PointPayment implements PaymentService {
-    private final OrderMenuPaymentUpdateService orderMenuPaymentUpdateService;
+    private final OrderMenuUpdater updater;
     private final PointCalculator pointCalculator;
     private final PointRepository pointRepository;
 
@@ -21,7 +21,7 @@ public class PointPayment implements PaymentService {
         if (pointRepository.existsByUserId(userId)) {
             pointCalculator.sum(userId, price * -1);
 
-            orderMenuPaymentUpdateService.update(orderMenuId, getPoint(userId));
+            updater.paymentUpdate(orderMenuId, getPoint(userId));
 
             return price + " price Point payment succeed";
         }

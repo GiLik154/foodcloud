@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.restaurant.ordermanagement;
 
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.update.OrderMenuResultUpdateService;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuUpdater;
 import com.example.foodcloud.enums.OrderResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping("/restaurant/check")
 public class OrderCheckController {
     private final OrderMenuRepository orderMenuRepository;
-    private final OrderMenuResultUpdateService orderMenuResultUpdateService;
+    private final OrderMenuUpdater orderMenuUpdater;
 
 
     @GetMapping("")
@@ -35,6 +35,6 @@ public class OrderCheckController {
     @PutMapping("/updateStatus/{orderMenuId}/{status}")
     @ResponseBody
     public void updateOrderStatus(@PathVariable("orderMenuId") Long orderMenuId, @PathVariable("status") String status) {
-        orderMenuResultUpdateService.update(orderMenuId, status);
+        orderMenuUpdater.resultUpdate(orderMenuId, status);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.groupbuylist.service.update;
 
-import com.example.foodcloud.domain.ordermenu.service.update.OrderMenuListResultUpdateService;
+import com.example.foodcloud.domain.groupbuylist.service.GroupBuyListResultUpdater;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderJoinGroupResultUpdateServiceImpl implements OrderJoinGroupResultUpdateService {
     private final GroupBuyListRepository groupBuyListRepository;
-    private final OrderMenuListResultUpdateService orderMenuListResultUpdateService;
+    private final GroupBuyListResultUpdater groupBuyListResultUpdater;
 
     @Override
     public void update(Long userId, Long orderJoinGroupId, String result) {
@@ -25,7 +25,7 @@ public class OrderJoinGroupResultUpdateServiceImpl implements OrderJoinGroupResu
             OrderResult orderResult = OrderResult.valueOf(result);
             orderJoinGroup.updateResult(orderResult);
 
-            orderMenuListResultUpdateService.update(orderJoinGroupId, orderResult);
+            groupBuyListResultUpdater.update(orderJoinGroupId, orderResult);
         });
     }
 }

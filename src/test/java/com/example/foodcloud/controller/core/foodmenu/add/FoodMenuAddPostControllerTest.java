@@ -1,5 +1,7 @@
 package com.example.foodcloud.controller.core.foodmenu.add;
 
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
@@ -26,7 +28,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,10 +95,10 @@ class FoodMenuAddPostControllerTest {
         String imageName = "test-image.jpg";
         MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
@@ -129,10 +132,10 @@ class FoodMenuAddPostControllerTest {
 
     @Test
     void 음식_메뉴_정상추가_파일_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
@@ -168,10 +171,10 @@ class FoodMenuAddPostControllerTest {
         String imageName = "test-image.jpg";
         MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/add/" + restaurant.getId())
@@ -195,10 +198,10 @@ class FoodMenuAddPostControllerTest {
         String imageName = "test-image.jpg";
         MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
@@ -226,10 +229,10 @@ class FoodMenuAddPostControllerTest {
         String imageName = "test-image.jpg";
         MockMultipartFile mockMultipartFile = new MockMultipartFile("multipartFile", imageName, "image/jpeg", imageBytes);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();

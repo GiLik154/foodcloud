@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.groupbuylist.service.add.dto;
 
-import com.example.foodcloud.domain.ordermenu.service.add.dto.OrderMenuAddServiceDto;
+import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
 import lombok.Getter;
 
 @Getter
@@ -21,7 +21,7 @@ public class NewOrderServiceDto {
         return new OrderJoinGroupAddServiceDto(this.location, this.restaurantId);
     }
 
-    public OrderMenuAddServiceDto convertOrderMenuDto(Long orderJoinGroupId) {
-        return new OrderMenuAddServiceDto(this.location, this.count, this.foodMenuId, orderJoinGroupId);
+    public OrderMenuRegisterCommend convertOrderMenuDto(Long orderJoinGroupId) {
+        return new OrderMenuRegisterCommend(this.location, this.count, this.foodMenuId, orderJoinGroupId);
     }
 }

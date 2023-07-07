@@ -1,5 +1,7 @@
 package com.example.foodcloud.controller.core.order.join;
 
+import com.example.foodcloud.FoodMenuFixture;
+import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.order.OrderGroupJoinController;
@@ -12,10 +14,6 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,10 +72,10 @@ class OrderJoinGetControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpSession session = new MockHttpSession();
@@ -101,10 +99,10 @@ class OrderJoinGetControllerTest {
         Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
         MockHttpServletRequestBuilder builder = post("/order/join")

@@ -1,5 +1,7 @@
 package com.example.foodcloud.domain.foodmenu.service.add;
 
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
@@ -44,11 +46,11 @@ class FoodMenuAddServiceImplTest {
     void 음식메뉴_추가_정상작동() {
         File file = new File("test.jpg");
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
@@ -69,11 +71,11 @@ class FoodMenuAddServiceImplTest {
     void 음식메뉴_추가_이미지없음() {
         File file = null;
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
@@ -94,11 +96,11 @@ class FoodMenuAddServiceImplTest {
     void 음식메뉴_추가_유저고유번호_다름() {
         File file = mock(File.class);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
@@ -114,11 +116,11 @@ class FoodMenuAddServiceImplTest {
     void 음식메뉴_추가_식당고유번호_다름() {
         File file = mock(File.class);
 
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
         Long userId = user.getId();
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 

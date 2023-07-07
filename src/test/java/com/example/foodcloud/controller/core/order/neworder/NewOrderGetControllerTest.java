@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.order.neworder;
 
+import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.controller.core.order.NewOrderCreateController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -51,7 +52,7 @@ class NewOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpSession session = new MockHttpSession();
@@ -71,7 +72,7 @@ class NewOrderGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
         MockHttpServletRequestBuilder builder = get("/order/new")

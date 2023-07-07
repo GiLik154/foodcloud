@@ -33,11 +33,9 @@ class RestaurantCountUpdaterTest {
 
     @Test
     void 식당의_주문횟수_동시성_테스트() throws InterruptedException {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);

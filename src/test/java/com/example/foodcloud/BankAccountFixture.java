@@ -8,15 +8,14 @@ public class BankAccountFixture {
     private final User user;
     private String name = "testBankName";
     private String accountNumber = "testNumber";
-    private final PaymentCode paymentCode;
+    private PaymentCode paymentCode = PaymentCode.NH;
 
-    private BankAccountFixture(User user, PaymentCode paymentCode) {
+    private BankAccountFixture(User user) {
         this.user = user;
-        this.paymentCode = paymentCode;
     }
 
-    public static BankAccountFixture fixture(User user, PaymentCode paymentCode) {
-        return new BankAccountFixture(user, paymentCode);
+    public static BankAccountFixture fixture(User user) {
+        return new BankAccountFixture(user);
     }
 
     public BankAccountFixture name(String name) {
@@ -26,6 +25,11 @@ public class BankAccountFixture {
 
     public BankAccountFixture accountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+        return this;
+    }
+
+    public BankAccountFixture paymentCode(PaymentCode paymentCode) {
+        this.paymentCode = paymentCode;
         return this;
     }
 

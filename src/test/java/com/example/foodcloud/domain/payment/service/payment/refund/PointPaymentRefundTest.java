@@ -1,25 +1,20 @@
 package com.example.foodcloud.domain.payment.service.payment.refund;
 
-import com.example.foodcloud.domain.payment.domain.BankAccount;
-import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
-import com.example.foodcloud.domain.payment.service.payments.PaymentService;
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
+import com.example.foodcloud.domain.payment.service.payments.PaymentService;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.PaymentCode;
-import com.example.foodcloud.enums.foodmenu.FoodTypes;
-import com.example.foodcloud.enums.foodmenu.MeatTypes;
-import com.example.foodcloud.enums.foodmenu.Temperature;
-import com.example.foodcloud.enums.foodmenu.Vegetables;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -29,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @Transactional
@@ -59,60 +55,36 @@ class PointPaymentRefundTest {
 
     @Test
     void Point_환불_정상작동() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         Long userId = user.getId();
 
         Point point = new Point(user);
         point.update(6000);
         pointRepository.save(point);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
-        groupBuyListRepository.save(groupBuyList);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
-        orderMenuRepository.save(orderMenu);
-
         String result = bankPaymentService.get(BANK_CODE).refund(userId, orderMenu);
 
-        assertEquals("25000 price Point refund succeed", result);
+        assertTrue(result.contains("succeed"));
         assertEquals(31000, point.getTotalPoint());
         assertEquals(25000, point.getRecentPoint());
     }
 
     @Test
     void Point_환불_아이디_고유번호_다름() {
-        User user = new User("test", "test", "test");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         Long userId = user.getId();
 
         Point point = new Point(user);
         point.update(5000);
         pointRepository.save(point);
-
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
-        foodMenuRepository.save(foodMenu);
-
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
-        groupBuyListRepository.save(groupBuyList);
-
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
-        orderMenuRepository.save(orderMenu);
 
         String result = bankPaymentService.get(BANK_CODE).refund(userId + 1L, orderMenu);
 

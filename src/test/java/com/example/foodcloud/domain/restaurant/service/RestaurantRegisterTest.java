@@ -32,28 +32,26 @@ class RestaurantRegisterTest {
 
     @Test
     void 식당_추가_정상작동() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
         Long userId = user.getId();
 
-        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("test", "test", "test");
+        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("testName", "testLocation", "testHours");
         restaurantRegister.add(userId, restaurantRegisterCommend);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
-        assertEquals("test", restaurant.getName());
-        assertEquals("test", restaurant.getLocation());
-        assertEquals("test", restaurant.getBusinessHours());
+        assertEquals("testName", restaurant.getName());
+        assertEquals("testLocation", restaurant.getLocation());
+        assertEquals("testHours", restaurant.getBusinessHours());
         assertEquals(user, restaurant.getUser());
     }
 
     @Test
     void 유저의_고유번호가_다르면_익셉션_발생() {
-        User user = UserFixture.fixture().build();
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
         Long userId = user.getId();
 
-        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("test", "test",  "test");
+        RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("testName", "testLocation",  "testHours");
 
         assertThrows(UsernameNotFoundException.class, () -> restaurantRegister.add(userId + 1L, restaurantRegisterCommend));
     }

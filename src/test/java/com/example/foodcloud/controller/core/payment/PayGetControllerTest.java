@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.payment;
 
+import com.example.foodcloud.*;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
@@ -74,19 +75,20 @@ class PayGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.KB);
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
         bankAccountRepository.save(bankAccount);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
+
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
 
@@ -127,7 +129,7 @@ class PayGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.KB);
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
         bankAccountRepository.save(bankAccount);
 
         MockHttpSession session = new MockHttpSession();
@@ -146,19 +148,19 @@ class PayGetControllerTest {
         User user = new User("testUserName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        BankAccount bankAccount = new BankAccount(user, "testName", "testNumber", PaymentCode.KB);
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
         bankAccountRepository.save(bankAccount);
 
-        Restaurant restaurant = new Restaurant("test", "test", "test", user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu = new FoodMenu("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW, restaurant);
+        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        GroupBuyList groupBuyList = new GroupBuyList("test", "test", user, restaurant);
+        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenu orderMenu = new OrderMenu("test", 5, "test", user, foodMenu, groupBuyList);
+        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenuRepository.save(orderMenu);
         Long orderMenuId = orderMenu.getId();
         MockHttpServletRequestBuilder builder = get("/payment/pay/" + orderMenuId)

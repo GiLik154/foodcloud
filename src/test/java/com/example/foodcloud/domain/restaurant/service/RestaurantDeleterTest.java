@@ -36,14 +36,14 @@ class RestaurantDeleterTest {
 
     @Test
     void 식당_삭제_정상작동() {
-        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+
         Long userId = user.getId();
-
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
-
-        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+        Long restaurantId = restaurant.getId();
 
         restaurantDeleter.delete(userId, "testPassword", restaurantId);
 
@@ -52,13 +52,14 @@ class RestaurantDeleterTest {
 
     @Test
     void 유저의_고유번호가_다르면_익셉션_발생() {
-        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
-        Long userId = user.getId();
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
-        Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
+        Long userId = user.getId();
+        Long restaurantId = restaurant.getId();
 
         assertThrows(UsernameNotFoundException.class, () -> restaurantDeleter.delete(userId + 1L, "testPassword", restaurantId));
         assertTrue(restaurantRepository.existsById(restaurantId));
@@ -66,14 +67,14 @@ class RestaurantDeleterTest {
 
     @Test
     void 식당의_고유번호가_다르면_삭제되지_않음() {
-        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
+
         Long userId = user.getId();
-
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
-
-        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+        Long restaurantId = restaurant.getId();
 
         restaurantDeleter.delete(userId, "testPassword", restaurantId + 1L);
 
@@ -82,14 +83,14 @@ class RestaurantDeleterTest {
 
     @Test
     void 유저의_비밀번호가_다르면_익셉션_발생() {
-        User user = UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build();
+        User user = UserFixture.fixture()
+                .encoding(bCryptPasswordEncoder, "testPassword")
+                .build();
         userRepository.save(user);
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         Long userId = user.getId();
 
-        Restaurant restaurant = RestaurantFixture.fixture(user).build();
-        restaurantRepository.save(restaurant);
-
-        Long restaurantId = restaurantRepository.findById(restaurant.getId()).get().getId();
+        Long restaurantId = restaurant.getId();
 
         assertThrows(BadCredentialsException.class, () -> restaurantDeleter.delete(userId, "wrongPassword", restaurantId));
 

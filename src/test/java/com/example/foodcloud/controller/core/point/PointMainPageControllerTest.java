@@ -1,5 +1,6 @@
 package com.example.foodcloud.controller.core.point;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
@@ -16,7 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -48,7 +49,7 @@ class PointMainPageControllerTest {
 
     @Test
     void 포인트_메인페이지_정상작동() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);
@@ -68,7 +69,7 @@ class PointMainPageControllerTest {
 
     @Test
     void 포인트_메인페이지_포인트_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         MockHttpSession session = new MockHttpSession();
@@ -86,7 +87,7 @@ class PointMainPageControllerTest {
 
     @Test
     void 포인트_메인페이지_세션_없음() throws Exception {
-        User user = new User("test", "test", "test");
+        User user = userRepository.save(UserFixture.fixture().build());
         userRepository.save(user);
 
         Point point = new Point(user);

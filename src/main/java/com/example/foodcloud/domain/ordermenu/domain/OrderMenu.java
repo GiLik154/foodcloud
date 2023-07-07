@@ -27,7 +27,6 @@ public class OrderMenu {
     private int price;
 
     /** 주문 시간 */
-    @Column(nullable = false)
     @CreatedDate
     private LocalDateTime time;
 
@@ -36,34 +35,29 @@ public class OrderMenu {
     private String location;
 
     /** 주문한 유저 */
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     /** OrderMenu를 공구하는 메인 주문 리스트 */
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private GroupBuyList groupBuyList;
 
     /** 주문한 결제 수단 */
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Payment payment;
 
     /** Order에 담겨있는 FoodMenu */
-    @Column(nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private FoodMenu foodMenu;
 
     /** OrderMenu의 결과 */
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderResult result;
 
     protected OrderMenu() {}
 
     /** OrderMenu 기본 생성자 */
-    public OrderMenu(int count, String location,  User user, GroupBuyList groupBuyList, FoodMenu foodMenu) {
+    public OrderMenu(int count, String location, User user, GroupBuyList groupBuyList, FoodMenu foodMenu) {
         this.count = count;
         this.price = Math.multiplyExact(foodMenu.getPrice(), count);
         this.location = location;
@@ -83,9 +77,7 @@ public class OrderMenu {
         this.result = OrderResult.RECEIVED;
     }
 
-    /**
-     * 결과를 변경함
-     */
+    /** 결과를 변경함 */
     public void updateResult(OrderResult orderResult) {
         this.result = orderResult;
     }

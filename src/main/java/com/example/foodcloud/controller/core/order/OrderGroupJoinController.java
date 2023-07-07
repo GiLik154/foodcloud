@@ -5,7 +5,7 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.ordermenu.service.add.OrderMenuAddService;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
 public class OrderGroupJoinController {
-    private final OrderMenuAddService orderMenuAddService;
+    private final OrderMenuRegister orderMenuRegister;
     private final GroupBuyListRepository groupBuyListRepository;
     private final FoodMenuRepository foodMenuRepository;
 
@@ -38,7 +38,7 @@ public class OrderGroupJoinController {
                        @RequestParam Long orderJoinGroupId,
                        @Valid OrderGroupJoinControllerDto orderGroupJoinControllerDto) {
 
-        Long orderMenuId = orderMenuAddService.add(userId, orderGroupJoinControllerDto.convert(orderJoinGroupId));
+        Long orderMenuId = orderMenuRegister.register(userId, orderGroupJoinControllerDto.convert(orderJoinGroupId));
 
         return "redirect:/payment/pay/" + orderMenuId;
     }

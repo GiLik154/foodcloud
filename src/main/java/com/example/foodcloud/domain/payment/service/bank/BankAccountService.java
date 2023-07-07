@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BankAccountService implements BankAccountRegister, BankAccountDeleter, BankAccountUpdater {
+public class BankAccountService implements BankAccountRegister, BankAccountUpdater, BankAccountDeleter {
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final UserValidation userValidation;
@@ -35,6 +35,15 @@ public class BankAccountService implements BankAccountRegister, BankAccountDelet
     }
 
     @Override
+    public void update(Long userId, Long bankAccountId, BankAccountUpdaterCommend commend) {
+        bankAccountRepository.findByUserIdAndId(userId, bankAccountId)
+                .ifPresentOrElse(bankAccount -> bankAccount.update(commend.getName(), commend.getAccountNumber(), commend.getPaymentCode()),
+                        () -> {
+                            throw new NotFoundBankAccountException("Not exist bank account");
+                        });
+    }
+
+    @Override
     public void delete(Long userId, Long bankAccountId, String password) {
         if (!bankAccountRepository.existsBankAccountByUserIdAndId(userId, bankAccountId)) {
             throw new NotFoundBankAccountException("Not exist bank account");
@@ -43,19 +52,5 @@ public class BankAccountService implements BankAccountRegister, BankAccountDelet
         userValidation.validate(userId, password);
 
         bankAccountRepository.deleteById(bankAccountId);
-    }
-
-    /**
-     * userId와  bankAccountId로 BankAccount를 찾은 후
-     * dto의 정보들로 업데이트 하는 메소드를 실행함.
-     */
-    @Override
-    public void update(Long userId, Long bankAccountId, BankAccountUpdaterCommend commend) {
-        bankAccountRepository.findByUserIdAndId(userId, bankAccountId)
-                .ifPresentOrElse(bankAccount ->
-                                bankAccount.update(commend.getName(), commend.getAccountNumber(), commend.getPaymentCode()),
-                        () -> {
-                            throw new NotFoundBankAccountException("Not exist bank account");
-                        });
     }
 }

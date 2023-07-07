@@ -12,19 +12,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @Service
+@Transactional
 @RequiredArgsConstructor
-public class UserService implements UserDeleter, UserRegister, UserUpdater {
+public class UserService implements UserRegister, UserUpdater, UserDeleter {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
     private final PointRegister pointRegister;
 
     @Override
-    public void register(UserJoinerCommend userJoinerCommend) {
-        User user = new User(userJoinerCommend.getUsername(), userJoinerCommend.getPassword(), userJoinerCommend.getPhone());
+    public void register(UserJoinerCommend commend) {
+        validateDuplicate(commend.getUsername());
 
-        checkDuplicate(userJoinerCommend.getUsername());
+        User user = new User(commend.getUsername(), commend.getPassword(), commend.getPhone());
 
         user.encodePassword(bCryptPasswordEncoder);
 
@@ -33,31 +33,31 @@ public class UserService implements UserDeleter, UserRegister, UserUpdater {
         pointRegister.register(user.getId());
     }
 
-    private void checkDuplicate(String username) {
-        if (userRepository.existsByName(username)) throw new UserNameDuplicateException();
+    private void validateDuplicate(String username) {
+        if (userRepository.existsByName(username)) throw new UserNameDuplicateException("Duplicate User Name");
     }
 
     @Override
     public void update(String username, String newPhone) {
-        User user = userFindByName(username);
+        User user = findByName(username);
 
         user.update(newPhone);
     }
 
     @Override
     public void delete(String username, String password) {
-        User user = userFindByName(username);
+        User user = findByName(username);
 
         valid(user, password);
 
         userRepository.deleteByName(username);
     }
 
-    private void valid(User user, String password){
-        if (!user.isValidPassword(bCryptPasswordEncoder, password)) throw new BadCredentialsException("Invalid password");
+    private User findByName(String username){
+        return userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User name not found"));
     }
 
-    private User userFindByName(String username){
-        return userRepository.findByName(username).orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+    private void valid(User user, String password){
+        if (!user.isValidPassword(bCryptPasswordEncoder, password)) throw new BadCredentialsException("Invalid password");
     }
 }
