@@ -1,5 +1,6 @@
-package com.example.foodcloud.domain.foodmenu.service.image;
+package com.example.foodcloud.infra;
 
+import com.example.foodcloud.application.image.ImageUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -17,10 +18,10 @@ import java.time.format.DateTimeFormatter;
 
 @Component
 @RequiredArgsConstructor
-public class ImageUploadServiceImpl implements ImageUploadService {
+public class ImageUploaderImpl implements ImageUploader {
 
     @Override
-    public String saveFileAndReturnFilePath(String restaurantName, File file) {
+    public String savedFileAndReturnFilePath(String restaurantName, File file) {
         String fileName = StringUtils.cleanPath(creatFileName());
         String uploadDir = "food-menu-images/" + restaurantName + "/";
         Path uploadPath = Paths.get(uploadDir);

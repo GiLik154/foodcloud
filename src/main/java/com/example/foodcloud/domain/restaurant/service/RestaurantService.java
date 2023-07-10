@@ -25,32 +25,12 @@ public class RestaurantService implements RestaurantRegister, RestaurantDeleter,
 
     @Override
     public void add(Long userId, RestaurantRegisterCommend commend) {
-        User user = userFind(userId);
+        User user = findUser(userId);
 
         Restaurant restaurant = new Restaurant(commend.getName(), commend.getLocation(),
                 commend.getBusinessHours(), user);
 
         restaurantRepository.save(restaurant);
-    }
-
-    @Override
-    public void delete(Long userId, String password, Long restaurantId) {
-        User user = userFind(userId);
-
-        validPassword(user, password);
-
-        restaurantRepository.findById(restaurantId).
-                ifPresent(restaurantRepository::delete);
-    }
-
-    private User userFind(Long userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    }
-
-    private void validPassword(User user, String password) {
-        if (!user.isValidPassword(bCryptPasswordEncoder, password))
-            throw new BadCredentialsException("Invalid password");
     }
 
     @Override
@@ -68,5 +48,25 @@ public class RestaurantService implements RestaurantRegister, RestaurantDeleter,
                         restaurantUpdaterCommend.getLocation(),
                         restaurantUpdaterCommend.getBusinessHours()
                 ));
+    }
+
+    @Override
+    public void delete(Long userId, String password, Long restaurantId) {
+        User user = findUser(userId);
+
+        validPassword(user, password);
+
+        restaurantRepository.findById(restaurantId).
+                ifPresent(restaurantRepository::delete);
+    }
+
+    private User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    private void validPassword(User user, String password) {
+        if (!user.isValidPassword(bCryptPasswordEncoder, password))
+            throw new BadCredentialsException("Invalid password");
     }
 }

@@ -5,7 +5,8 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.update.dto.FoodMenuUpdateServiceDto;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuUpdaterCommend;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,15 +30,15 @@ import static org.mockito.Mockito.mock;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuUpdateServiceImplTest {
-    private final FoodMenuUpdateService foodMenuUpdateService;
+class FoodMenuUpdaterImplTest {
+    private final FoodMenuUpdater foodMenuUpdater;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public FoodMenuUpdateServiceImplTest(FoodMenuUpdateService foodMenuUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.foodMenuUpdateService = foodMenuUpdateService;
+    public FoodMenuUpdaterImplTest(FoodMenuUpdater foodMenuUpdater, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.foodMenuUpdater = foodMenuUpdater;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -53,14 +54,13 @@ class FoodMenuUpdateServiceImplTest {
 
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
-        Long restaurantId = restaurant.getId();
 
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuUpdateService.update(foodMenuId, foodMenuUpdateServiceDto, file);
+        FoodMenuUpdaterCommend foodMenuUpdaterCommend = new FoodMenuUpdaterCommend("test123", 3000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
+        foodMenuUpdater.update(foodMenuId, foodMenuUpdaterCommend, file);
 
         assertEquals("test123", foodMenu.getName());
         assertEquals(3000, foodMenu.getPrice());
@@ -85,8 +85,8 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
-        foodMenuUpdateService.update(foodMenuId, foodMenuUpdateServiceDto, file);
+        FoodMenuUpdaterCommend foodMenuUpdaterCommend = new FoodMenuUpdaterCommend("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
+        foodMenuUpdater.update(foodMenuId, foodMenuUpdaterCommend, file);
 
         FoodMenu updateFoodMenu = foodMenuRepository.findById(foodMenuId).get();
 
@@ -113,8 +113,8 @@ class FoodMenuUpdateServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdateServiceDto foodMenuUpdateServiceDto = new FoodMenuUpdateServiceDto("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
-        foodMenuUpdateService.update(foodMenuId + 1L, foodMenuUpdateServiceDto, file);
+        FoodMenuUpdaterCommend foodMenuUpdaterCommend = new FoodMenuUpdaterCommend("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
+        foodMenuUpdater.update(foodMenuId + 1L, foodMenuUpdaterCommend, file);
 
         FoodMenu updateFoodMenu = foodMenuRepository.findById(foodMenuId).get();
 

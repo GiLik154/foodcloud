@@ -1,10 +1,10 @@
-package com.example.foodcloud.domain.foodmenu.service.add;
+package com.example.foodcloud.domain.foodmenu.service;
 
-import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
 
 import java.io.File;
 
-public interface FoodMenuAddService {
+public interface FoodMenuCreator {
     /**
      * 식당의 id와 사용자의 id를 사용해 해당 식당이 존재하는지 확인한다.
      * 존재한다면 FoodMenuAddServiceDto로부터 받은 정보로 FoodMenu 객체를 생성하고,
@@ -12,8 +12,8 @@ public interface FoodMenuAddService {
      *
      * @param userId                사용자 id
      * @param restaurantId          식당 id
-     * @param foodMenuAddServiceDto 추가할 음식 메뉴 정보
+     * @param foodMenuCreatorCommend 추가할 음식 메뉴 정보
      * @param file                  이미지 파일
      */
-    void add(Long userId, Long restaurantId, FoodMenuAddServiceDto foodMenuAddServiceDto, File file);
+    void create(Long userId, Long restaurantId, FoodMenuCreatorCommend foodMenuCreatorCommend, File file);
 }

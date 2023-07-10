@@ -4,6 +4,7 @@ import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuDeleter;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -22,16 +23,16 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuDeleteServiceImplTest {
-    private final FoodMenuDeleteService foodMenuDeleteService;
+class FoodMenuDeleterImplTest {
+    private final FoodMenuDeleter foodMenuDeleter;
     private final FoodMenuRepository foodMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    FoodMenuDeleteServiceImplTest(FoodMenuDeleteService foodMenuDeleteService, FoodMenuRepository foodMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, PasswordEncoder bCryptPasswordEncoder) {
-        this.foodMenuDeleteService = foodMenuDeleteService;
+    FoodMenuDeleterImplTest(FoodMenuDeleter foodMenuDeleter, FoodMenuRepository foodMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, PasswordEncoder bCryptPasswordEncoder) {
+        this.foodMenuDeleter = foodMenuDeleter;
         this.foodMenuRepository = foodMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -51,7 +52,7 @@ class FoodMenuDeleteServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        foodMenuDeleteService.delete(userId, foodMenuId, "test");
+        foodMenuDeleter.delete(userId, foodMenuId, "test");
 
         assertFalse(foodMenuRepository.existsById(foodMenuId));
     }
@@ -71,7 +72,7 @@ class FoodMenuDeleteServiceImplTest {
 
 
         assertThrows(UsernameNotFoundException.class, () ->
-                foodMenuDeleteService.delete(userId + 1L, foodMenuId, "test123")
+                foodMenuDeleter.delete(userId + 1L, foodMenuId, "test123")
         );
 
         assertTrue(foodMenuRepository.existsById(foodMenuId));
@@ -90,7 +91,7 @@ class FoodMenuDeleteServiceImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        foodMenuDeleteService.delete(userId, foodMenuId + 1L, "test");
+        foodMenuDeleter.delete(userId, foodMenuId + 1L, "test");
 
         assertTrue(foodMenuRepository.existsById(foodMenuId));
     }
@@ -109,7 +110,7 @@ class FoodMenuDeleteServiceImplTest {
         Long foodMenuId = foodMenu.getId();
 
         BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                foodMenuDeleteService.delete(userId, foodMenuId, "test123")
+                foodMenuDeleter.delete(userId, foodMenuId, "test123")
         );
 
         assertEquals("Invalid password", e.getMessage());

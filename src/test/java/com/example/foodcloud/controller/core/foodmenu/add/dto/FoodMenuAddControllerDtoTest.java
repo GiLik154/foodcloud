@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.foodmenu.add.dto;
 
 import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuAddControllerDto;
-import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -26,13 +26,13 @@ class FoodMenuAddControllerDtoTest {
     @Test
     void 음식_추가_Dto_Convert() {
         FoodMenuAddControllerDto foodMenuAddControllerDto = new FoodMenuAddControllerDto("testName", 123456789, Temperature.COLD, FoodTypes.ADE, MeatTypes.BEEF, Vegetables.FEW);
-        FoodMenuAddServiceDto foodMenuAddServiceDto = foodMenuAddControllerDto.convert();
+        FoodMenuCreatorCommend foodMenuCreatorCommend = foodMenuAddControllerDto.convert();
 
-        assertEquals("testName", foodMenuAddServiceDto.getName());
-        assertEquals(123456789, foodMenuAddServiceDto.getPrice());
-        assertEquals(Temperature.COLD, foodMenuAddServiceDto.getTemperature());
-        assertEquals(FoodTypes.ADE, foodMenuAddServiceDto.getFoodTypes());
-        assertEquals(MeatTypes.BEEF, foodMenuAddServiceDto.getMeatType());
-        assertEquals(Vegetables.FEW, foodMenuAddServiceDto.getVegetables());
+        assertEquals("testName", foodMenuCreatorCommend.getName());
+        assertEquals(123456789, foodMenuCreatorCommend.getPrice());
+        assertEquals(Temperature.COLD, foodMenuCreatorCommend.getTemperature());
+        assertEquals(FoodTypes.ADE, foodMenuCreatorCommend.getFoodTypes());
+        assertEquals(MeatTypes.BEEF, foodMenuCreatorCommend.getMeatType());
+        assertEquals(Vegetables.FEW, foodMenuCreatorCommend.getVegetables());
     }
 }

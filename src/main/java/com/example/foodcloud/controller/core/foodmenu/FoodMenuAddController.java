@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuAddControllerDto;
-import com.example.foodcloud.domain.foodmenu.service.add.FoodMenuAddService;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuCreator;
 import com.example.foodcloud.enums.FoodType;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RequestMapping(value = "/food-menu/add")
 public class FoodMenuAddController {
-    private final FoodMenuAddService foodMenuAddService;
+    private final FoodMenuCreator foodMenuCreator;
 
     @GetMapping("")
     public String get() {
@@ -47,7 +47,7 @@ public class FoodMenuAddController {
             multipartFile.transferTo(file);
         }
 
-        foodMenuAddService.add(userId, restaurantId, foodMenuAddControllerDto.convert(), file);
+        foodMenuCreator.create(userId, restaurantId, foodMenuAddControllerDto.convert(), file);
 
         return "thymeleaf/food-menu/add";
     }

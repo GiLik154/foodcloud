@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.ordermenu.service;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuCountUpdateService;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
@@ -25,34 +25,31 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class OrderMenuService implements OrderMenuRegister, OrderMenuUpdater, OrderMenuDeleter {
+public class OrderMenuService implements OrderMenuCreator, OrderMenuUpdater, OrderMenuDeleter {
     private final UserRepository userRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
 
-    private final FoodMenuCountUpdateService foodMenuCountUpdateService;
+    private final FoodMenuUpdater foodMenuUpdater;
     private final RestaurantCountUpdater restaurantCountUpdater;
 
     @Override
-    public Long register(Long userId, OrderMenuRegisterCommend orderMenuRegisterCommend) {
+    public Long crate(Long userId, OrderMenuRegisterCommend commend) {
+        Long foodMenuId = commend.getFoodMenuId();
+        Long orderJoinGroupId = commend.getOrderJoinGroupId();
+
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        FoodMenu foodMenu = foodMenuRepository.findById(orderMenuRegisterCommend.getFoodMenuId()).orElseThrow(NotFoundFoodMenuException::new);
-        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderMenuRegisterCommend.getOrderJoinGroupId()).orElseThrow(() ->
+        FoodMenu foodMenu = foodMenuRepository.findById(foodMenuId).orElseThrow(() -> new NotFoundFoodMenuException("Not found food menu"));
+        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderJoinGroupId).orElseThrow(() ->
                 new NotFoundGroupByListException("Not found GroupByList"));
 
-        OrderMenu orderMenu = new OrderMenu(
-                orderMenuRegisterCommend.getCount(),
-                orderMenuRegisterCommend.getLocation(),
-                user,
-                groupBuyList,
-                foodMenu
-        );
+        OrderMenu orderMenu = new OrderMenu(commend.getCount(), commend.getLocation(), user, groupBuyList, foodMenu);
 
         orderMenuRepository.save(orderMenu);
 
         restaurantCountUpdater.increaseOrderCount(foodMenu.getRestaurant().getId());
-        foodMenuCountUpdateService.increaseOrderCount(foodMenu.getId());
+        foodMenuUpdater.increaseOrderCount(foodMenu.getId());
 
         return orderMenu.getId();
     }

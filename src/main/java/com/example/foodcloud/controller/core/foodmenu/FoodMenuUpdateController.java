@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.foodmenu;
 
 import com.example.foodcloud.controller.core.foodmenu.dto.FoodMenuUpdateControllerDto;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.update.FoodMenuUpdateService;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @RequestMapping(value = "/food-menu/update")
 public class FoodMenuUpdateController {
-    private final FoodMenuUpdateService foodMenuUpdateService;
+    private final FoodMenuUpdater foodMenuUpdater;
     private final FoodMenuRepository foodMenuRepository;
 
     @GetMapping("/{foodMenuId}")
@@ -42,7 +42,7 @@ public class FoodMenuUpdateController {
             multipartFile.transferTo(file);
         }
 
-        foodMenuUpdateService.update(foodMenuId,
+        foodMenuUpdater.update(foodMenuId,
                 foodMenuUpdateControllerDto.convert(),
                 file);
 

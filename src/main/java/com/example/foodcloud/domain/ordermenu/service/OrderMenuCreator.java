@@ -5,7 +5,7 @@ import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import com.example.foodcloud.exception.NotFoundGroupByListException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public interface OrderMenuRegister {
+public interface OrderMenuCreator {
     /**
      * 유저의 ID를 통해 유저가 존재하는지 확인
      * 음식 메뉴의 ID를 통해 음식 메뉴가 존재하는지 확인.
@@ -23,5 +23,5 @@ public interface OrderMenuRegister {
      *                                         'CANCELED'인 OrderJoinGroup가 존재하는지 확인할 때
      *                                         존재하지 않으면 발생
      */
-    Long register(Long userId, OrderMenuRegisterCommend orderMenuRegisterCommend);
+    Long crate(Long userId, OrderMenuRegisterCommend orderMenuRegisterCommend);
 }

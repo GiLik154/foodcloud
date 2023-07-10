@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.foodmenu.dto;
 
-import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -34,8 +34,8 @@ public class FoodMenuAddControllerDto {
         this.vegetables = vegetables;
     }
 
-    public FoodMenuAddServiceDto convert() {
-        return new FoodMenuAddServiceDto(this.name,
+    public FoodMenuCreatorCommend convert() {
+        return new FoodMenuCreatorCommend(this.name,
                 this.price,
                 this.temperature,
                 this.foodTypes,

@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.foodmenu.service.update.dto;
+package com.example.foodcloud.domain.foodmenu.service.commend;
 
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
@@ -6,8 +6,9 @@ import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
 import lombok.Getter;
 
+
 @Getter
-public class FoodMenuUpdateServiceDto {
+public class FoodMenuCreatorCommend {
     private final String name;
     private final int price;
     private final Temperature temperature;
@@ -15,7 +16,7 @@ public class FoodMenuUpdateServiceDto {
     private final MeatTypes meatType;
     private final Vegetables vegetables;
 
-    public FoodMenuUpdateServiceDto(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
+    public FoodMenuCreatorCommend(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
         this.name = name;
         this.price = price;
         this.temperature = temperature;

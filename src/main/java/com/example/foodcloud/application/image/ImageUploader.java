@@ -1,8 +1,8 @@
-package com.example.foodcloud.domain.foodmenu.service.image;
+package com.example.foodcloud.application.image;
 
 import java.io.File;
 
-public interface ImageUploadService {
+public interface ImageUploader {
     /**
      * 식당의 이름을 String으로 받는다.
      * creatFileName메소드를 통해 파일 이름을 만든다.
@@ -14,5 +14,5 @@ public interface ImageUploadService {
      * @param file           파일
      * @return 이미지가 업로드 된 path 주소
      */
-    String saveFileAndReturnFilePath(String restaurantName, File file);
+    String savedFileAndReturnFilePath(String restaurantName, File file);
 }

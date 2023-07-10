@@ -3,6 +3,7 @@ package com.example.foodcloud.domain.foodmenu.service.image;
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
+import com.example.foodcloud.application.image.ImageUploader;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -27,15 +28,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ImageUploadServiceImplTest {
-    private final ImageUploadService imageUploadService;
+class ImageUploaderImplTest {
+    private final ImageUploader imageUploader;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public ImageUploadServiceImplTest(ImageUploadService imageUploadService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.imageUploadService = imageUploadService;
+    public ImageUploaderImplTest(ImageUploader imageUploader, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.imageUploader = imageUploader;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -76,7 +77,7 @@ class ImageUploadServiceImplTest {
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.saveFileAndReturnFilePath(restaurant.getName(), file);
+        imageUploader.savedFileAndReturnFilePath(restaurant.getName(), file);
 
         assertEquals(1, folder.listFiles().length);
     }
@@ -108,7 +109,7 @@ class ImageUploadServiceImplTest {
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
         foodMenuRepository.save(foodMenu);
 
-        imageUploadService.saveFileAndReturnFilePath(restaurant.getName(), file);
+        imageUploader.savedFileAndReturnFilePath(restaurant.getName(), file);
 
         assertEquals(1, folder.listFiles().length);
     }

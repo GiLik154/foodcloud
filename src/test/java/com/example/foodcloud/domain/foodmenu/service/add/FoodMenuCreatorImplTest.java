@@ -4,7 +4,8 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.add.dto.FoodMenuAddServiceDto;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuCreator;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -28,15 +29,15 @@ import static org.mockito.Mockito.mock;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuAddServiceImplTest {
-    private final FoodMenuAddService foodMenuAddService;
+class FoodMenuCreatorImplTest {
+    private final FoodMenuCreator foodMenuCreator;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public FoodMenuAddServiceImplTest(FoodMenuAddService foodMenuAddService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.foodMenuAddService = foodMenuAddService;
+    public FoodMenuCreatorImplTest(FoodMenuCreator foodMenuCreator, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.foodMenuCreator = foodMenuCreator;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -54,8 +55,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
+        FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
+        foodMenuCreator.create(userId, restaurantId, foodMenuCreatorCommend, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
         assertEquals("test", foodMenu.getName());
@@ -79,8 +80,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuAddService.add(userId, restaurantId, foodMenuAddServiceDto, file);
+        FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
+        foodMenuCreator.create(userId, restaurantId, foodMenuCreatorCommend, file);
         FoodMenu foodMenu = foodMenuRepository.findByRestaurantId(restaurantId).get(0);
 
         assertEquals("test", foodMenu.getName());
@@ -104,8 +105,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuAddService.add(userId + 1L, restaurantId, foodMenuAddServiceDto, file);
+        FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
+        foodMenuCreator.create(userId + 1L, restaurantId, foodMenuCreatorCommend, file);
 
         List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
 
@@ -124,8 +125,8 @@ class FoodMenuAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        FoodMenuAddServiceDto foodMenuAddServiceDto = new FoodMenuAddServiceDto("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuAddService.add(userId, restaurantId + 1L, foodMenuAddServiceDto, file);
+        FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
+        foodMenuCreator.create(userId, restaurantId + 1L, foodMenuCreatorCommend, file);
 
         List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
 

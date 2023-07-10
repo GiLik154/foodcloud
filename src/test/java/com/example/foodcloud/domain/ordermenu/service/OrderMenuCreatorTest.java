@@ -31,8 +31,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class OrderMenuRegisterTest {
-    private final OrderMenuRegister orderMenuRegister;
+class OrderMenuCreatorTest {
+    private final OrderMenuCreator orderMenuCreator;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -40,8 +40,8 @@ class OrderMenuRegisterTest {
     private final GroupBuyListRepository groupBuyListRepository;
 
     @Autowired
-    OrderMenuRegisterTest(OrderMenuRegister orderMenuRegister, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
-        this.orderMenuRegister = orderMenuRegister;
+    OrderMenuCreatorTest(OrderMenuCreator orderMenuCreator, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
+        this.orderMenuCreator = orderMenuCreator;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -61,7 +61,7 @@ class OrderMenuRegisterTest {
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId);
 
-        orderMenuRegister.register(user.getId(), orderMenuRegisterCommend);
+        orderMenuCreator.crate(user.getId(), orderMenuRegisterCommend);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);
 
@@ -94,10 +94,10 @@ class OrderMenuRegisterTest {
         groupBuyListRepository.save(groupBuyList);
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("test", 5, foodMenu.getId(), groupBuyList.getId());
-        orderMenuRegister.register(user.getId(), orderMenuRegisterCommend);
+        orderMenuCreator.crate(user.getId(), orderMenuRegisterCommend);
 
         assertThrows(UsernameNotFoundException.class, () ->
-                orderMenuRegister.register(userId + 1L, orderMenuRegisterCommend)
+                orderMenuCreator.crate(userId + 1L, orderMenuRegisterCommend)
         );
 
     }
@@ -115,7 +115,7 @@ class OrderMenuRegisterTest {
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId + 1L, groupBuyListId);
 
-        assertThrows(NotFoundFoodMenuException.class, () -> orderMenuRegister.register(userId, orderMenuRegisterCommend));
+        assertThrows(NotFoundFoodMenuException.class, () -> orderMenuCreator.crate(userId, orderMenuRegisterCommend));
     }
 
     @Test
@@ -131,6 +131,6 @@ class OrderMenuRegisterTest {
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId + 1L);
 
-        assertThrows(NotFoundGroupByListException.class, () -> orderMenuRegister.register(userId, orderMenuRegisterCommend));
+        assertThrows(NotFoundGroupByListException.class, () -> orderMenuCreator.crate(userId, orderMenuRegisterCommend));
     }
 }
