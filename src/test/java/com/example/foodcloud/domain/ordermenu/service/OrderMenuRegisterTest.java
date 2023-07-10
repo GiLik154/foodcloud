@@ -17,7 +17,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
-import com.example.foodcloud.exception.NotFoundOrderJoinGroupException;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -96,7 +96,7 @@ class OrderMenuRegisterTest {
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("test", 5, foodMenu.getId(), groupBuyList.getId());
         orderMenuRegister.register(user.getId(), orderMenuRegisterCommend);
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
+        assertThrows(UsernameNotFoundException.class, () ->
                 orderMenuRegister.register(userId + 1L, orderMenuRegisterCommend)
         );
 
@@ -131,6 +131,6 @@ class OrderMenuRegisterTest {
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId + 1L);
 
-        assertThrows(NotFoundOrderJoinGroupException.class, () -> orderMenuRegister.register(userId, orderMenuRegisterCommend));
+        assertThrows(NotFoundGroupByListException.class, () -> orderMenuRegister.register(userId, orderMenuRegisterCommend));
     }
 }

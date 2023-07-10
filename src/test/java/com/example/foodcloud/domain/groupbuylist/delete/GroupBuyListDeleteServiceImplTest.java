@@ -5,7 +5,7 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.groupbuylist.service.delete.OrderJoinGroupDeleteService;
+import com.example.foodcloud.domain.groupbuylist.service.OrderJoinGroupDeleter;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -22,17 +22,17 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class GroupBuyListDeleteServiceImplTest {
-    private final OrderJoinGroupDeleteService orderJoinGroupDeleteService;
+    private final OrderJoinGroupDeleter orderJoinGroupDeleter;
     private final GroupBuyListRepository groupBuyListRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public GroupBuyListDeleteServiceImplTest(OrderJoinGroupDeleteService orderJoinGroupDeleteService,
+    public GroupBuyListDeleteServiceImplTest(OrderJoinGroupDeleter orderJoinGroupDeleter,
                                              GroupBuyListRepository groupBuyListRepository,
                                              UserRepository userRepository,
                                              RestaurantRepository restaurantRepository) {
-        this.orderJoinGroupDeleteService = orderJoinGroupDeleteService;
+        this.orderJoinGroupDeleter = orderJoinGroupDeleter;
         this.groupBuyListRepository = groupBuyListRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -51,7 +51,7 @@ class GroupBuyListDeleteServiceImplTest {
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleteService.delete(userId, groupBuyList.getId());
+        orderJoinGroupDeleter.delete(userId, groupBuyList.getId());
 
         assertFalse(groupBuyListRepository.existsById(groupBuyList.getId()));
     }
@@ -68,7 +68,7 @@ class GroupBuyListDeleteServiceImplTest {
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleteService.delete(userId + 1L, groupBuyList.getId());
+        orderJoinGroupDeleter.delete(userId + 1L, groupBuyList.getId());
 
         assertTrue(groupBuyListRepository.existsById(groupBuyList.getId()));
     }
@@ -85,7 +85,7 @@ class GroupBuyListDeleteServiceImplTest {
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleteService.delete(userId, groupBuyList.getId() + 1L);
+        orderJoinGroupDeleter.delete(userId, groupBuyList.getId() + 1L);
 
         assertTrue(groupBuyListRepository.existsById(groupBuyList.getId()));
     }

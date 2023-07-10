@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.ordermenu.service;
 
 import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
-import com.example.foodcloud.exception.NotFoundOrderJoinGroupException;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface OrderMenuRegister {
@@ -19,7 +19,7 @@ public interface OrderMenuRegister {
      *                                         존재하지 않으면 발생
      * @throws NotFoundFoodMenuException       음식 메뉴의 ID를 통해 음식 메뉴가 존재하는지 확인
      *                                         할 때 존재하지 않으면 발생
-     * @throws NotFoundOrderJoinGroupException 유저의 ID와 OrderJoinGroup의 ID를 통해 결과가
+     * @throws NotFoundGroupByListException 유저의 ID와 OrderJoinGroup의 ID를 통해 결과가
      *                                         'CANCELED'인 OrderJoinGroup가 존재하는지 확인할 때
      *                                         존재하지 않으면 발생
      */

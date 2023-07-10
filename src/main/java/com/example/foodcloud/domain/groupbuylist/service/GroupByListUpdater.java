@@ -1,6 +1,8 @@
-package com.example.foodcloud.domain.groupbuylist.service.update;
+package com.example.foodcloud.domain.groupbuylist.service;
 
-public interface OrderJoinGroupResultUpdateService {
+import com.example.foodcloud.enums.OrderResult;
+
+public interface GroupByListUpdater {
     /**
      * 유저의 ID와 OrderJoinGroup의 ID로 OrderJoinGroup가 존재하는지 확인한다.
      * 존재하면 result로 OrderResult를 찾고
@@ -9,7 +11,7 @@ public interface OrderJoinGroupResultUpdateService {
      *
      * @param userId           유저의 ID
      * @param orderJoinGroupId OrderJoinGroup의 ID
-     * @param result           수정할 결과값
+     * @param orderResult      수정할 결과값
      */
-    void update(Long userId, Long orderJoinGroupId, String result);
+    void update(Long userId, Long orderJoinGroupId, OrderResult orderResult);
 }

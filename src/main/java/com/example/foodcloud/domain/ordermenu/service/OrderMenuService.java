@@ -14,7 +14,7 @@ import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.exception.NotFoundFoodMenuException;
-import com.example.foodcloud.exception.NotFoundOrderJoinGroupException;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,8 @@ public class OrderMenuService implements OrderMenuRegister, OrderMenuUpdater, Or
     public Long register(Long userId, OrderMenuRegisterCommend orderMenuRegisterCommend) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         FoodMenu foodMenu = foodMenuRepository.findById(orderMenuRegisterCommend.getFoodMenuId()).orElseThrow(NotFoundFoodMenuException::new);
-        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderMenuRegisterCommend.getOrderJoinGroupId()).orElseThrow(NotFoundOrderJoinGroupException::new);
+        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderMenuRegisterCommend.getOrderJoinGroupId()).orElseThrow(() ->
+                new NotFoundGroupByListException("Not found GroupByList"));
 
         OrderMenu orderMenu = new OrderMenu(
                 orderMenuRegisterCommend.getCount(),

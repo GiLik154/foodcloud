@@ -2,7 +2,7 @@ package com.example.foodcloud.controller.core.order;
 
 import com.example.foodcloud.controller.core.order.dto.NewOrderCreateControllerDto;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.groupbuylist.service.add.NewOrderService;
+import com.example.foodcloud.application.order.NewOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
 public class NewOrderCreateController {
-    private final NewOrderService newOrderService;
+    private final NewOrder newOrder;
     private final FoodMenuRepository foodMenuRepository;
 
     @GetMapping("/new")
@@ -27,7 +27,7 @@ public class NewOrderCreateController {
     @PostMapping("/new")
     public String post(@SessionAttribute Long userId,
                        @Valid NewOrderCreateControllerDto newOrderCreateControllerDto) {
-        Long orderMenuId = newOrderService.order(userId, newOrderCreateControllerDto.convert());
+        Long orderMenuId = newOrder.order(userId, newOrderCreateControllerDto.convert());
 
         return "redirect:/payment/pay/" + orderMenuId;
     }

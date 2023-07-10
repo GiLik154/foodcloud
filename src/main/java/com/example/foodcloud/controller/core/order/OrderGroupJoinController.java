@@ -6,6 +6,7 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.service.OrderMenuRegister;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,8 +25,9 @@ public class OrderGroupJoinController {
 
 
     @GetMapping("/join")
-    public String get(@RequestParam Long orderJoinGroupId, Model model) {
-        GroupBuyList groupBuyList = groupBuyListRepository.findValidByIdAndNotCancel(orderJoinGroupId);
+    public String get(@RequestParam Long groupByListId, Model model) {
+        GroupBuyList groupBuyList = groupBuyListRepository.findById(groupByListId).orElseThrow(() ->
+                new NotFoundGroupByListException("Not found GroupByList"));
         List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(groupBuyList.getRestaurant().getId());
 
         model.addAttribute("OrderJoinGroupInfo", groupBuyList);
@@ -35,10 +37,10 @@ public class OrderGroupJoinController {
 
     @PostMapping("/join")
     public String post(@SessionAttribute Long userId,
-                       @RequestParam Long orderJoinGroupId,
+                       @RequestParam Long groupByListId,
                        @Valid OrderGroupJoinControllerDto orderGroupJoinControllerDto) {
 
-        Long orderMenuId = orderMenuRegister.register(userId, orderGroupJoinControllerDto.convert(orderJoinGroupId));
+        Long orderMenuId = orderMenuRegister.register(userId, orderGroupJoinControllerDto.convert(groupByListId));
 
         return "redirect:/payment/pay/" + orderMenuId;
     }

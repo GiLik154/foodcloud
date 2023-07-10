@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.order.dto;
 
-import com.example.foodcloud.domain.groupbuylist.service.add.dto.NewOrderServiceDto;
+import com.example.foodcloud.application.order.commend.NewOrderServiceCommend;
 import lombok.Getter;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,7 +25,7 @@ public class NewOrderCreateControllerDto {
         this.foodMenuId = foodMenuId;
     }
 
-    public NewOrderServiceDto convert() {
-        return new NewOrderServiceDto(this.location, this.count, this.restaurantId, this.foodMenuId);
+    public NewOrderServiceCommend convert() {
+        return new NewOrderServiceCommend(this.location, this.count, this.restaurantId, this.foodMenuId);
     }
 }

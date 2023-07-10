@@ -4,8 +4,8 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.groupbuylist.service.add.OrderJoinGroupAddService;
-import com.example.foodcloud.domain.groupbuylist.service.add.dto.OrderJoinGroupAddServiceDto;
+import com.example.foodcloud.domain.groupbuylist.service.OrderJoinGroupCreator;
+import com.example.foodcloud.domain.groupbuylist.service.commend.OrderJoinGroupCreatorCommend;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -25,18 +25,18 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class GroupBuyListAddServiceImplTest {
-    private final OrderJoinGroupAddService orderJoinGroupAddService;
+    private final OrderJoinGroupCreator orderJoinGroupCreator;
     private final GroupBuyListRepository groupBuyListRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public GroupBuyListAddServiceImplTest(OrderJoinGroupAddService OrderJoinGroupAddService,
+    public GroupBuyListAddServiceImplTest(OrderJoinGroupCreator OrderJoinGroupCreator,
                                           GroupBuyListRepository GroupBuyListRepository,
                                           UserRepository userRepository,
                                           RestaurantRepository restaurantRepository) {
 
-        this.orderJoinGroupAddService = OrderJoinGroupAddService;
+        this.orderJoinGroupCreator = OrderJoinGroupCreator;
         this.groupBuyListRepository = GroupBuyListRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -52,8 +52,8 @@ class GroupBuyListAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurant.getId();
 
-        OrderJoinGroupAddServiceDto OrderJoinGroupAddServiceDto = new OrderJoinGroupAddServiceDto("test", restaurantId);
-        orderJoinGroupAddService.add(userId, OrderJoinGroupAddServiceDto);
+        OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId);
+        orderJoinGroupCreator.add(userId, OrderJoinGroupCreatorCommend);
         GroupBuyList groupBuyList = groupBuyListRepository.findByUserId(userId).get(0);
 
         assertEquals("test", groupBuyList.getLocation());
@@ -73,10 +73,10 @@ class GroupBuyListAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderJoinGroupAddServiceDto OrderJoinGroupAddServiceDto = new OrderJoinGroupAddServiceDto("test", restaurantId);
+        OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId);
 
-        UsernameNotFoundException e = assertThrows(UsernameNotFoundException.class, () ->
-                orderJoinGroupAddService.add(userId + 1L, OrderJoinGroupAddServiceDto)
+        assertThrows(UsernameNotFoundException.class, () ->
+                orderJoinGroupCreator.add(userId + 1L, OrderJoinGroupCreatorCommend)
         );
     }
 
@@ -93,10 +93,10 @@ class GroupBuyListAddServiceImplTest {
         restaurantRepository.save(restaurant);
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
-        OrderJoinGroupAddServiceDto OrderJoinGroupAddServiceDto = new OrderJoinGroupAddServiceDto("test", restaurantId + 1L);
+        OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId + 1L);
 
         NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
-                orderJoinGroupAddService.add(userId, OrderJoinGroupAddServiceDto)
+                orderJoinGroupCreator.add(userId, OrderJoinGroupCreatorCommend)
         );
         assertEquals("Not found Restaurant", e.getMessage());
     }

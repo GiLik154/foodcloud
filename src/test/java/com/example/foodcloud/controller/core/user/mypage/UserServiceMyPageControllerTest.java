@@ -1,10 +1,10 @@
 package com.example.foodcloud.controller.core.user.mypage;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.user.UserMyPageController;
 import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.security.login.UserDetailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +27,14 @@ class UserServiceMyPageControllerTest {
     private final UserExceptionAdvice userExceptionAdvice;
     private final UserRepository userRepository;
     private final LoginInterceptor loginInterceptor;
-    private final UserDetailService userDetailService;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserServiceMyPageControllerTest(UserMyPageController userMyPageController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, LoginInterceptor loginInterceptor, UserDetailService userDetailService) {
+    public UserServiceMyPageControllerTest(UserMyPageController userMyPageController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, LoginInterceptor loginInterceptor) {
         this.userMyPageController = userMyPageController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.userRepository = userRepository;
         this.loginInterceptor = loginInterceptor;
-        this.userDetailService = userDetailService;
     }
 
     @BeforeEach
@@ -48,8 +46,10 @@ class UserServiceMyPageControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "testName", password = "testPassword")
+    @WithMockUser(username = "testUserName", password = "testPassword")
     void 마이페이지_기본화면() throws Exception {
+        userRepository.save(UserFixture.fixture().build());
+
         MockHttpServletRequestBuilder builder = get("/user/my-page");
 
         mockMvc.perform(builder)

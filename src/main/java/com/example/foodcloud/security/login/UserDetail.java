@@ -1,6 +1,6 @@
 package com.example.foodcloud.security.login;
 
-import com.example.foodcloud.domain.user.domain.User;
+import com.example.foodcloud.enums.UserGrade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,27 +8,31 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class UserDetail implements UserDetails {
-    private final transient User user;
+    private final String username;
+    private final String password;
+    private final UserGrade userGrade;
 
-    public UserDetail(User user) {
-        this.user = user;
+    public UserDetail(String username, String password, UserGrade userGrade) {
+        this.username = username;
+        this.password = password;
+        this.userGrade = userGrade;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> collection = new ArrayList<>();
-        collection.add((GrantedAuthority) () -> user.getUserGrade().getAuthority());
+        collection.add(userGrade);
         return collection;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getName();
+        return username;
     }
 
     @Override
@@ -49,9 +53,5 @@ public class UserDetail implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User getUser() {
-        return user;
     }
 }

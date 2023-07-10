@@ -1,8 +1,8 @@
-package com.example.foodcloud.domain.groupbuylist.service.add;
+package com.example.foodcloud.domain.groupbuylist.service;
 
-import com.example.foodcloud.domain.groupbuylist.service.add.dto.OrderJoinGroupAddServiceDto;
+import com.example.foodcloud.domain.groupbuylist.service.commend.OrderJoinGroupCreatorCommend;
 
-public interface OrderJoinGroupAddService {
+public interface OrderJoinGroupCreator {
     /**
      * 유저의 ID로 유저가 존재하는지 확인한다.
      * DTO의 식당의 ID로 식당이 존재하는지 확인한다.
@@ -10,9 +10,9 @@ public interface OrderJoinGroupAddService {
      * 이후 OrderJoinGroup의 ID를 반환한다.
      *
      * @param userId                      유저의 ID
-     * @param orderJoinGroupAddServiceDto OrderJoinGroup를 생성하기 위한
+     * @param orderJoinGroupCreatorCommend OrderJoinGroup를 생성하기 위한
      *                                    정보가 담긴 DTO
      * @return OrderJoinGroup의 ID
      */
-    Long add(Long userId, OrderJoinGroupAddServiceDto orderJoinGroupAddServiceDto);
+    Long add(Long userId, OrderJoinGroupCreatorCommend orderJoinGroupCreatorCommend);
 }
