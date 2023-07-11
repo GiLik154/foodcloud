@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class GroupBuyListService implements OrderJoinGroupCreator, GroupByListUpdater, OrderJoinGroupDeleter {
+public class GroupBuyListService implements GroupByListCreator, GroupByListUpdater, GroupByListDeleter {
     private final GroupBuyListRepository groupBuyListRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;

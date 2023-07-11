@@ -47,9 +47,7 @@ public class GroupBuyList {
         this.result = OrderResult.PAYMENT_WAITING;
     }
 
-    /**
-     * 결과 업데이트
-     */
+    /** 결과 업데이트 */
     public void updateResult(OrderResult result) {
         this.result = result;
     }

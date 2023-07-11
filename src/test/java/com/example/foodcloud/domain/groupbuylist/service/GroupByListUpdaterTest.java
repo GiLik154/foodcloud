@@ -1,92 +1,84 @@
-package com.example.foodcloud.domain.groupbuylist.delete;
+package com.example.foodcloud.domain.groupbuylist.service;
 
 import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.groupbuylist.service.OrderJoinGroupDeleter;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class GroupBuyListDeleteServiceImplTest {
-    private final OrderJoinGroupDeleter orderJoinGroupDeleter;
+class GroupByListUpdaterTest {
+    private final GroupByListUpdater groupByListUpdater;
     private final GroupBuyListRepository groupBuyListRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
 
     @Autowired
-    public GroupBuyListDeleteServiceImplTest(OrderJoinGroupDeleter orderJoinGroupDeleter,
-                                             GroupBuyListRepository groupBuyListRepository,
-                                             UserRepository userRepository,
-                                             RestaurantRepository restaurantRepository) {
-        this.orderJoinGroupDeleter = orderJoinGroupDeleter;
-        this.groupBuyListRepository = groupBuyListRepository;
+    public GroupByListUpdaterTest(GroupByListUpdater GroupByListUpdater,
+                                  GroupBuyListRepository GroupBuyListRepository,
+                                  UserRepository userRepository,
+                                  RestaurantRepository restaurantRepository) {
+        this.groupByListUpdater = GroupByListUpdater;
+        this.groupBuyListRepository = GroupBuyListRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
     }
 
     @Test
-    void 오더메인_삭제_정상작동() {
+    void 메인주문_업데이트_정상_작동() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId();
-
-
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleter.delete(userId, groupBuyList.getId());
+        Long userId = user.getId();
+        Long groupBuyListId = groupBuyList.getId();
 
-        assertFalse(groupBuyListRepository.existsById(groupBuyList.getId()));
+        groupByListUpdater.update(userId, groupBuyListId, OrderResult.PREPARED);
+
+        assertEquals(OrderResult.PREPARED, groupBuyList.getResult());
     }
 
     @Test
-    void 오더메인_삭제_유저_고유번호_다름() {
+    void 유저의_고유변호가_다르면_익셉션_발생() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId();
-
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleter.delete(userId + 1L, groupBuyList.getId());
+        Long userId = user.getId();
+        Long groupBuyListId = groupBuyList.getId();
 
-        assertTrue(groupBuyListRepository.existsById(groupBuyList.getId()));
+        assertThrows(NotFoundGroupByListException.class, () -> groupByListUpdater.update(userId + 1L, groupBuyListId, OrderResult.PREPARED));
+
+        assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
     }
 
     @Test
-    void 오더메인_삭제_오더메인_고유번호_다름() {
+    void 공구리스트의_고유번호가_다르면_익셉션_발생() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId();
-
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
 
-        orderJoinGroupDeleter.delete(userId, groupBuyList.getId() + 1L);
+        Long userId = user.getId();
+        Long groupBuyListId = groupBuyList.getId();
 
-        assertTrue(groupBuyListRepository.existsById(groupBuyList.getId()));
+        assertThrows(NotFoundGroupByListException.class, () -> groupByListUpdater.update(userId, groupBuyListId + 1L, OrderResult.PREPARED));
+
+        assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
     }
 }
