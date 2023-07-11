@@ -7,7 +7,6 @@ import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.OrderMenuRecommender;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -59,7 +58,7 @@ class OrderMenuRecommenderTest {
 
         Long userId = user.getId();
 
-        List<FoodMenu> list = orderMenuRecommender.recommend(userId, "test");
+        List<FoodMenu> list = orderMenuRecommender.recommend(userId, "testLocation");
 
         assertNotNull(list);
         assertEquals(3, list.size());
@@ -77,7 +76,7 @@ class OrderMenuRecommenderTest {
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         restaurantRepository.save(restaurant);
 
-        FoodMenu foodMenu1 =  FoodMenuFixture.fixture(restaurant).name("1").build();
+        FoodMenu foodMenu1 =  foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).name("1").build());
 
         for(int i = 1; i < 7; i++) {
             foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).name(String.valueOf(i)).build());
@@ -88,7 +87,7 @@ class OrderMenuRecommenderTest {
 
         orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu1).build());
 
-        List<FoodMenu> list = orderMenuRecommender.recommend(userId, "test");
+        List<FoodMenu> list = orderMenuRecommender.recommend(userId, "testLocation");
 
         assertNotNull(list);
         assertEquals(5, list.size());

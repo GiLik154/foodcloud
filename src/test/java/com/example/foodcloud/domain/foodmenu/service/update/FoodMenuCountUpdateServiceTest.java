@@ -3,6 +3,7 @@ package com.example.foodcloud.domain.foodmenu.service.update;
 import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
@@ -25,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuCountUpdateServiceTest {
-    private final FoodMenuCountUpdateService foodMenuCountUpdateService;
+    private final FoodMenuUpdater foodMenuUpdater;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -33,8 +34,8 @@ class FoodMenuCountUpdateServiceTest {
     private final GroupBuyListRepository groupBuyListRepository;
 
     @Autowired
-    public FoodMenuCountUpdateServiceTest(FoodMenuCountUpdateService foodMenuCountUpdateService, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
-        this.foodMenuCountUpdateService = foodMenuCountUpdateService;
+    public FoodMenuCountUpdateServiceTest(FoodMenuUpdater foodMenuUpdater, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
+        this.foodMenuUpdater = foodMenuUpdater;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.orderMenuRepository = orderMenuRepository;
@@ -65,7 +66,7 @@ class FoodMenuCountUpdateServiceTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuCountUpdateService.increaseOrderCount(foodMenuId);
+                foodMenuUpdater.increaseOrderCount(foodMenuId);
                 countDownLatch.countDown();
             });
         }

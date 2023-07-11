@@ -11,6 +11,7 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -54,7 +55,7 @@ class GroupBuyListResultUpdateServiceImplTest {
     }
 
     @Test
-    void 메인주문_업데이트_유저고유번호_다름() {
+    void 유저의_고유변호가_다르면_익셉션_발생() {
         User user = userRepository.save(UserFixture.fixture().build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
@@ -62,13 +63,13 @@ class GroupBuyListResultUpdateServiceImplTest {
         Long userId = user.getId();
         Long groupBuyListId = groupBuyList.getId();
 
-        groupByListUpdater.update(userId + 1L, groupBuyListId, OrderResult.PREPARED);
+        assertThrows(NotFoundGroupByListException.class, () -> groupByListUpdater.update(userId + 1L, groupBuyListId, OrderResult.PREPARED));
 
         assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
     }
 
     @Test
-    void 메인주문_업데이트_오더고유번호_다름() {
+    void 공구리스트의_고유번호가_다르면_익셉션_발생() {
         User user = userRepository.save(UserFixture.fixture().build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
@@ -76,7 +77,7 @@ class GroupBuyListResultUpdateServiceImplTest {
         Long userId = user.getId();
         Long groupBuyListId = groupBuyList.getId();
 
-        groupByListUpdater.update(userId, groupBuyListId, OrderResult.PREPARED);
+        assertThrows(NotFoundGroupByListException.class, () -> groupByListUpdater.update(userId, groupBuyListId + 1L, OrderResult.PREPARED));
 
         assertEquals(OrderResult.PAYMENT_WAITING, groupBuyList.getResult());
     }

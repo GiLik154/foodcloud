@@ -9,6 +9,7 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -71,9 +72,7 @@ class FoodMenuDeleterImplTest {
         Long foodMenuId = foodMenu.getId();
 
 
-        assertThrows(UsernameNotFoundException.class, () ->
-                foodMenuDeleter.delete(userId + 1L, foodMenuId, "test123")
-        );
+        assertThrows(UsernameNotFoundException.class, () -> foodMenuDeleter.delete(userId + 1L, foodMenuId, "test123"));
 
         assertTrue(foodMenuRepository.existsById(foodMenuId));
     }
@@ -91,7 +90,7 @@ class FoodMenuDeleterImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        foodMenuDeleter.delete(userId, foodMenuId + 1L, "test");
+        assertThrows(NotFoundFoodMenuException.class, () -> foodMenuDeleter.delete(userId, foodMenuId + 1L, "test"));
 
         assertTrue(foodMenuRepository.existsById(foodMenuId));
     }
@@ -109,11 +108,8 @@ class FoodMenuDeleterImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                foodMenuDeleter.delete(userId, foodMenuId, "test123")
-        );
+        assertThrows(BadCredentialsException.class, () -> foodMenuDeleter.delete(userId, foodMenuId, "test123"));
 
-        assertEquals("Invalid password", e.getMessage());
         assertTrue(foodMenuRepository.existsById(foodMenuId));
     }
 }

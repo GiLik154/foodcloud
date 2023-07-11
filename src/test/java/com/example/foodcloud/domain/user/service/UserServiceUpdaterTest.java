@@ -31,10 +31,10 @@ class UserServiceUpdaterTest {
 
         userUpdater.update("testUserName", "newPhone");
 
-        User updateTest = userRepository.findByName("testName").get();
+        User updateTest = userRepository.findByName("testUserName").get();
 
-        assertEquals("testName", updateTest.getName());
-        assertEquals("testPassword", updateTest.getPassword());
+        assertEquals("testUserName", updateTest.getName());
+        assertEquals("testUserPassword", updateTest.getPassword());
         assertEquals("newPhone", updateTest.getPhone());
     }
 

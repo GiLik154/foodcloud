@@ -16,7 +16,7 @@ public class NewOrderServcie implements NewOrder {
 
     @Override
     public Long order(Long userId, NewOrderServiceCommend newOrderServiceCommend) {
-        Long orderJoinGroupId = orderJoinGroupCreator.add(userId, newOrderServiceCommend.convertOrderJoinGroupDto());
+        Long orderJoinGroupId = orderJoinGroupCreator.craete(userId, newOrderServiceCommend.convertOrderJoinGroupDto());
 
         return orderMenuCreator.crate(userId, newOrderServiceCommend.convertOrderMenuDto(orderJoinGroupId));
     }

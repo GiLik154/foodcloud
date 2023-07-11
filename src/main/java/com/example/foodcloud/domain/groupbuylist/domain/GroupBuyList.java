@@ -22,7 +22,7 @@ public class GroupBuyList {
 
     /** 주문한 시간 */
     @CreatedDate
-    private LocalDateTime time;
+    private final LocalDateTime time = LocalDateTime.now();
 
     /** 주문한 유저 */
     @ManyToOne(fetch = FetchType.LAZY)

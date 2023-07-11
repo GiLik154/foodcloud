@@ -53,7 +53,8 @@ class GroupBuyListAddServiceImplTest {
         Long restaurantId = restaurant.getId();
 
         OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId);
-        orderJoinGroupCreator.add(userId, OrderJoinGroupCreatorCommend);
+        orderJoinGroupCreator.craete(userId, OrderJoinGroupCreatorCommend);
+
         GroupBuyList groupBuyList = groupBuyListRepository.findByUserId(userId).get(0);
 
         assertEquals("test", groupBuyList.getLocation());
@@ -76,7 +77,7 @@ class GroupBuyListAddServiceImplTest {
         OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId);
 
         assertThrows(UsernameNotFoundException.class, () ->
-                orderJoinGroupCreator.add(userId + 1L, OrderJoinGroupCreatorCommend)
+                orderJoinGroupCreator.craete(userId + 1L, OrderJoinGroupCreatorCommend)
         );
     }
 
@@ -96,7 +97,7 @@ class GroupBuyListAddServiceImplTest {
         OrderJoinGroupCreatorCommend OrderJoinGroupCreatorCommend = new OrderJoinGroupCreatorCommend("test", restaurantId + 1L);
 
         NotFoundRestaurantException e = assertThrows(NotFoundRestaurantException.class, () ->
-                orderJoinGroupCreator.add(userId, OrderJoinGroupCreatorCommend)
+                orderJoinGroupCreator.craete(userId, OrderJoinGroupCreatorCommend)
         );
         assertEquals("Not found Restaurant", e.getMessage());
     }

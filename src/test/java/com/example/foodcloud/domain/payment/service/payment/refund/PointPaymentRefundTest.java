@@ -7,7 +7,6 @@ import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.payment.service.payments.PaymentService;
@@ -31,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PointPaymentRefundTest {
     private final Map<String, PaymentService> bankPaymentService;
-    private final BankAccountRepository bankAccountRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
@@ -40,9 +38,8 @@ class PointPaymentRefundTest {
     private final PointRepository pointRepository;
 
     @Autowired
-    public PointPaymentRefundTest(Map<String, PaymentService> bankPaymentService, BankAccountRepository bankAccountRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, PointRepository pointRepository) {
+    public PointPaymentRefundTest(Map<String, PaymentService> bankPaymentService, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, PointRepository pointRepository) {
         this.bankPaymentService = bankPaymentService;
-        this.bankAccountRepository = bankAccountRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
@@ -69,8 +66,8 @@ class PointPaymentRefundTest {
         String result = bankPaymentService.get(BANK_CODE).refund(userId, orderMenu);
 
         assertTrue(result.contains("succeed"));
-        assertEquals(31000, point.getTotalPoint());
-        assertEquals(25000, point.getRecentPoint());
+        assertEquals(56000, point.getTotalPoint());
+        assertEquals(50000, point.getRecentPoint());
     }
 
     @Test

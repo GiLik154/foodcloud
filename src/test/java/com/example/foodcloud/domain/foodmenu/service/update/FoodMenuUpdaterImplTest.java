@@ -15,6 +15,7 @@ import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
+import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -113,8 +114,8 @@ class FoodMenuUpdaterImplTest {
         foodMenuRepository.save(foodMenu);
         Long foodMenuId = foodMenu.getId();
 
-        FoodMenuUpdaterCommend foodMenuUpdaterCommend = new FoodMenuUpdaterCommend("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.BEEF, Vegetables.MANY);
-        foodMenuUpdater.update(foodMenuId + 1L, foodMenuUpdaterCommend, file);
+        FoodMenuUpdaterCommend foodMenuUpdaterCommend = new FoodMenuUpdaterCommend("updateTest", 3000, Temperature.HOT, FoodTypes.AMERICANO, MeatTypes.CHICKEN, Vegetables.MANY);
+        assertThrows(NotFoundFoodMenuException.class, () -> foodMenuUpdater.update(foodMenuId + 1L, foodMenuUpdaterCommend, file));
 
         FoodMenu updateFoodMenu = foodMenuRepository.findById(foodMenuId).get();
 
@@ -122,7 +123,7 @@ class FoodMenuUpdaterImplTest {
         assertNotEquals(3000, updateFoodMenu.getPrice());
         assertNotEquals(Temperature.HOT, updateFoodMenu.getTemperature());
         assertNotEquals(FoodTypes.AMERICANO, updateFoodMenu.getFoodTypes());
-        assertNotEquals(MeatTypes.BEEF, updateFoodMenu.getMeatType());
+        assertNotEquals(MeatTypes.CHICKEN, updateFoodMenu.getMeatType());
         assertNotEquals(Vegetables.MANY, updateFoodMenu.getVegetables());
         assertNull(updateFoodMenu.getImagePath());
     }

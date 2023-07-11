@@ -14,6 +14,7 @@ import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
 import com.example.foodcloud.enums.foodmenu.Vegetables;
+import com.example.foodcloud.exception.NotFoundRestaurantException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -106,7 +107,7 @@ class FoodMenuCreatorImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuCreator.create(userId + 1L, restaurantId, foodMenuCreatorCommend, file);
+        assertThrows(NotFoundRestaurantException.class, () -> foodMenuCreator.create(userId + 1L, restaurantId, foodMenuCreatorCommend, file));
 
         List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
 
@@ -126,7 +127,8 @@ class FoodMenuCreatorImplTest {
         Long restaurantId = restaurantRepository.findByUserId(userId).get(0).getId();
 
         FoodMenuCreatorCommend foodMenuCreatorCommend = new FoodMenuCreatorCommend("test", 5000, Temperature.COLD, FoodTypes.ADE, MeatTypes.CHICKEN, Vegetables.FEW);
-        foodMenuCreator.create(userId, restaurantId + 1L, foodMenuCreatorCommend, file);
+
+        assertThrows(NotFoundRestaurantException.class, () -> foodMenuCreator.create(userId, restaurantId + 1L, foodMenuCreatorCommend, file));
 
         List<FoodMenu> foodMenus = foodMenuRepository.findByRestaurantId(restaurantId);
 

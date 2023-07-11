@@ -7,7 +7,6 @@ import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.OrderMenuUpdater;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.payment.domain.Point;
@@ -85,7 +84,7 @@ class OrderMenuPaymentUpdaterTest {
 
         orderMenuUpdater.paymentUpdate(orderMenu.getId(), bankAccount);
 
-        assertEquals(PaymentCode.KB, orderMenu.getPayment().getPaymentCode());
+        assertEquals(code, orderMenu.getPayment().getPaymentCode());
     }
 
     @Test

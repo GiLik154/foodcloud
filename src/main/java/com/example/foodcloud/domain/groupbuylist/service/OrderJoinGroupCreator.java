@@ -14,5 +14,5 @@ public interface OrderJoinGroupCreator {
      *                                    정보가 담긴 DTO
      * @return OrderJoinGroup의 ID
      */
-    Long add(Long userId, OrderJoinGroupCreatorCommend orderJoinGroupCreatorCommend);
+    Long craete(Long userId, OrderJoinGroupCreatorCommend orderJoinGroupCreatorCommend);
 }

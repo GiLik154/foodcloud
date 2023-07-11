@@ -30,7 +30,7 @@ public class GroupBuyListService implements OrderJoinGroupCreator, GroupByListUp
     private final OrderMenuRepository orderMenuRepository;
 
     @Override
-    public Long add(Long userId, OrderJoinGroupCreatorCommend commend) {
+    public Long craete(Long userId, OrderJoinGroupCreatorCommend commend) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         Restaurant restaurant = restaurantRepository.findById(commend.getRestaurantId()).orElseThrow(() -> new NotFoundRestaurantException("Not found Restaurant"));
 

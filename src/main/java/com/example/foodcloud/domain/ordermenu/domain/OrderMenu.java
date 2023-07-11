@@ -28,7 +28,7 @@ public class OrderMenu {
 
     /** 주문 시간 */
     @CreatedDate
-    private LocalDateTime time;
+    private final LocalDateTime time = LocalDateTime.now();
 
     /** 주문 장소 */
     @Column(nullable = false)
