@@ -34,7 +34,6 @@ class BankAccountRegisterTest {
     @Test
     void 계좌_추가_정상작동() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
         Long userId = user.getId();
 
         BankAccountRegisterCommend bankAccountRegisterCommend = new BankAccountRegisterCommend("testName", "testNumber", PaymentCode.KB);
@@ -53,7 +52,6 @@ class BankAccountRegisterTest {
     @Test
     void 계좌_추가_유저_없음() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
         Long userId = user.getId();
 
         BankAccountRegisterCommend bankAccountRegisterCommend = new BankAccountRegisterCommend("testName", "testNumber", PaymentCode.KB);

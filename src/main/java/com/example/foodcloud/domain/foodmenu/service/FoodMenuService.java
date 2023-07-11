@@ -73,9 +73,7 @@ public class FoodMenuService implements FoodMenuCreator, FoodMenuUpdater, FoodMe
     public void delete(Long userId, Long foodMenuId, String password) {
         FoodMenu foodMenu = findFoodMenu(foodMenuId);
 
-        User user = findUser(userId);
-
-        validPassword(user, password);
+        validUser(userId, password);
 
         foodMenuRepository.delete(foodMenu);
     }
@@ -84,12 +82,14 @@ public class FoodMenuService implements FoodMenuCreator, FoodMenuUpdater, FoodMe
         return foodMenuRepository.findById(foodMenuId).orElseThrow(() -> new NotFoundFoodMenuException("Not found food menu"));
     }
 
-    private User findUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+    private void validUser(Long userId, String password) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        validPassword(user, password);
     }
 
-    private void validPassword(User user, String password) {
-        if (!user.isValidPassword(bCryptPasswordEncoder, password))
-            throw new BadCredentialsException("Invalid password");
+    private void validPassword(User user, String password){
+        if (!user.isValidPassword(bCryptPasswordEncoder, password)) throw new BadCredentialsException("Invalid password");
     }
 }

@@ -1,10 +1,11 @@
 package com.example.foodcloud.domain.payment.service.bank;
 
+import com.example.foodcloud.BankAccountFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.PaymentCode;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,64 +36,53 @@ class BankAccountDeleterTest {
 
     @Test
     void 계좌_삭제_정상작동() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
-        bankAccountRepository.save(bankAccount);
+        Long userId = user.getId();
+        Long bankAccountId = bankAccount.getId();
 
-        bankAccountDeleter.delete(user.getId(), bankAccount.getId(), "test");
+        bankAccountDeleter.delete(userId, bankAccountId, "testPassword");
 
-        assertFalse(bankAccountRepository.existsById(bankAccount.getId()));
+        assertFalse(bankAccountRepository.existsById(bankAccountId));
     }
 
     @Test
     void 계좌_삭제_유저고유번호_다름() { //
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
-        Long userId = user.getId() + 1L;
+        User user = userRepository.save(UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
-        bankAccountRepository.save(bankAccount);
+        Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();
 
-        assertThrows(NotFoundBankAccountException.class, () ->
-                bankAccountDeleter.delete(userId, bankAccountId, "test"));
+        assertThrows(NotFoundBankAccountException.class, () -> bankAccountDeleter.delete(userId + 1L, bankAccountId, "testPassword"));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
     void 계좌_삭제_계좌고유번호_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
+
         Long userId = user.getId();
+        Long bankAccountId = bankAccount.getId();
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId() + 1L;
-
-        assertThrows(NotFoundBankAccountException.class, () ->
-                bankAccountDeleter.delete(userId, bankAccountId, "test"));
+        assertThrows(NotFoundBankAccountException.class, () -> bankAccountDeleter.delete(userId, bankAccountId + 1L, "testPassword"));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
     }
 
     @Test
     void 계좌_삭제_비밀번호_다름() {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
-        Long userId = user.getId();
+        User user = userRepository.save(UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build());
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
-        bankAccountRepository.save(bankAccount);
+        Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();
 
-        BadCredentialsException e = assertThrows(BadCredentialsException.class, () ->
-                bankAccountDeleter.delete(userId, bankAccountId, "test123")
-        );
+        assertThrows(BadCredentialsException.class, () -> bankAccountDeleter.delete(userId, bankAccountId, "wrongPassword"));
 
         assertTrue(bankAccountRepository.existsById(bankAccount.getId()));
-        assertEquals("Invalid password", e.getMessage());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.foodcloud.domain.payment.service.bank;
 
+import com.example.foodcloud.BankAccountFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
@@ -35,11 +36,9 @@ class BankAccountUpdaterTest {
     @Test
     void 계좌_업데이트_정상작동() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId();
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.KB);
-        bankAccountRepository.save(bankAccount);
+        Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdaterCommend bankAccountUpdaterCommend = new BankAccountUpdaterCommend("updateName", "updateNumber", PaymentCode.KB);
@@ -53,40 +52,36 @@ class BankAccountUpdaterTest {
     @Test
     void 유저의_고유번호가_다르면_익셉션이_발생해야함() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId() + 1L;
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
+        Long userId = user.getId();
         Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdaterCommend bankAccountUpdaterCommend = new BankAccountUpdaterCommend("test123", "test123", PaymentCode.KB);
 
         assertThrows(NotFoundBankAccountException.class, () ->
-                bankAccountUpdater.update(userId, bankAccountId, bankAccountUpdaterCommend));
+                bankAccountUpdater.update(userId + 1L, bankAccountId, bankAccountUpdaterCommend));
 
         assertEquals("testBankName", bankAccount.getName());
-        assertEquals("testBankNumber", bankAccount.getAccountNumber());
+        assertEquals("testNumber", bankAccount.getAccountNumber());
         assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());
     }
 
     @Test
     void 계좌의_고유번호가_다르면_익셉션이_발생해야함() {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-        Long userId = user.getId();
+        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
-        BankAccount bankAccount = new BankAccount(user, "testBankName", "testBankNumber", PaymentCode.NH);
-        bankAccountRepository.save(bankAccount);
-        Long bankAccountId = bankAccount.getId() + 1L;
+        Long userId = user.getId();
+        Long bankAccountId = bankAccount.getId();
 
         BankAccountUpdaterCommend bankAccountUpdaterCommend = new BankAccountUpdaterCommend("test123", "test123", PaymentCode.KB);
 
         assertThrows(NotFoundBankAccountException.class, () ->
-                bankAccountUpdater.update(userId, bankAccountId, bankAccountUpdaterCommend));
+                bankAccountUpdater.update(userId, bankAccountId + 1L, bankAccountUpdaterCommend));
 
         assertEquals("testBankName", bankAccount.getName());
-        assertEquals("testBankNumber", bankAccount.getAccountNumber());
+        assertEquals("testNumber", bankAccount.getAccountNumber());
         assertEquals(PaymentCode.NH, bankAccount.getPaymentCode());
     }
 }

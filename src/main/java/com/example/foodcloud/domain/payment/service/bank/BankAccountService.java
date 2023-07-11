@@ -6,10 +6,11 @@ import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegi
 import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountUpdaterCommend;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.validate.UserValidation;
 import com.example.foodcloud.exception.NotFoundBankAccountException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BankAccountService implements BankAccountRegister, BankAccountUpdater, BankAccountDeleter {
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
-    private final UserValidation userValidation;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public void register(Long userId, BankAccountRegisterCommend bankAccountRegisterCommend) {
@@ -49,8 +50,18 @@ public class BankAccountService implements BankAccountRegister, BankAccountUpdat
             throw new NotFoundBankAccountException("Not exist bank account");
         }
 
-        userValidation.validate(userId, password);
+        validUser(userId, password);
 
         bankAccountRepository.deleteById(bankAccountId);
+    }
+
+    private void validUser(Long userId, String password) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        validPassword(user, password);
+    }
+
+    private void validPassword(User user, String password){
+        if (!user.isValidPassword(bCryptPasswordEncoder, password)) throw new BadCredentialsException("Invalid password");
     }
 }
