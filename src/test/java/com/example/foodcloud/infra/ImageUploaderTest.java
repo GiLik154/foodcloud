@@ -1,4 +1,4 @@
-package com.example.foodcloud.domain.foodmenu.service.image;
+package com.example.foodcloud.infra;
 
 import com.example.foodcloud.application.image.ImageUploader;
 import org.junit.jupiter.api.AfterEach;
@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class ImageUploaderImplTest {
+class ImageUploaderTest {
     private final ImageUploader imageUploader;
 
     @Autowired
-    public ImageUploaderImplTest(ImageUploader imageUploader) {
+    public ImageUploaderTest(ImageUploader imageUploader) {
         this.imageUploader = imageUploader;
     }
 

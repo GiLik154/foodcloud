@@ -1,9 +1,8 @@
-package com.example.foodcloud.domain.foodmenu.service.update;
+package com.example.foodcloud.domain.foodmenu.service;
 
 import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
@@ -25,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuCountUpdateServiceTest {
+class FoodMenuCountUpdaterTest {
     private final FoodMenuUpdater foodMenuUpdater;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
@@ -34,7 +33,7 @@ class FoodMenuCountUpdateServiceTest {
     private final GroupBuyListRepository groupBuyListRepository;
 
     @Autowired
-    public FoodMenuCountUpdateServiceTest(FoodMenuUpdater foodMenuUpdater, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
+    public FoodMenuCountUpdaterTest(FoodMenuUpdater foodMenuUpdater, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
         this.foodMenuUpdater = foodMenuUpdater;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
@@ -46,20 +45,12 @@ class FoodMenuCountUpdateServiceTest {
     @Test
     void 푸드메뉴_업데이트_동시성_테스트() throws InterruptedException {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
-
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-        Long foodMenuId = foodMenu.getId();
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
+
+        Long foodMenuId = foodMenu.getId();
 
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         CountDownLatch countDownLatch = new CountDownLatch(100);
