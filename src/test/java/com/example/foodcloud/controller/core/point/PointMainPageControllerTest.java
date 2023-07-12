@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.point;
 
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,21 +28,18 @@ class PointMainPageControllerTest {
     private final PointMainPageController pointMainPageController;
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public PointMainPageControllerTest(PointMainPageController pointMainPageController, PointRepository pointRepository, UserRepository userRepository, LoginInterceptor loginInterceptor) {
+    public PointMainPageControllerTest(PointMainPageController pointMainPageController, PointRepository pointRepository, UserRepository userRepository) {
         this.pointMainPageController = pointMainPageController;
         this.pointRepository = pointRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(pointMainPageController)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

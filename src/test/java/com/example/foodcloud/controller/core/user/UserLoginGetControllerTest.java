@@ -1,15 +1,15 @@
-package com.example.foodcloud.controller.core.user.login;
+package com.example.foodcloud.controller.core.user;
 
-import com.example.foodcloud.controller.core.user.UserLoginController;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -19,20 +19,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class UserLoginGetControllerTest {
-    private final UserLoginController userLoginController;
-    private final UserExceptionAdvice userExceptionAdvice;
+    private final WebApplicationContext context;
     private MockMvc mockMvc;
 
-    UserLoginGetControllerTest(UserLoginController userLoginController, UserExceptionAdvice userExceptionAdvice) {
-        this.userLoginController = userLoginController;
-        this.userExceptionAdvice = userExceptionAdvice;
+    @Autowired
+    UserLoginGetControllerTest(WebApplicationContext context) {
+        this.context = context;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userLoginController)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .apply(springSecurity())
-                .setControllerAdvice(userExceptionAdvice)
                 .build();
     }
 
@@ -42,6 +40,6 @@ class UserLoginGetControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/login"));
+                .andExpect(view().name("thymeleaf/user/login"));
     }
 }

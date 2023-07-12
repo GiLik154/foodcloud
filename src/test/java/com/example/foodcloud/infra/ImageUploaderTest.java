@@ -1,6 +1,5 @@
 package com.example.foodcloud.infra;
 
-import com.example.foodcloud.application.image.ImageUploader;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

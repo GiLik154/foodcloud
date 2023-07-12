@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.core.user.login;
+package com.example.foodcloud.controller.core.user;
 
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ class UserLoginPostControllerTest {
     private final PasswordEncoder passwordEncoder;
     private MockMvc mockMvc;
 
+    @Autowired
     UserLoginPostControllerTest(WebApplicationContext context, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.context = context;
         this.userRepository = userRepository;

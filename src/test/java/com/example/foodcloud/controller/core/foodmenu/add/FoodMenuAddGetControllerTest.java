@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.foodmenu.add;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,15 +24,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FoodMenuAddGetControllerTest {
     private final FoodMenuAddController foodMenuAddController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuAddGetControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository) {
+    public FoodMenuAddGetControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
         this.foodMenuAddController = foodMenuAddController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
     }
 
@@ -41,7 +38,6 @@ class FoodMenuAddGetControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuAddController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

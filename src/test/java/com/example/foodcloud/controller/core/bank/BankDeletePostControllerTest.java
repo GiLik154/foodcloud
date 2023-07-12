@@ -3,7 +3,6 @@ package com.example.foodcloud.controller.core.bank;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -31,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BankDeletePostControllerTest {
     private final BankDeleteController bankDeleteController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,10 +39,9 @@ class BankDeletePostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public BankDeletePostControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public BankDeletePostControllerTest(BankDeleteController bankDeleteController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, BankAccountRepository bankAccountRepository, PasswordEncoder passwordEncoder, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.bankDeleteController = bankDeleteController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.passwordEncoder = passwordEncoder;
@@ -55,7 +52,6 @@ class BankDeletePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankDeleteController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

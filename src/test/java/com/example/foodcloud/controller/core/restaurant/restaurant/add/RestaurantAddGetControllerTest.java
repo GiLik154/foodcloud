@@ -4,7 +4,6 @@ package com.example.foodcloud.controller.core.restaurant.restaurant.add;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,15 +26,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RestaurantAddGetControllerTest {
     private final RestaurantAddController restaurantAddController;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final ParamValidateAdvice paramValidateAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantAddGetControllerTest(RestaurantAddController restaurantAddController, UserRepository userRepository, LoginInterceptor loginInterceptor, ParamValidateAdvice paramValidateAdvice) {
+    public RestaurantAddGetControllerTest(RestaurantAddController restaurantAddController, UserRepository userRepository, ParamValidateAdvice paramValidateAdvice) {
         this.restaurantAddController = restaurantAddController;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.paramValidateAdvice = paramValidateAdvice;
     }
 
@@ -43,7 +40,6 @@ class RestaurantAddGetControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantAddController)
                 .setControllerAdvice(paramValidateAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

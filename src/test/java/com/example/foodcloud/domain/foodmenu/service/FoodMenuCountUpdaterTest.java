@@ -1,12 +1,10 @@
 package com.example.foodcloud.domain.foodmenu.service;
 
-import com.example.foodcloud.*;
+import com.example.foodcloud.FoodMenuFixture;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
-import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
-import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -25,21 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuCountUpdaterTest {
-    private final FoodMenuUpdater foodMenuUpdater;
-    private final OrderMenuRepository orderMenuRepository;
+    private final FoodMenuCountIncrease foodMenuCountIncrease;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
-    private final GroupBuyListRepository groupBuyListRepository;
 
     @Autowired
-    public FoodMenuCountUpdaterTest(FoodMenuUpdater foodMenuUpdater, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, OrderMenuRepository orderMenuRepository, UserRepository userRepository, GroupBuyListRepository groupBuyListRepository) {
-        this.foodMenuUpdater = foodMenuUpdater;
+    public FoodMenuCountUpdaterTest(FoodMenuCountIncrease foodMenuCountIncrease, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.foodMenuCountIncrease = foodMenuCountIncrease;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
-        this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
-        this.groupBuyListRepository = groupBuyListRepository;
     }
 
     @Test
@@ -47,8 +41,6 @@ class FoodMenuCountUpdaterTest {
         User user = userRepository.save(UserFixture.fixture().build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         Long foodMenuId = foodMenu.getId();
 
@@ -57,7 +49,7 @@ class FoodMenuCountUpdaterTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                foodMenuUpdater.increaseOrderCount(foodMenuId);
+                foodMenuCountIncrease.increase(foodMenuId);
                 countDownLatch.countDown();
             });
         }
@@ -66,8 +58,6 @@ class FoodMenuCountUpdaterTest {
         try {
             assertEquals(100, foodMenuRepository.findById(foodMenu.getId()).get().getOrderCount());
         } finally {
-            orderMenuRepository.delete(orderMenu);
-            groupBuyListRepository.delete(groupBuyList);
             foodMenuRepository.delete(foodMenu);
             restaurantRepository.delete(restaurant);
             userRepository.delete(user);

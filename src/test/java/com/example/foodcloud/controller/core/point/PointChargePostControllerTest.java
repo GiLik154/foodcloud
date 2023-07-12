@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.point;
 
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -31,16 +30,14 @@ class PointChargePostControllerTest {
     private final PointChargeController pointChargeController;
     private final PointRepository pointRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final ParamValidateAdvice paramValidateAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public PointChargePostControllerTest(PointChargeController pointChargeController, PointRepository pointRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, ParamValidateAdvice paramValidateAdvice) {
+    public PointChargePostControllerTest(PointChargeController pointChargeController, PointRepository pointRepository, UserRepository userRepository, ParamValidateAdvice paramValidateAdvice) {
         this.pointChargeController = pointChargeController;
         this.pointRepository = pointRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.paramValidateAdvice = paramValidateAdvice;
     }
 
@@ -48,7 +45,6 @@ class PointChargePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(pointChargeController)
                 .setControllerAdvice(paramValidateAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

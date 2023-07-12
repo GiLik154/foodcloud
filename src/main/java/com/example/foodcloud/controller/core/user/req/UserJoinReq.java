@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.core.user.dto;
+package com.example.foodcloud.controller.core.user.req;
 
 import com.example.foodcloud.domain.user.service.commend.UserJoinerCommend;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-public class UserJoinControllerDto {
+public class UserJoinReq {
     @NotBlank(message = "Username is required")
     private final String joinName;
     @NotBlank(message = "Password is required")
@@ -14,7 +14,7 @@ public class UserJoinControllerDto {
     @NotBlank
     private final String joinPhone;
 
-    public UserJoinControllerDto(String joinName, String joinPassword, String joinPhone) {
+    public UserJoinReq(String joinName, String joinPassword, String joinPhone) {
         this.joinName = joinName;
         this.joinPassword = joinPassword;
         this.joinPhone = joinPhone;

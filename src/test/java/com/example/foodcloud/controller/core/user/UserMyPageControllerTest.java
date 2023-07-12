@@ -1,64 +1,67 @@
-package com.example.foodcloud.controller.core.user.mypage;
+package com.example.foodcloud.controller.core.user;
 
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.user.UserMyPageController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
+import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserServiceMyPageControllerTest {
-    private final UserMyPageController userMyPageController;
-    private final UserExceptionAdvice userExceptionAdvice;
+class UserMyPageControllerTest {
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserServiceMyPageControllerTest(UserMyPageController userMyPageController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, LoginInterceptor loginInterceptor) {
-        this.userMyPageController = userMyPageController;
-        this.userExceptionAdvice = userExceptionAdvice;
+    public UserMyPageControllerTest(WebApplicationContext context, UserRepository userRepository) {
+        this.context = context;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userMyPageController)
-                .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
-    @WithMockUser(username = "testUserName", password = "testPassword")
     void 마이페이지_기본화면() throws Exception {
-        userRepository.save(UserFixture.fixture().build());
+        User user = userRepository.save(UserFixture.fixture().build());
+
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         MockHttpServletRequestBuilder builder = get("/user/my-page");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/my-page"));
+                .andExpect(view().name("thymeleaf/user/my-page"));
     }
 
     @Test
-    void 마이페이지_세션없음() throws Exception {
+    @WithMockUser(roles = {"AMINE"})
+    void 마이페이지_유저의_권한이_다르면_접속이_불가능() throws Exception {
         MockHttpServletRequestBuilder builder = get("/user/my-page");
 
         mockMvc.perform(builder)

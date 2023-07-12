@@ -3,7 +3,6 @@ package com.example.foodcloud.controller.core.foodmenu.list;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuListController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
@@ -29,17 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FoodMenuListControllerTest {
     private final FoodMenuListController foodMenuListController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuListControllerTest(FoodMenuListController foodMenuListController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository) {
+    public FoodMenuListControllerTest(FoodMenuListController foodMenuListController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository) {
         this.foodMenuListController = foodMenuListController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
@@ -49,7 +46,6 @@ class FoodMenuListControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuListController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

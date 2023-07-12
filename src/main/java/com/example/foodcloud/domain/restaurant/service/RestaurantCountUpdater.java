@@ -10,5 +10,5 @@ public interface RestaurantCountUpdater {
      *
      * @param restaurantId 증가시킬 식당의 ID
      */
-    void increaseOrderCount(Long restaurantId);
+    void increase(Long restaurantId);
 }

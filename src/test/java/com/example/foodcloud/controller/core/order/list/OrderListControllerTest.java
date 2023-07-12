@@ -5,7 +5,6 @@ import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.OrderMenuFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.core.order.OrderListController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -41,19 +40,17 @@ class OrderListControllerTest {
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
-    private final LoginInterceptor loginInterceptor;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderListControllerTest(OrderListController orderListController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public OrderListControllerTest(OrderListController orderListController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.orderListController = orderListController;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
-        this.loginInterceptor = loginInterceptor;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
@@ -61,7 +58,6 @@ class OrderListControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(orderListController)
                 .setControllerAdvice(notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

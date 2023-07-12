@@ -1,11 +1,8 @@
-package com.example.foodcloud.controller.core.user.join;
+package com.example.foodcloud.controller.core.user;
 
-import com.example.foodcloud.controller.core.user.UserJoinController;
-import com.example.foodcloud.enums.KoreanErrorCode;
-import com.example.foodcloud.controller.advice.ParamValidateAdvice;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.enums.KoreanErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,25 +25,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserServiceJoinControllerTest {
-    private final UserJoinController userJoinController;
-    private final ParamValidateAdvice paramValidateAdvice;
-    private final UserExceptionAdvice userExceptionAdvice;
+class UserJoinControllerTest {
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserServiceJoinControllerTest(UserJoinController userJoinController, ParamValidateAdvice paramValidateAdvice, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
-        this.userJoinController = userJoinController;
-        this.paramValidateAdvice = paramValidateAdvice;
-        this.userExceptionAdvice = userExceptionAdvice;
+    public UserJoinControllerTest(WebApplicationContext context, UserRepository userRepository) {
+        this.context = context;
         this.userRepository = userRepository;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userJoinController)
-                .setControllerAdvice(paramValidateAdvice, userExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
@@ -53,20 +49,20 @@ class UserServiceJoinControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/login"));
+                .andExpect(view().name("thymeleaf/user/login"));
     }
 
     @Test
     void Post_유저_회원가입_정상작동() throws Exception {
-        MockHttpServletRequestBuilder builder = post("/user/join")
+        MockHttpServletRequestBuilder builder = post("/user")
+                .with(csrf())
                 .param("joinName", "testName")
                 .param("joinPassword", "testPassword")
                 .param("joinPhone", "testPhone");
 
-
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/user/join-check"));
+                .andExpect(view().name("thymeleaf/user/join-check"));
 
         User user = userRepository.findByName("testName").get();
 
@@ -81,14 +77,15 @@ class UserServiceJoinControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        MockHttpServletRequestBuilder builder = post("/user/join")
+        MockHttpServletRequestBuilder builder = post("/user")
+                .with(csrf())
                 .param("joinName", "testName")
                 .param("joinPassword", "testPassword")
                 .param("joinPhone", "testPhone");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(view().name("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.USER_NAME_DUPLICATE.getResult()));
     }
 
@@ -97,14 +94,15 @@ class UserServiceJoinControllerTest {
         User user = new User("testName", "testPassword", "testPhone");
         userRepository.save(user);
 
-        MockHttpServletRequestBuilder builder = post("/user/join")
+        MockHttpServletRequestBuilder builder = post("/user")
+                .with(csrf())
                 .param("joinName", "")
                 .param("joinPassword", "")
                 .param("joinPhone", "");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(view().name("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.METHOD_ARGUMENT.getResult()));
     }
 }

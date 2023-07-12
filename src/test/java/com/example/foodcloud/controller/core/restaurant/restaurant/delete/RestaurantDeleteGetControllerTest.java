@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.restaurant.restaurant.delete;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantDeleteController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,16 +28,14 @@ class RestaurantDeleteGetControllerTest {
     private final RestaurantDeleteController restaurantDeleteController;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantDeleteGetControllerTest(RestaurantDeleteController restaurantDeleteController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public RestaurantDeleteGetControllerTest(RestaurantDeleteController restaurantDeleteController, RestaurantRepository restaurantRepository, UserRepository userRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.restaurantDeleteController = restaurantDeleteController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
@@ -46,7 +43,6 @@ class RestaurantDeleteGetControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantDeleteController)
                 .setControllerAdvice(notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.restaurant.restaurant.list;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantListController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,16 +28,14 @@ class RestaurantListControllerTest {
     private final RestaurantListController restaurantListController;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantListControllerTest(RestaurantListController restaurantListController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+    public RestaurantListControllerTest(RestaurantListController restaurantListController, RestaurantRepository restaurantRepository, UserRepository userRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
         this.restaurantListController = restaurantListController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
@@ -46,7 +43,6 @@ class RestaurantListControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantListController)
                 .setControllerAdvice(notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

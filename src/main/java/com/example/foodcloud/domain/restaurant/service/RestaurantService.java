@@ -34,7 +34,7 @@ public class RestaurantService implements RestaurantRegister, RestaurantDeleter,
     }
 
     @Override
-    public void increaseOrderCount(Long restaurantId) {
+    public void increase(Long restaurantId) {
         restaurantRepository.findByIdForUpdate(restaurantId)
                 .ifPresent(Restaurant::incrementOrderCount);
     }

@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.restaurant.restaurant.delete;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantDeleteController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -32,17 +31,15 @@ class RestaurantDeletePostControllerTest {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantDeletePostControllerTest(RestaurantDeleteController restaurantDeleteController, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice) {
+    public RestaurantDeletePostControllerTest(RestaurantDeleteController restaurantDeleteController, RestaurantRepository restaurantRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder, UserExceptionAdvice userExceptionAdvice) {
         this.restaurantDeleteController = restaurantDeleteController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
     }
 
@@ -50,7 +47,6 @@ class RestaurantDeletePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantDeleteController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

@@ -11,13 +11,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class ParamValidateAdvice {
 
     /**
-     * Validation에서 발생하는 오류를 처리하는
-     * 컨트롤러 어드바이스
-     * 에러 메세지는 Enum으로 처리함.
-     * Enum으로 처라힘으로 컨트롤단이 변경되었을 때 최소한의 수정으로 처리할 수 있고
-     * 오타로 발생하는 오류를 줄일 수 있음.
+     * Validation에서 발생하는 오류를 처리하는 컨드롤러 어드바이스
+     * thymeleaf/error/error-page 로 리다이렉트 시킴.
      */
-
     @ExceptionHandler({BindException.class, MethodArgumentNotValidException.class, NullPointerException.class})
     public ModelAndView bindException() {
         ModelAndView modelAndView = new ModelAndView("thymeleaf/error/error-page");

@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.ordermenu.service;
 
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
+import com.example.foodcloud.domain.foodmenu.service.FoodMenuCountIncrease;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
@@ -31,7 +31,7 @@ public class OrderMenuService implements OrderMenuCreator, OrderMenuUpdater, Ord
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
 
-    private final FoodMenuUpdater foodMenuUpdater;
+    private final FoodMenuCountIncrease foodMenuCountIncrease;
     private final RestaurantCountUpdater restaurantCountUpdater;
 
     @Override
@@ -40,16 +40,14 @@ public class OrderMenuService implements OrderMenuCreator, OrderMenuUpdater, Ord
         Long orderJoinGroupId = commend.getOrderJoinGroupId();
 
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderJoinGroupId).orElseThrow(() -> new NotFoundGroupByListException("Not found GroupByList"));
         FoodMenu foodMenu = foodMenuRepository.findById(foodMenuId).orElseThrow(() -> new NotFoundFoodMenuException("Not found food menu"));
-        GroupBuyList groupBuyList = groupBuyListRepository.findByUserIdAndId(userId, orderJoinGroupId).orElseThrow(() ->
-                new NotFoundGroupByListException("Not found GroupByList"));
 
         OrderMenu orderMenu = new OrderMenu(commend.getCount(), commend.getLocation(), user, groupBuyList, foodMenu);
-
         orderMenuRepository.save(orderMenu);
 
-        restaurantCountUpdater.increaseOrderCount(foodMenu.getRestaurant().getId());
-        foodMenuUpdater.increaseOrderCount(foodMenu.getId());
+        restaurantCountUpdater.increase(foodMenu.getRestaurant().getId());
+        foodMenuCountIncrease.increase(foodMenuId);
 
         return orderMenu.getId();
     }

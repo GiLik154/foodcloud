@@ -5,7 +5,6 @@ import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -34,17 +33,15 @@ class RestaurantAddPostControllerTest {
     private final RestaurantAddController restaurantAddController;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final ParamValidateAdvice paramValidateAdvice;
     private final UserExceptionAdvice userExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantAddPostControllerTest(RestaurantAddController restaurantAddController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, ParamValidateAdvice paramValidateAdvice, UserExceptionAdvice userExceptionAdvice) {
+    public RestaurantAddPostControllerTest(RestaurantAddController restaurantAddController, RestaurantRepository restaurantRepository, UserRepository userRepository, ParamValidateAdvice paramValidateAdvice, UserExceptionAdvice userExceptionAdvice) {
         this.restaurantAddController = restaurantAddController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.paramValidateAdvice = paramValidateAdvice;
         this.userExceptionAdvice = userExceptionAdvice;
     }
@@ -53,7 +50,6 @@ class RestaurantAddPostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantAddController)
                 .setControllerAdvice(userExceptionAdvice, paramValidateAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

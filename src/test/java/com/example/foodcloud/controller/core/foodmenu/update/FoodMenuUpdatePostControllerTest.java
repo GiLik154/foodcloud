@@ -5,7 +5,6 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuUpdateController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -45,17 +44,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FoodMenuUpdatePostControllerTest {
     private final FoodMenuUpdateController foodMenuUpdateController;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuUpdatePostControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public FoodMenuUpdatePostControllerTest(FoodMenuUpdateController foodMenuUpdateController, NotFoundExceptionAdvice notFoundExceptionAdvice, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.foodMenuUpdateController = foodMenuUpdateController;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -65,7 +62,6 @@ class FoodMenuUpdatePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuUpdateController)
                 .setControllerAdvice(notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

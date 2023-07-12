@@ -4,7 +4,6 @@ import com.example.foodcloud.*;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.PointExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -49,14 +48,13 @@ class PayPostControllerTest {
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
     private final RestaurantRepository restaurantRepository;
-    private final LoginInterceptor loginInterceptor;
     private final UserExceptionAdvice userExceptionAdvice;
     private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private final PointExceptionAdvice pointExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public PayPostControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice, PointExceptionAdvice pointExceptionAdvice) {
+    public PayPostControllerTest(OrderPayController orderPayController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, RestaurantRepository restaurantRepository, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice, PointExceptionAdvice pointExceptionAdvice) {
         this.orderPayController = orderPayController;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
@@ -65,7 +63,6 @@ class PayPostControllerTest {
         this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
         this.restaurantRepository = restaurantRepository;
-        this.loginInterceptor = loginInterceptor;
         this.userExceptionAdvice = userExceptionAdvice;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
         this.pointExceptionAdvice = pointExceptionAdvice;
@@ -75,7 +72,6 @@ class PayPostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(orderPayController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice, pointExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

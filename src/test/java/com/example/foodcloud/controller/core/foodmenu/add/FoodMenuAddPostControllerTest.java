@@ -4,7 +4,6 @@ import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -44,17 +43,15 @@ class FoodMenuAddPostControllerTest {
 
     private final FoodMenuAddController foodMenuAddController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuAddPostControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+    public FoodMenuAddPostControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.foodMenuAddController = foodMenuAddController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
@@ -64,7 +61,6 @@ class FoodMenuAddPostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuAddController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
 
 

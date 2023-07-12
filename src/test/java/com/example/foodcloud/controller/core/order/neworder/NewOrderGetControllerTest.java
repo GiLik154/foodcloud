@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.order.neworder;
 
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.controller.core.order.NewOrderCreateController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,21 +28,18 @@ class NewOrderGetControllerTest {
     private final NewOrderCreateController newOrderCreateController;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
-    private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderGetControllerTest(NewOrderCreateController newOrderCreateController, UserRepository userRepository, RestaurantRepository restaurantRepository, LoginInterceptor loginInterceptor) {
+    public NewOrderGetControllerTest(NewOrderCreateController newOrderCreateController, UserRepository userRepository, RestaurantRepository restaurantRepository) {
         this.newOrderCreateController = newOrderCreateController;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
-        this.loginInterceptor = loginInterceptor;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(newOrderCreateController)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

@@ -4,7 +4,6 @@ import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
 import com.example.foodcloud.controller.core.foodmenu.FoodMenuDeleteController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -34,7 +33,6 @@ class FoodMenuDeleteGetControllerTest {
 
     private final FoodMenuDeleteController foodMenuDeleteController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final UserRepository userRepository;
@@ -42,10 +40,9 @@ class FoodMenuDeleteGetControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuDeleteGetControllerTest(FoodMenuDeleteController foodMenuDeleteController, UserExceptionAdvice userExceptionAdvice, LoginInterceptor loginInterceptor, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+    public FoodMenuDeleteGetControllerTest(FoodMenuDeleteController foodMenuDeleteController, UserExceptionAdvice userExceptionAdvice, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
         this.foodMenuDeleteController = foodMenuDeleteController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.userRepository = userRepository;
@@ -56,7 +53,6 @@ class FoodMenuDeleteGetControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(foodMenuDeleteController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

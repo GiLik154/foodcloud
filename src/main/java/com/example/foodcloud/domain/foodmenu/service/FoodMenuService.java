@@ -1,6 +1,6 @@
 package com.example.foodcloud.domain.foodmenu.service;
 
-import com.example.foodcloud.application.image.ImageUploader;
+import com.example.foodcloud.infra.ImageUploader;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
@@ -62,11 +62,6 @@ public class FoodMenuService implements FoodMenuCreator, FoodMenuUpdater, FoodMe
 
     private String getImagePath(String restaurantName, File file) {
         return imageUploader.savedFileAndReturnFilePath(restaurantName, file);
-    }
-
-    @Override
-    public void increaseOrderCount(Long foodMenuId) {
-        foodMenuRepository.findByIdForUpdate(foodMenuId).ifPresent(FoodMenu::incrementOrderCount);
     }
 
     @Override

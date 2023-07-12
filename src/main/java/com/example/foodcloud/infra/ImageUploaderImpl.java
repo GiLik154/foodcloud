@@ -1,6 +1,5 @@
 package com.example.foodcloud.infra;
 
-import com.example.foodcloud.application.image.ImageUploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;

@@ -1,4 +1,4 @@
-package com.example.foodcloud.application.image;
+package com.example.foodcloud.infra;
 
 import java.io.File;
 

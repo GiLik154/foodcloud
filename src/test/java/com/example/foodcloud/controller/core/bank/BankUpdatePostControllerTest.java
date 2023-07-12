@@ -2,7 +2,6 @@ package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -29,7 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BankUpdatePostControllerTest {
     private final BankUpdateController bankUpdateController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
 
@@ -40,13 +38,12 @@ class BankUpdatePostControllerTest {
     @Autowired
     public BankUpdatePostControllerTest(BankUpdateController bankUpdateController,
                                         UserExceptionAdvice userExceptionAdvice,
-                                        LoginInterceptor loginInterceptor,
                                         UserRepository userRepository,
-                                        BankAccountRepository bankAccountRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+                                        BankAccountRepository bankAccountRepository,
+                                        NotFoundExceptionAdvice notFoundExceptionAdvice) {
 
         this.bankUpdateController = bankUpdateController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.notFoundExceptionAdvice = notFoundExceptionAdvice;
@@ -56,7 +53,6 @@ class BankUpdatePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankUpdateController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

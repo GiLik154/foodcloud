@@ -49,6 +49,10 @@ public class User {
         this.phone = phone;
     }
 
+    public void update(UserGrade userGrade) {
+        this.userGrade = userGrade;
+    }
+
     /** 패스워드를 검증하는 매소드 */
     public boolean isValidPassword(PasswordEncoder passwordEncoder, String password) {
         return passwordEncoder.matches(password, this.password);

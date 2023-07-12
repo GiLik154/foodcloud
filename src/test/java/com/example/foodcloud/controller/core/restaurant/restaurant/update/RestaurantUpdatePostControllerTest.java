@@ -3,7 +3,6 @@ package com.example.foodcloud.controller.core.restaurant.restaurant.update;
 
 import com.example.foodcloud.controller.advice.ParamValidateAdvice;
 import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantUpdateController;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -31,16 +30,14 @@ class RestaurantUpdatePostControllerTest {
     private final RestaurantUpdateController restaurantUpdateController;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private final ParamValidateAdvice paramValidateAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantUpdatePostControllerTest(RestaurantUpdateController restaurantUpdateController, RestaurantRepository restaurantRepository, UserRepository userRepository, LoginInterceptor loginInterceptor, ParamValidateAdvice paramValidateAdvice) {
+    public RestaurantUpdatePostControllerTest(RestaurantUpdateController restaurantUpdateController, RestaurantRepository restaurantRepository, UserRepository userRepository, ParamValidateAdvice paramValidateAdvice) {
         this.restaurantUpdateController = restaurantUpdateController;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
         this.paramValidateAdvice = paramValidateAdvice;
     }
 
@@ -48,7 +45,6 @@ class RestaurantUpdatePostControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(restaurantUpdateController)
                 .setControllerAdvice(paramValidateAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

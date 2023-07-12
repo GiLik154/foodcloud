@@ -10,11 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class NotFoundExceptionAdvice {
 
     /**
-     * NotFound의 익셉션을 처리하는 익셉션 어드바이스
-     * 각 익셉션에 따라 오류메세지가 달라짐.
-     * 에러 메세지는 Enum으로 처리함.
-     * Enum으로 처라힘으로 컨트롤단이 변경되었을 때 최소한의 수정으로 처리할 수 있고
-     * 오타로 발생하는 오류를 줄일 수 있음.
+     * NotFound의 익셉션을 처리하는 컨트롤러 어드바이스
+     * thymeleaf/error/error-page 로 리다이렉트 시킴.
      */
     private static final String VIEW_PAGE = "thymeleaf/error/error-page";
     private static final String MODEL_NAME = "errorMsg";

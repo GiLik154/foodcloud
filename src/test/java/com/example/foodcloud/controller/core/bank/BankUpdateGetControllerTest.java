@@ -1,7 +1,6 @@
 package com.example.foodcloud.controller.core.bank;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -27,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BankUpdateGetControllerTest {
     private final BankUpdateController bankUpdateController;
     private final UserExceptionAdvice userExceptionAdvice;
-    private final LoginInterceptor loginInterceptor;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private MockMvc mockMvc;
@@ -35,13 +33,11 @@ class BankUpdateGetControllerTest {
     @Autowired
     public BankUpdateGetControllerTest(BankUpdateController bankUpdateController,
                                        UserExceptionAdvice userExceptionAdvice,
-                                       LoginInterceptor loginInterceptor,
                                        UserRepository userRepository,
                                        BankAccountRepository bankAccountRepository) {
 
         this.bankUpdateController = bankUpdateController;
         this.userExceptionAdvice = userExceptionAdvice;
-        this.loginInterceptor = loginInterceptor;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
     }
@@ -50,7 +46,6 @@ class BankUpdateGetControllerTest {
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankUpdateController)
                 .setControllerAdvice(userExceptionAdvice)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

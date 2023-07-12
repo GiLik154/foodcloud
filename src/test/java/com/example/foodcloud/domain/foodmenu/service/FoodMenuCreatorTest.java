@@ -2,7 +2,7 @@ package com.example.foodcloud.domain.foodmenu.service;
 
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.application.image.ImageUploader;
+import com.example.foodcloud.infra.ImageUploader;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;

@@ -60,7 +60,6 @@ class OrderMenuCreatorTest {
         Long groupBuyListId = groupBuyList.getId();
 
         OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId);
-
         orderMenuCreator.crate(user.getId(), orderMenuRegisterCommend);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);

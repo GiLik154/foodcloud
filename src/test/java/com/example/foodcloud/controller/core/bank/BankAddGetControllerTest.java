@@ -1,6 +1,5 @@
 package com.example.foodcloud.controller.core.bank;
 
-import com.example.foodcloud.controller.interceptor.LoginInterceptor;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,20 +22,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BankAddGetControllerTest {
     private final BankAddController bankAddController;
     private final UserRepository userRepository;
-    private final LoginInterceptor loginInterceptor;
     private MockMvc mockMvc;
 
     @Autowired
-    public BankAddGetControllerTest(BankAddController bankAddController, UserRepository userRepository, LoginInterceptor loginInterceptor) {
+    public BankAddGetControllerTest(BankAddController bankAddController, UserRepository userRepository) {
         this.bankAddController = bankAddController;
         this.userRepository = userRepository;
-        this.loginInterceptor = loginInterceptor;
     }
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.standaloneSetup(bankAddController)
-                .addInterceptors(loginInterceptor)
                 .build();
     }
 

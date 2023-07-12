@@ -43,7 +43,7 @@ class RestaurantCountUpdaterTest {
 
         for (int i = 0; i < 100; i++) {
             executorService.execute(() -> {
-                restaurantCountUpdater.increaseOrderCount(restaurantId);
+                restaurantCountUpdater.increase(restaurantId);
                 countDownLatch.countDown();
             });
         }
