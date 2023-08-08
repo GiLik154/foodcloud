@@ -18,10 +18,10 @@ public class OrderCheckController {
     private final OrderMenuRepository orderMenuRepository;
     private final OrderMenuUpdater orderMenuUpdater;
 
-
     @GetMapping("")
     public String get(Model model) {
         model.addAttribute("orderResult", OrderResult.values());
+        model.addAttribute("orderMenuList", orderMenuRepository.findAll());
         return "thymeleaf/restaurant/check";
     }
 

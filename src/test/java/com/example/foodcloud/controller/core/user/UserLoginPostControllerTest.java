@@ -18,7 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Transactional
@@ -39,7 +40,8 @@ class UserLoginPostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
     }

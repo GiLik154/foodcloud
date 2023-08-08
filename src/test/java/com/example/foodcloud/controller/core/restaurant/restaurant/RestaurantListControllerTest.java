@@ -1,6 +1,8 @@
-package com.example.foodcloud.controller.core.user;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
+import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
+import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.security.login.UserDetail;
@@ -19,23 +21,23 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserUpdatePostControllerTest {
+class RestaurantListControllerTest {
     private final WebApplicationContext context;
+    private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserUpdatePostControllerTest(WebApplicationContext context, UserRepository userRepository) {
+    public RestaurantListControllerTest(WebApplicationContext context, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.context = context;
+        this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
     }
 
@@ -48,49 +50,26 @@ class UserUpdatePostControllerTest {
     }
 
     @Test
-    void Post_유저_수정_정상작동() throws Exception {
+    void 식당_리스트_정상작동() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
+        restaurantRepository.save(RestaurantFixture.fixture(user).build());
 
         UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = put("/user")
-                .with(csrf())
-                .param("phone", "updatePhone");
-
-        mockMvc.perform(builder)
-
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/my-page"));
-
-        assertEquals("updatePhone", user.getPhone());
-    }
-
-    @Test
-    void Post_유저_수정_유저_고유번호_다름() throws Exception {
-        User user = userRepository.save(UserFixture.fixture().build());
-
-        UserDetail userDetail = new UserDetail("wrongUserName", user.getPassword(), user.getUserGrade(), user.getId());
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        MockHttpServletRequestBuilder builder = put("/user")
-                .with(csrf())
-                .param("phone", "updatePhone");
+        MockHttpServletRequestBuilder builder = get("/restaurant/list");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(view().name("thymeleaf/error/error-page"));
-
-        assertEquals("testUserPhone", user.getPhone());
+                .andExpect(view().name("thymeleaf/restaurant/list"))
+                .andExpect(model().attribute("restaurantList", restaurantRepository.findByUserId(user.getId())));
     }
 
     @Test
     @WithAnonymousUser
-    void 로그인_안하면_접속_못함() throws Exception {
-        MockHttpServletRequestBuilder builder = put("/user")
-                .with(csrf());
+    void 로그인을_안하면_접속이_불가능함() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/restaurant/list");
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

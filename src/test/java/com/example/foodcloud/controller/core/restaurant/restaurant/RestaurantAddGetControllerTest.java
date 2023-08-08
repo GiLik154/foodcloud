@@ -1,22 +1,26 @@
-package com.example.foodcloud.controller.core.restaurant.restaurant.add;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.controller.advice.ParamValidateAdvice;
-import com.example.foodcloud.controller.core.restaurant.restaurant.RestaurantAddController;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -24,50 +28,46 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RestaurantAddGetControllerTest {
-    private final RestaurantAddController restaurantAddController;
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
-    private final ParamValidateAdvice paramValidateAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public RestaurantAddGetControllerTest(RestaurantAddController restaurantAddController, UserRepository userRepository, ParamValidateAdvice paramValidateAdvice) {
-        this.restaurantAddController = restaurantAddController;
+    public RestaurantAddGetControllerTest(WebApplicationContext context, UserRepository userRepository) {
+        this.context = context;
         this.userRepository = userRepository;
-        this.paramValidateAdvice = paramValidateAdvice;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(restaurantAddController)
-                .setControllerAdvice(paramValidateAdvice)
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void 식당_추가_정상출력() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
-        MockHttpServletRequestBuilder builder = get("/restaurant/add")
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/restaurant/add"));
-    }
-
-    @Test
-    void 식당_추가_세션_없음() throws Exception {
-        User user = userRepository.save(UserFixture.fixture().build());
-        userRepository.save(user);
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         MockHttpServletRequestBuilder builder = get("/restaurant/add");
 
         mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(view().name("thymeleaf/restaurant/add"));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 로그인을_안하면_접속이_불가능함() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/restaurant/add");
+
+        mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

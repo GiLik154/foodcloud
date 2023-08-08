@@ -11,11 +11,13 @@ public class UserDetail implements UserDetails {
     private final String username;
     private final String password;
     private final UserGrade userGrade;
+    private final Long userId;
 
-    public UserDetail(String username, String password, UserGrade userGrade) {
+    public UserDetail(String username, String password, UserGrade userGrade, Long userId) {
         this.username = username;
         this.password = password;
         this.userGrade = userGrade;
+        this.userId = userId;
     }
 
     @Override
@@ -53,5 +55,9 @@ public class UserDetail implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getUserId() {
+        return userId;
     }
 }

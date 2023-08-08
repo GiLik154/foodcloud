@@ -1,10 +1,7 @@
 package com.example.foodcloud.controller.core.restaurant.ordermanagement;
 
 
-import com.example.foodcloud.FoodMenuFixture;
-import com.example.foodcloud.GroupBuyListFixture;
-import com.example.foodcloud.OrderMenuFixture;
-import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -16,18 +13,24 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -36,55 +39,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderCheckPutRestControllerTest {
-    private final OrderCheckController orderCheckController;
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
-    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderCheckPutRestControllerTest(OrderCheckController orderCheckController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.orderCheckController = orderCheckController;
+    public OrderCheckPutRestControllerTest(WebApplicationContext context, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository) {
+        this.context = context;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
-        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderCheckController)
-                .setControllerAdvice(notFoundExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void Put_Rest_주문_체크_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         MockHttpServletRequestBuilder builder = put("/restaurant/check/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED)
-                .session(session);
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk());
@@ -93,26 +86,18 @@ class OrderCheckPutRestControllerTest {
     }
 
     @Test
-    void Put_Rest_주문_체크_세션없음() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+    void 로그인을_안하면_접속이_불가능함() throws Exception {
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpServletRequestBuilder builder = put("/restaurant/check/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED.getResult());
+        MockHttpServletRequestBuilder builder = put("/restaurant/check/updateStatus/" + orderMenu.getId() + "/" + OrderResult.RECEIVED)
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

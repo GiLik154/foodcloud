@@ -16,69 +16,49 @@ public class FoodMenu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 음식의 이름
-     */
+    /** 음식의 이름 */
     @Column(nullable = false)
     private String name;
 
-    /**
-     * 음식의 가격
-     */
+    /** 음식의 가격 */
     @Column(nullable = false)
     private int price;
 
-    /**
-     * 음식의 주문 횟수
-     */
+    /** 음식의 주문 횟수 */
     @Column(nullable = false)
     private int orderCount;
 
-    /**
-     * 음식의 온도
-     */
+    /** 음식의 온도 */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Temperature temperature;
 
-    /**
-     * 음식의 타입
-     */
+    /** 음식의 타입 */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private FoodTypes foodTypes;
 
-    /**
-     * 음식의 고기 종류
-     */
+    /** 음식의 고기 종류 */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private MeatTypes meatType;
 
-    /**
-     * 음식의 야채 양
-     */
+    /** 음식의 야채 양 */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Vegetables vegetables;
 
-    /**
-     * 음식의 이미지 path
-     */
+    /** 음식의 이미지 path */
     private String imagePath;
 
-    /**
-     * 음식이 등록된 식당
-     */
+    /** 음식이 등록된 식당 */
     @ManyToOne(fetch = FetchType.LAZY)
     private Restaurant restaurant;
 
     protected FoodMenu() {
     }
 
-    /**
-     * 기본 생성자
-     */
+    /** 기본 생성자 */
     public FoodMenu(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables, Restaurant restaurant) {
         this.name = name;
         this.price = price;
@@ -89,9 +69,7 @@ public class FoodMenu {
         this.restaurant = restaurant;
     }
 
-    /**
-     * 업데이트 메소드
-     */
+    /** 업데이트 메소드 */
     public void update(String foodMenuName, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
         this.name = foodMenuName;
         this.price = price;
@@ -101,16 +79,12 @@ public class FoodMenu {
         this.vegetables = vegetables;
     }
 
-    /**
-     * 주문 횟수 증가
-     */
+    /** 주문 횟수 증가 */
     public void incrementOrderCount() {
         this.orderCount++;
     }
 
-    /**
-     * 이미지 path 업데이트
-     */
+    /** 이미지 path 업데이트 */
     public void uploadImage(String imagePath) {
         this.imagePath = imagePath;
     }

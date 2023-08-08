@@ -1,17 +1,12 @@
-package com.example.foodcloud.controller.core.restaurant.ordermanagement;
+package com.example.foodcloud.controller.core.restaurant.restaurant;
 
 
-import com.example.foodcloud.*;
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
-import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
-import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
-import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
-import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
+import com.example.foodcloud.RestaurantFixture;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,23 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class OrderCheckGetControllerTest {
+class RestaurantUpdateGetControllerTest {
     private final WebApplicationContext context;
-    private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
-    private final FoodMenuRepository foodMenuRepository;
-    private final GroupBuyListRepository groupBuyListRepository;
-    private final OrderMenuRepository orderMenuRepository;
+    private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderCheckGetControllerTest(WebApplicationContext context, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository) {
+    public RestaurantUpdateGetControllerTest(WebApplicationContext context, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.context = context;
-        this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
-        this.foodMenuRepository = foodMenuRepository;
-        this.groupBuyListRepository = groupBuyListRepository;
-        this.orderMenuRepository = orderMenuRepository;
+        this.userRepository = userRepository;
     }
 
     @BeforeEach
@@ -61,34 +51,30 @@ class OrderCheckGetControllerTest {
     }
 
     @Test
-    void 주문_체크_정상작동() throws Exception {
+    void Get_식당_수정_정상작동() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
         UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/restaurant/check");
+        MockHttpServletRequestBuilder builder = get("/restaurant/update/" + restaurant.getId())
+                .param("restaurantId", String.valueOf(restaurant.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(view().name("thymeleaf/restaurant/check"))
-                .andExpect(model().attribute("orderResult", OrderResult.values()));
+                .andExpect(view().name("thymeleaf/restaurant/update"))
+                .andExpect(model().attribute("restaurantInfo", restaurant));
     }
 
     @Test
+    @WithAnonymousUser
     void 로그인을_안하면_접속이_불가능함() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
-        MockHttpServletRequestBuilder builder = get("/restaurant/check");
+        MockHttpServletRequestBuilder builder = get("/restaurant/update/" + restaurant.getId());
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

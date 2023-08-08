@@ -46,8 +46,8 @@ public class OrderMenuService implements OrderMenuCreator, OrderMenuUpdater, Ord
         OrderMenu orderMenu = new OrderMenu(commend.getCount(), commend.getLocation(), user, groupBuyList, foodMenu);
         orderMenuRepository.save(orderMenu);
 
-        restaurantCountUpdater.increase(foodMenu.getRestaurant().getId());
         foodMenuCountIncrease.increase(foodMenuId);
+        restaurantCountUpdater.increase(foodMenu.getRestaurant().getId());
 
         return orderMenu.getId();
     }

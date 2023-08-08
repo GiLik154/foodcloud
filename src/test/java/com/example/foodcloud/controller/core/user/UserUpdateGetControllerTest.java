@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,7 +39,8 @@ class UserUpdateGetControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
                 .apply(springSecurity())
                 .build();
     }
@@ -47,7 +49,7 @@ class UserUpdateGetControllerTest {
     void Get_유저_수정_기본화면() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
 
-        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -56,5 +58,15 @@ class UserUpdateGetControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/user/update"));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/user/update");
+
+        mockMvc.perform(builder)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

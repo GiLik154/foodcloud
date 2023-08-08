@@ -36,7 +36,7 @@ class RestaurantRegisterTest {
         Long userId = user.getId();
 
         RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("testName", "testLocation", "testHours");
-        restaurantRegister.add(userId, restaurantRegisterCommend);
+        restaurantRegister.register(userId, restaurantRegisterCommend);
 
         Restaurant restaurant = restaurantRepository.findByUserId(userId).get(0);
 
@@ -53,6 +53,6 @@ class RestaurantRegisterTest {
 
         RestaurantRegisterCommend restaurantRegisterCommend = new RestaurantRegisterCommend("testName", "testLocation",  "testHours");
 
-        assertThrows(UsernameNotFoundException.class, () -> restaurantRegister.add(userId + 1L, restaurantRegisterCommend));
+        assertThrows(UsernameNotFoundException.class, () -> restaurantRegister.register(userId + 1L, restaurantRegisterCommend));
     }
 }

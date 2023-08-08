@@ -4,11 +4,10 @@ import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(propagation = Propagation.REQUIRES_NEW)
+@Transactional
 @RequiredArgsConstructor
 public class FoodMenuCountIncreaseImpl implements FoodMenuCountIncrease {
     private final FoodMenuRepository foodMenuRepository;

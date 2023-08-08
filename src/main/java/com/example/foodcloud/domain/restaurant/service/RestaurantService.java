@@ -18,25 +18,19 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class RestaurantService implements RestaurantRegister, RestaurantDeleter, RestaurantCountUpdater, RestaurantUpdater {
+public class RestaurantService implements RestaurantRegister, RestaurantDeleter, RestaurantUpdater {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void add(Long userId, RestaurantRegisterCommend commend) {
+    public void register(Long userId, RestaurantRegisterCommend commend) {
         User user = findUser(userId);
 
         Restaurant restaurant = new Restaurant(commend.getName(), commend.getLocation(),
                 commend.getBusinessHours(), user);
 
         restaurantRepository.save(restaurant);
-    }
-
-    @Override
-    public void increase(Long restaurantId) {
-        restaurantRepository.findByIdForUpdate(restaurantId)
-                .ifPresent(Restaurant::incrementOrderCount);
     }
 
     @Override

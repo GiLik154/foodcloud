@@ -13,5 +13,5 @@ public interface RestaurantRegister {
      * @throws UsernameNotFoundException 유저의 ID로 유저가 존재하는지
      *                                   확인할 때 존재하지 않으면 발생
      */
-    void add(Long userId, RestaurantRegisterCommend restaurantRegisterCommend);
+    void register(Long userId, RestaurantRegisterCommend restaurantRegisterCommend);
 }

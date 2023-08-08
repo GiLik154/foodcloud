@@ -43,15 +43,18 @@
                 </tr>
                 </thead>
                 <tbody id="orderListBody">
-                <div class="row" th:each="ordermMenu : ${orderMenuList}"> </div>
-                <img th:if="${orderMenu.foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
-                     th:else th:src="@{${orderMenu.foodMenu.imagePath}}">
-                <td th:text="${orderMenu.foodMenu.name}"></td>
-                <td th:text="${orderMenu.count}"></td>
-                <td th:text="${orderMenu.location}"></td>
-                <td th:text="${orderMenu.payment.getPaymentCode().name()}"></td>
-                <td th:text="${orderMenu.price}"></td>
-                <td th:text="${orderMenu.result.name()}"></td>
+                <tr th:each="orderMenu : ${orderMenuList}">
+                    <td>
+                        <img th:if="${orderMenu.foodMenu.imagePath == null}"
+                             th:src="@{'/food-menu-images/default/default.png'}"
+                             th:else="@{${orderMenu.foodMenu.imagePath}}">
+                    </td>
+                    <td th:text="${orderMenu.foodMenu.name}"></td>
+                    <td th:text="${orderMenu.count}"></td>
+                    <td th:text="${orderMenu.location}"></td>
+                    <td th:text="${orderMenu.payment != null ? orderMenu.payment.getPaymentCode().name() : ''}"></td>
+                    <td th:text="${orderMenu.price}"></td>
+                    <td th:text="${orderMenu.result.name()}"></td>
                 </tr>
                 </tbody>
             </table>

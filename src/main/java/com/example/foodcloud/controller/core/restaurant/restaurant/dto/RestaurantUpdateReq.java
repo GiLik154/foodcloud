@@ -6,7 +6,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-public class RestaurantUpdateControllerDto {
+public class RestaurantUpdateReq {
     @NotEmpty
     private final String name;
     @NotEmpty
@@ -14,7 +14,7 @@ public class RestaurantUpdateControllerDto {
     @NotEmpty
     private final String businessHours;
 
-    public RestaurantUpdateControllerDto(String name, String location, String businessHours) {
+    public RestaurantUpdateReq(String name, String location, String businessHours) {
         this.name = name;
         this.location = location;
         this.businessHours = businessHours;
