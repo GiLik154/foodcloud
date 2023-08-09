@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/point")
-public class PointMainPageController {
+public class PointController {
     private final PointRepository pointRepository;
 
     private final PointRegister pointRegister;
