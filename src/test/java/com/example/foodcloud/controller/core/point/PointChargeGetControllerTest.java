@@ -1,20 +1,27 @@
 package com.example.foodcloud.controller.core.point;
 
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.Point;
 import com.example.foodcloud.domain.payment.domain.PointRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,55 +29,51 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PointChargeGetControllerTest {
-    private final PointChargeController pointChargeController;
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private final PointRepository pointRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    PointChargeGetControllerTest(PointChargeController pointChargeController, UserRepository userRepository, PointRepository pointRepository) {
-        this.pointChargeController = pointChargeController;
+    public PointChargeGetControllerTest(WebApplicationContext context, UserRepository userRepository, PointRepository pointRepository) {
+        this.context = context;
         this.userRepository = userRepository;
         this.pointRepository = pointRepository;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(pointChargeController)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void Get_포인트_충전_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
-        Point point = new Point(user);
-        pointRepository.save(point);
-
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
-
-        MockHttpServletRequestBuilder builder = get("/point/charge")
-                .session(session);
-
-        mockMvc.perform(builder)
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/point/charge"))
-                .andExpect(model().attribute("myPoint", point));
-    }
-
-    @Test
-    void Get_포인트_충전_정상작동_세션_없음() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         Point point = new Point(user);
         pointRepository.save(point);
 
         MockHttpServletRequestBuilder builder = get("/point/charge");
+
+        mockMvc.perform(builder)
+                .andExpect(status().isOk())
+                .andExpect(view().name("thymeleaf/point/charge"))
+                .andExpect(model().attribute("myPoint", point));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/point/charge");
+
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }
