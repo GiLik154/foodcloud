@@ -129,7 +129,7 @@ class PointChargePostControllerTest {
     @Test
     @WithAnonymousUser
     void 로그인_안하면_접속_못함() throws Exception {
-        MockHttpServletRequestBuilder builder = put("/point/charge")
+        MockHttpServletRequestBuilder builder = put("/point")
                 .with(csrf());
 
         mockMvc.perform(builder)
