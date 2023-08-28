@@ -1,7 +1,7 @@
 package com.example.foodcloud.application.order.commend;
 
 import com.example.foodcloud.domain.groupbuylist.service.commend.OrderJoinGroupCreatorCommend;
-import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
+import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuCreatorCommend;
 import lombok.Getter;
 
 @Getter
@@ -22,7 +22,7 @@ public class NewOrderServiceCommend {
         return new OrderJoinGroupCreatorCommend(this.location, this.restaurantId);
     }
 
-    public OrderMenuRegisterCommend convertOrderMenuDto(Long orderJoinGroupId) {
-        return new OrderMenuRegisterCommend(this.location, this.count, this.foodMenuId, orderJoinGroupId);
+    public OrderMenuCreatorCommend convertOrderMenuDto(Long orderJoinGroupId) {
+        return new OrderMenuCreatorCommend(this.location, this.count, this.foodMenuId, orderJoinGroupId);
     }
 }

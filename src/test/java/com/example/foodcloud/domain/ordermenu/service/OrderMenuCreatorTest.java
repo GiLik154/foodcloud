@@ -10,7 +10,7 @@ import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
+import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuCreatorCommend;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
@@ -59,8 +59,8 @@ class OrderMenuCreatorTest {
         Long foodMenuId = foodMenu.getId();
         Long groupBuyListId = groupBuyList.getId();
 
-        OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId);
-        orderMenuCreator.crate(user.getId(), orderMenuRegisterCommend);
+        OrderMenuCreatorCommend orderMenuCreatorCommend = new OrderMenuCreatorCommend("testLocation", 5, foodMenuId, groupBuyListId);
+        orderMenuCreator.crate(user.getId(), orderMenuCreatorCommend);
 
         OrderMenu orderMenu = orderMenuRepository.findAll().get(0);
 
@@ -92,11 +92,11 @@ class OrderMenuCreatorTest {
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
         groupBuyListRepository.save(groupBuyList);
 
-        OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("test", 5, foodMenu.getId(), groupBuyList.getId());
-        orderMenuCreator.crate(user.getId(), orderMenuRegisterCommend);
+        OrderMenuCreatorCommend orderMenuCreatorCommend = new OrderMenuCreatorCommend("test", 5, foodMenu.getId(), groupBuyList.getId());
+        orderMenuCreator.crate(user.getId(), orderMenuCreatorCommend);
 
         assertThrows(UsernameNotFoundException.class, () ->
-                orderMenuCreator.crate(userId + 1L, orderMenuRegisterCommend)
+                orderMenuCreator.crate(userId + 1L, orderMenuCreatorCommend)
         );
 
     }
@@ -112,9 +112,9 @@ class OrderMenuCreatorTest {
         Long foodMenuId = foodMenu.getId();
         Long groupBuyListId = groupBuyList.getId();
 
-        OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId + 1L, groupBuyListId);
+        OrderMenuCreatorCommend orderMenuCreatorCommend = new OrderMenuCreatorCommend("testLocation", 5, foodMenuId + 1L, groupBuyListId);
 
-        assertThrows(NotFoundFoodMenuException.class, () -> orderMenuCreator.crate(userId, orderMenuRegisterCommend));
+        assertThrows(NotFoundFoodMenuException.class, () -> orderMenuCreator.crate(userId, orderMenuCreatorCommend));
     }
 
     @Test
@@ -128,8 +128,8 @@ class OrderMenuCreatorTest {
         Long foodMenuId = foodMenu.getId();
         Long groupBuyListId = groupBuyList.getId();
 
-        OrderMenuRegisterCommend orderMenuRegisterCommend = new OrderMenuRegisterCommend("testLocation", 5, foodMenuId, groupBuyListId + 1L);
+        OrderMenuCreatorCommend orderMenuCreatorCommend = new OrderMenuCreatorCommend("testLocation", 5, foodMenuId, groupBuyListId + 1L);
 
-        assertThrows(NotFoundGroupByListException.class, () -> orderMenuCreator.crate(userId, orderMenuRegisterCommend));
+        assertThrows(NotFoundGroupByListException.class, () -> orderMenuCreator.crate(userId, orderMenuCreatorCommend));
     }
 }

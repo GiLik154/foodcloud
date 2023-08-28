@@ -3,9 +3,6 @@ package com.example.foodcloud.controller.core.order.cancel;
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.OrderMenuFixture;
-import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.order.OrderCancelController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -33,6 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -43,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderCancelPostControllerTest {
-    private final OrderCancelController orderCancelController;
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private final PointRepository pointRepository;
@@ -51,13 +49,11 @@ class OrderCancelPostControllerTest {
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
     private final OrderMenuRepository orderMenuRepository;
-    private final UserExceptionAdvice userExceptionAdvice;
-    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    OrderCancelPostControllerTest(OrderCancelController orderCancelController, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.orderCancelController = orderCancelController;
+    OrderCancelPostControllerTest(WebApplicationContext context, UserRepository userRepository, BankAccountRepository bankAccountRepository, PointRepository pointRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, OrderMenuRepository orderMenuRepository) {
+        this.context = context;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
         this.pointRepository = pointRepository;
@@ -65,14 +61,11 @@ class OrderCancelPostControllerTest {
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
         this.orderMenuRepository = orderMenuRepository;
-        this.userExceptionAdvice = userExceptionAdvice;
-        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderCancelController)
-                .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 

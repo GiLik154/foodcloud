@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 @Transactional
 @RequiredArgsConstructor
-public class NewOrderService implements NewOrder {
+public class NewOrderCreatorService implements NewOrderCreator {
     private final GroupByListCreator groupByListCreator;
     private final OrderMenuCreator orderMenuCreator;
 

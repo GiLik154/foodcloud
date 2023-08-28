@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.order;
 
-import com.example.foodcloud.application.order.NewOrder;
-import com.example.foodcloud.controller.core.order.dto.NewOrderCreateControllerDto;
+import com.example.foodcloud.application.order.NewOrderCreator;
+import com.example.foodcloud.controller.core.order.req.NewOrderCreateReq;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.security.login.UserDetail;
 import lombok.RequiredArgsConstructor;
@@ -22,20 +22,20 @@ import javax.validation.Valid;
 public class NewOrderController {
     private final FoodMenuRepository foodMenuRepository;
 
-    private final NewOrder newOrder;
+    private final NewOrderCreator newOrderCreator;
 
     @GetMapping("")
-    public String get(@RequestParam Long restaurantId, Model model) {
+    public String showCreatePage(@RequestParam Long restaurantId, Model model) {
         model.addAttribute("foodMenuList", foodMenuRepository.findByRestaurantId(restaurantId));
 
         return "thymeleaf/order/new";
     }
 
     @PostMapping("")
-    public String post(@Valid NewOrderCreateControllerDto newOrderCreateControllerDto) {
+    public String create(@Valid NewOrderCreateReq req) {
         Long userId = getCurrentUserId();
 
-        Long orderMenuId = newOrder.order(userId, newOrderCreateControllerDto.convert());
+        Long orderMenuId = newOrderCreator.order(userId, req.convert());
 
         return "redirect:/payment/pay/" + orderMenuId;
     }

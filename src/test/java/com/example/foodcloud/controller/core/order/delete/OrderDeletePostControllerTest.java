@@ -3,7 +3,6 @@ package com.example.foodcloud.controller.core.order.delete;
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.OrderMenuFixture;
-import com.example.foodcloud.controller.core.order.OrderDeleteController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderDeletePostControllerTest {
-    private final OrderDeleteController orderDeleteController;
+    private final WebApplicationContext context;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -43,8 +43,8 @@ class OrderDeletePostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderDeletePostControllerTest(OrderDeleteController orderDeleteController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
-        this.orderDeleteController = orderDeleteController;
+    public OrderDeletePostControllerTest(WebApplicationContext context, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
+        this.context = context;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -54,7 +54,7 @@ class OrderDeletePostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderDeleteController)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 

@@ -3,7 +3,7 @@ package com.example.foodcloud.controller.core.order.neworder;
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.order.NewOrderCreateController;
+import com.example.foodcloud.controller.core.order.NewOrderController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -35,8 +35,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class NewOrderPostControllerTest {
-    private final NewOrderCreateController newOrderCreateController;
+class NewOrderCreatorPostControllerTest {
+    private final NewOrderController newOrderController;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
@@ -47,8 +47,8 @@ class NewOrderPostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public NewOrderPostControllerTest(NewOrderCreateController newOrderCreateController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.newOrderCreateController = newOrderCreateController;
+    public NewOrderCreatorPostControllerTest(NewOrderController newOrderController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
+        this.newOrderController = newOrderController;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
@@ -60,7 +60,7 @@ class NewOrderPostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(newOrderCreateController)
+        mockMvc = MockMvcBuilders.standaloneSetup(newOrderController)
                 .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
                 .build();
     }

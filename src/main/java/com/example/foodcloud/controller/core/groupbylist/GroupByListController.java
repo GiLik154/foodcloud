@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.groupbylist;
 
-import com.example.foodcloud.controller.core.order.dto.OrderGroupJoinControllerDto;
+import com.example.foodcloud.controller.core.groupbylist.req.OrderGroupCreateReq;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -42,11 +42,11 @@ public class GroupByListController {
     }
 
     @PostMapping("/join")
-    public String join(@RequestParam Long groupByListId,
-                       @Valid OrderGroupJoinControllerDto orderGroupJoinControllerDto) {
+    public String create(@RequestParam Long groupByListId,
+                       @Valid OrderGroupCreateReq req) {
         Long userId = getCurrentUserId();
 
-        Long orderMenuId = orderMenuCreator.crate(userId, orderGroupJoinControllerDto.convert(groupByListId));
+        Long orderMenuId = orderMenuCreator.crate(userId, req.convert(groupByListId));
 
         return "redirect:/payment/pay/" + orderMenuId;
     }

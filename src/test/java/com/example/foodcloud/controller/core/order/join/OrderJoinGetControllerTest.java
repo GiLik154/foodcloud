@@ -2,9 +2,6 @@ package com.example.foodcloud.controller.core.order.join;
 
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.GroupBuyListFixture;
-import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.order.OrderGroupJoinController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -23,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -33,30 +31,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderJoinGetControllerTest {
-    private final OrderGroupJoinController orderGroupJoinController;
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
-    private final UserExceptionAdvice userExceptionAdvice;
-    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderJoinGetControllerTest(OrderGroupJoinController orderGroupJoinController, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, UserExceptionAdvice userExceptionAdvice, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.orderGroupJoinController = orderGroupJoinController;
+    public OrderJoinGetControllerTest(WebApplicationContext context, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
+        this.context = context;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
-        this.userExceptionAdvice = userExceptionAdvice;
-        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderGroupJoinController)
-                .setControllerAdvice(userExceptionAdvice, notFoundExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 

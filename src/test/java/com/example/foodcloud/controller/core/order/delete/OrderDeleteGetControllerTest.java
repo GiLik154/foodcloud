@@ -3,8 +3,6 @@ package com.example.foodcloud.controller.core.order.delete;
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.GroupBuyListFixture;
 import com.example.foodcloud.OrderMenuFixture;
-import com.example.foodcloud.controller.advice.NotFoundExceptionAdvice;
-import com.example.foodcloud.controller.core.order.OrderDeleteController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -26,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -34,30 +33,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OrderDeleteGetControllerTest {
-    private final OrderDeleteController orderDeleteController;
+    private final WebApplicationContext context;
     private final OrderMenuRepository orderMenuRepository;
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final GroupBuyListRepository groupBuyListRepository;
-    private final NotFoundExceptionAdvice notFoundExceptionAdvice;
     private MockMvc mockMvc;
 
     @Autowired
-    public OrderDeleteGetControllerTest(OrderDeleteController orderDeleteController, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository, NotFoundExceptionAdvice notFoundExceptionAdvice) {
-        this.orderDeleteController = orderDeleteController;
+    public OrderDeleteGetControllerTest(WebApplicationContext context, OrderMenuRepository orderMenuRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, GroupBuyListRepository groupBuyListRepository) {
+        this.context = context;
         this.orderMenuRepository = orderMenuRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.groupBuyListRepository = groupBuyListRepository;
-        this.notFoundExceptionAdvice = notFoundExceptionAdvice;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(orderDeleteController)
-                .setControllerAdvice(notFoundExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
     }
 

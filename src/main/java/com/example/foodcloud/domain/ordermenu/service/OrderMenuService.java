@@ -7,7 +7,7 @@ import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
-import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuRegisterCommend;
+import com.example.foodcloud.domain.ordermenu.service.commend.OrderMenuCreatorCommend;
 import com.example.foodcloud.domain.payment.domain.Payment;
 import com.example.foodcloud.domain.restaurant.service.RestaurantCountUpdater;
 import com.example.foodcloud.domain.user.domain.User;
@@ -35,7 +35,7 @@ public class OrderMenuService implements OrderMenuCreator, OrderMenuUpdater, Ord
     private final RestaurantCountUpdater restaurantCountUpdater;
 
     @Override
-    public Long crate(Long userId, OrderMenuRegisterCommend commend) {
+    public Long crate(Long userId, OrderMenuCreatorCommend commend) {
         Long foodMenuId = commend.getFoodMenuId();
         Long orderJoinGroupId = commend.getOrderJoinGroupId();
 

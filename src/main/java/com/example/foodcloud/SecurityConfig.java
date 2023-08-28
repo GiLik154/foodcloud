@@ -3,7 +3,6 @@ package com.example.foodcloud;
 import com.example.foodcloud.security.filter.AccessDeniedHandlerImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,8 +33,7 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/user/login", "/user/join").permitAll()
-                    .antMatchers(HttpMethod.POST, "/user").permitAll()
-                    .antMatchers("/user/**", "/user", "/restaurant/**").hasRole("USER")
+                    .antMatchers("/user/**", "/user", "/restaurant/**", "/new-order/**").hasRole("USER")
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling()
