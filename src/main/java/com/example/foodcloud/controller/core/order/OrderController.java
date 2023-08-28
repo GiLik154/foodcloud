@@ -1,10 +1,17 @@
 package com.example.foodcloud.controller.core.order;
 
+import com.example.foodcloud.controller.core.order.req.OrderJoinReq;
+import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
+import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
+import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyListRepository;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenu;
 import com.example.foodcloud.domain.ordermenu.domain.OrderMenuRepository;
 import com.example.foodcloud.domain.ordermenu.service.OrderMenuCanceler;
+import com.example.foodcloud.domain.ordermenu.service.OrderMenuCreator;
 import com.example.foodcloud.domain.ordermenu.service.OrderMenuDeleter;
 import com.example.foodcloud.enums.OrderResult;
+import com.example.foodcloud.exception.NotFoundGroupByListException;
 import com.example.foodcloud.exception.NotFoundOrderMenuException;
 import com.example.foodcloud.security.login.UserDetail;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +21,49 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/order")
 public class OrderController {
     private final OrderMenuRepository orderMenuRepository;
+    private final GroupBuyListRepository groupBuyListRepository;
+    private final FoodMenuRepository foodMenuRepository;
 
     private final OrderMenuCanceler orderMenuCanceler;
     private final OrderMenuDeleter orderMenuDeleter;
+    private final OrderMenuCreator orderMenuCreator;
+
+    @GetMapping("/join")
+    public String showJoinPage(@RequestParam Long orderJoinGroupId,
+                               Model model) {
+        GroupBuyList groupBuyList = groupBuyListRepository.findById(orderJoinGroupId).orElseThrow(() ->
+                new NotFoundGroupByListException("Not found GroupByList"));
+
+        List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(groupBuyList.getRestaurant().getId());
+
+        model.addAttribute("OrderJoinGroupInfo", groupBuyList);
+        model.addAttribute("foodMenuList", foodMenu);
+        return "thymeleaf/order/join";
+    }
+
+    @PostMapping("/join")
+    public String create(@RequestParam Long orderJoinGroupId,
+                         @Valid OrderJoinReq req) {
+        Long userId = getCurrentUserId();
+
+        Long orderMenuId = orderMenuCreator.crate(userId, req.convert(orderJoinGroupId));
+
+        return "redirect:/payment/pay/" + orderMenuId;
+    }
 
     @GetMapping("/list")
     public String showListPage(Model model) {
         Long userId = getCurrentUserId();
 
-        model.addAttribute("orderMenuList", orderMenuRepository.findByUserId(userId));
+        model.addAttribute("orderMenuList", orderMenuRepository.findByUserIdFetchJoin(userId));
         return "thymeleaf/order/list";
     }
 

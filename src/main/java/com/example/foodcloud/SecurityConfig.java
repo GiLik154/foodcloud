@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .and()
                     .authorizeRequests()
                     .antMatchers("/user/login", "/user/join").permitAll()
-                    .antMatchers("/user/**", "/user", "/restaurant/**", "/new-order/**").hasRole("USER")
+                    .antMatchers("/user/**", "/restaurant/**", "/new-order/**", "/order/**").hasRole("USER")
                     .anyRequest().authenticated()
                 .and()
                     .exceptionHandling()

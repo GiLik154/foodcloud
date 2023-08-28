@@ -16,7 +16,6 @@
 </head>
 <body>
 <div class="border_num my-4 mx-auto w-75">주문 목록</div>
-
 <div class="container order-manager-body">
     <div id="orderList">
         <table class="table">
@@ -32,15 +31,16 @@
             </tr>
             </thead>
             <tbody id="orderListBody">
-            <div class="row" th:each="ordermMenu : ${orderMenuList}"> </div>
-            <img th:if="${orderMenu.foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
-                 th:else th:src="@{${orderMenu.foodMenu.imagePath}}">
-            <td th:text="${orderMenu.foodMenu.name}"></td>
-            <td th:text="${orderMenu.count}"></td>
-            <td th:text="${orderMenu.location}"></td>
-            <td th:text="${orderMenu.payment.getPaymentCode().name()}"></td>
-            <td th:text="${orderMenu.price}"></td>
-            <td th:text="${orderMenu.result.name()}"></td>
+            <tr th:each="orderMenu : ${orderMenuList}">
+                <td>
+                    <img th:src="${orderMenu.foodMenu.imagePath != null} ? ${orderMenu.foodMenu.imagePath} : ${'/food-menu-images/default/default.png'}" />
+                </td>
+                <td th:text="${orderMenu.foodMenu.name}"></td>
+                <td th:text="${orderMenu.price}"></td>
+                <td th:text="${orderMenu.location}"></td>
+                <td th:text="${orderMenu.payment.getPaymentCode().name()}"></td>
+                <td th:text="${orderMenu.count}"></td>
+                <td th:text="${orderMenu.result.name()}"></td>
             </tr>
             </tbody>
         </table>
