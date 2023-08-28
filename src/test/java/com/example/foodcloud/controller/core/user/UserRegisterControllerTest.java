@@ -24,13 +24,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserJoinControllerTest {
+class UserRegisterControllerTest {
     private final WebApplicationContext context;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public UserJoinControllerTest(WebApplicationContext context, UserRepository userRepository) {
+    public UserRegisterControllerTest(WebApplicationContext context, UserRepository userRepository) {
         this.context = context;
         this.userRepository = userRepository;
     }

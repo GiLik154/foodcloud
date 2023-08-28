@@ -1,6 +1,6 @@
 package com.example.foodcloud.controller.core.user.req;
 
-import com.example.foodcloud.domain.user.service.commend.UserJoinerCommend;
+import com.example.foodcloud.domain.user.service.commend.UserRegisterCommend;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -20,7 +20,7 @@ public class UserJoinReq {
         this.joinPhone = joinPhone;
     }
 
-    public UserJoinerCommend convert() {
-        return new UserJoinerCommend(this.joinName, this.joinPassword, this.joinPhone);
+    public UserRegisterCommend convert() {
+        return new UserRegisterCommend(this.joinName, this.joinPassword, this.joinPhone);
     }
 }

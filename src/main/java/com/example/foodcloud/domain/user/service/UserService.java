@@ -3,7 +3,7 @@ package com.example.foodcloud.domain.user.service;
 import com.example.foodcloud.domain.payment.service.point.PointRegister;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
-import com.example.foodcloud.domain.user.service.commend.UserJoinerCommend;
+import com.example.foodcloud.domain.user.service.commend.UserRegisterCommend;
 import com.example.foodcloud.exception.UserNameDuplicateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,11 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService implements UserRegister, UserUpdater, UserDeleter {
     private final UserRepository userRepository;
-    private final PasswordEncoder bCryptPasswordEncoder;
     private final PointRegister pointRegister;
+    private final PasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void register(UserJoinerCommend commend) {
+    public void register(UserRegisterCommend commend) {
         validateDuplicate(commend.getUsername());
 
         User user = new User(commend.getUsername(), commend.getPassword(), commend.getPhone());
