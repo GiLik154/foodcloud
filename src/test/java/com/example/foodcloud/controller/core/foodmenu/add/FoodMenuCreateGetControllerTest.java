@@ -1,60 +1,61 @@
 package com.example.foodcloud.controller.core.foodmenu.add;
 
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuTypeRestController;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class FoodMenuAddGetControllerTest {
-    private final FoodMenuTypeRestController foodMenuTypeRestController;
-    private final UserExceptionAdvice userExceptionAdvice;
+class FoodMenuCreateGetControllerTest {
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuAddGetControllerTest(FoodMenuTypeRestController foodMenuTypeRestController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
-        this.foodMenuTypeRestController = foodMenuTypeRestController;
-        this.userExceptionAdvice = userExceptionAdvice;
+    public FoodMenuCreateGetControllerTest(WebApplicationContext context, UserRepository userRepository) {
+        this.context = context;
         this.userRepository = userRepository;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuTypeRestController)
-                .setControllerAdvice(userExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void Get_음식메뉴_추가_정상출력() throws Exception {
-        User user = new User("testName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/food-menu/add")
-                .session(session);
+        MockHttpServletRequestBuilder builder = get("/food-menu/add");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/add"));
+                .andExpect(view().name("thymeleaf/food-menu/add"));
     }
 
     @Test
@@ -63,6 +64,6 @@ class FoodMenuAddGetControllerTest {
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

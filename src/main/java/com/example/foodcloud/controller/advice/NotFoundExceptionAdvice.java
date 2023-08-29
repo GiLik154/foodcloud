@@ -19,7 +19,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler(NotFoundRestaurantException.class)
     public ModelAndView notFoundRestaurantException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.RESTAURANT_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult());
 
         return modelAndView;
     }
@@ -27,7 +27,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler(NotFoundFoodMenuException.class)
     public ModelAndView notFoundFoodMenuException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.FOOD_MENU_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult());
 
         return modelAndView;
     }
@@ -35,7 +35,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler({NotFoundBankAccountException.class, NotFoundBankCodeException.class})
     public ModelAndView notFoundBankAccountException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.BANK_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.BANK_NOT_FOUND.getResult());
 
         return modelAndView;
     }
@@ -43,7 +43,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler(NotFoundGroupByListException.class)
     public ModelAndView notFoundOrderJoinGroupException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.GROUP_BY_LIST_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.GROUP_BY_LIST_NOT_FOUND.getResult());
 
         return modelAndView;
     }
@@ -51,7 +51,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler(NotFoundOrderMenuException.class)
     public ModelAndView notFoundOrderMenuException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.ORDER_MENU_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.ORDER_MENU_NOT_FOUND.getResult());
 
         return modelAndView;
     }

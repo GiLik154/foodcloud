@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.core.foodmenu.update.dto;
+package com.example.foodcloud.controller.core.foodmenu.update.req;
 
 import com.example.foodcloud.controller.core.foodmenu.req.FoodMenuUpdaterReq;
 import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuUpdaterCommend;

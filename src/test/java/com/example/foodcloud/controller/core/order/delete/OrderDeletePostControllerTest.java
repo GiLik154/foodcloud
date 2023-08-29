@@ -135,7 +135,6 @@ class OrderDeletePostControllerTest {
         MockHttpServletRequestBuilder builder = delete("/order/" + 1L)
                 .with(csrf());
 
-
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("http://localhost/user/login"));

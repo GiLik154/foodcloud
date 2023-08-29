@@ -2,26 +2,31 @@ package com.example.foodcloud.controller.core.foodmenu.delete;
 
 import com.example.foodcloud.FoodMenuFixture;
 import com.example.foodcloud.RestaurantFixture;
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuDeleteController;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -30,9 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuDeleteGetControllerTest {
-
-    private final FoodMenuDeleteController foodMenuDeleteController;
-    private final UserExceptionAdvice userExceptionAdvice;
+    private final WebApplicationContext context;
     private final RestaurantRepository restaurantRepository;
     private final FoodMenuRepository foodMenuRepository;
     private final UserRepository userRepository;
@@ -40,9 +43,8 @@ class FoodMenuDeleteGetControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuDeleteGetControllerTest(FoodMenuDeleteController foodMenuDeleteController, UserExceptionAdvice userExceptionAdvice, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
-        this.foodMenuDeleteController = foodMenuDeleteController;
-        this.userExceptionAdvice = userExceptionAdvice;
+    public FoodMenuDeleteGetControllerTest(WebApplicationContext context, RestaurantRepository restaurantRepository, FoodMenuRepository foodMenuRepository, UserRepository userRepository, PasswordEncoder bCryptPasswordEncoder) {
+        this.context = context;
         this.restaurantRepository = restaurantRepository;
         this.foodMenuRepository = foodMenuRepository;
         this.userRepository = userRepository;
@@ -51,52 +53,35 @@ class FoodMenuDeleteGetControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuDeleteController)
-                .setControllerAdvice(userExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void Get_음식_메뉴_딜리트_출력_정상작동() throws Exception {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
-
+        User user = userRepository.save(UserFixture.fixture().encoding(bCryptPasswordEncoder, "testPassword").build());
         Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/food-menu/delete")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("password", "test")
-                .session(session);
+        MockHttpServletRequestBuilder builder = get("/food-menu/delete/" + foodMenu.getId());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/food-menu/delete"));
+                .andExpect(view().name("thymeleaf/food-menu/delete"));
     }
 
     @Test
-    void Get_음식_메뉴_딜리트_출력_세션_없음() throws Exception {
-        User user = new User("test", bCryptPasswordEncoder.encode("test"), "test");
-        userRepository.save(user);
-
-        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
-        MockHttpServletRequestBuilder builder = get("/food-menu/delete")
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("password", "test");
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = get("/food-menu/delete" + 1L);
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

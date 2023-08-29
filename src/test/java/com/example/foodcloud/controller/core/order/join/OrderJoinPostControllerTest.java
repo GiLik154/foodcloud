@@ -80,12 +80,11 @@ class OrderJoinPostControllerTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/join")
+        MockHttpServletRequestBuilder builder = post("/order/join/" + groupBuyList.getId())
                 .with(csrf())
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()));
+                .param("foodMenuId", String.valueOf(foodMenu.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
@@ -111,12 +110,11 @@ class OrderJoinPostControllerTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/join")
+        MockHttpServletRequestBuilder builder = post("/order/join/" + groupBuyList.getId())
                 .with(csrf())
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()));
+                .param("foodMenuId", String.valueOf(foodMenu.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
@@ -137,17 +135,16 @@ class OrderJoinPostControllerTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/join")
+        MockHttpServletRequestBuilder builder = post("/order/join/" + groupBuyList.getId())
                 .with(csrf())
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L))
-                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId()));
+                .param("foodMenuId", String.valueOf(foodMenu.getId() + 1L));
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
 
         assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }
@@ -163,17 +160,16 @@ class OrderJoinPostControllerTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/join")
+        MockHttpServletRequestBuilder builder = post("/order/join/" + groupBuyList.getId() + 1L)
                 .with(csrf())
                 .param("location", "testInputLocation")
                 .param("count", String.valueOf(5))
-                .param("foodMenuId", String.valueOf(foodMenu.getId()))
-                .param("orderJoinGroupId", String.valueOf(groupBuyList.getId() + 1L));
+                .param("foodMenuId", String.valueOf(foodMenu.getId()));
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.GROUP_BY_LIST_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.GROUP_BY_LIST_NOT_FOUND.getResult()));
 
         assertTrue(orderMenuRepository.findByGroupBuyListId(groupBuyList.getId()).isEmpty());
     }

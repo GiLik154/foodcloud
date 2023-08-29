@@ -4,10 +4,12 @@ package com.example.foodcloud.controller.core.foodmenu;
 import com.example.foodcloud.application.file.FileConverter;
 import com.example.foodcloud.controller.core.foodmenu.req.FoodMenCreateReq;
 import com.example.foodcloud.controller.core.foodmenu.req.FoodMenuUpdaterReq;
+import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.foodmenu.service.FoodMenuCreator;
 import com.example.foodcloud.domain.foodmenu.service.FoodMenuDeleter;
 import com.example.foodcloud.domain.foodmenu.service.FoodMenuUpdater;
+import com.example.foodcloud.exception.NotFoundFoodMenuException;
 import com.example.foodcloud.security.login.UserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -32,16 +34,16 @@ public class FoodMenuController {
 
     private final FileConverter converter;
 
-    @GetMapping("/add")
-    public String showCreatePage() {
-        return "thymeleaf/food-menu/add";
-    }
-
     @GetMapping("/list")
     public String get(@RequestParam Long restaurantId, Model model) {
         model.addAttribute("foodMenuList", repository.findByRestaurantId(restaurantId));
 
         return "thymeleaf/food-menu/list";
+    }
+
+    @GetMapping("/add")
+    public String showCreatePage() {
+        return "thymeleaf/food-menu/add";
     }
 
     @PostMapping("/{restaurantId}")
@@ -57,19 +59,21 @@ public class FoodMenuController {
 
     @GetMapping("update/{foodMenuId}")
     public String showUpdatePage(@PathVariable Long foodMenuId, Model model) {
-        repository.findById(foodMenuId).ifPresent(foodMenu ->
-                model.addAttribute("foodMenu", foodMenu));
+        FoodMenu foodMenu = repository.findById(foodMenuId).orElseThrow(() ->
+                new NotFoundFoodMenuException("Not found FoodMenu where showUpdatePage"));
+
+        model.addAttribute("foodMenu", foodMenu);
 
         return "thymeleaf/food-menu/update";
     }
 
-    @PutMapping("/{foodMenuId}")
+    @PostMapping("/update/{foodMenuId}")
     public String updater(@PathVariable Long foodMenuId,
                           @Valid FoodMenuUpdaterReq req,
                           MultipartFile multipartFile) throws IOException {
         updater.update(foodMenuId, req.convert(), converter.convert(multipartFile));
 
-        return "thymeleaf/food-menu/update";
+        return "redirect:/food-menu/update" + foodMenuId;
     }
 
     @GetMapping("/delete/{foodMenuId}")
@@ -87,7 +91,7 @@ public class FoodMenuController {
 
         deleter.delete(userId, foodMenuId, password);
 
-        return "thymeleaf/food-menu/delete";
+        return "redirect:/food-menu/delete" + foodMenuId;
     }
 
     private Long getCurrentUserId() {

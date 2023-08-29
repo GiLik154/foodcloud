@@ -145,7 +145,7 @@ class NewOrderCreatorPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
     }
 
     @Test
@@ -168,7 +168,7 @@ class NewOrderCreatorPostControllerTest {
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/error/error-page"))
-                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND));
+                .andExpect(model().attribute("errorMsg", KoreanErrorCode.FOOD_MENU_NOT_FOUND.getResult()));
     }
 
     @Test

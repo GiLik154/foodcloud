@@ -57,8 +57,8 @@
     <div class="border_clear">고기 종류를 선택해주세요</div>
     <select id="meatType">
       <option value="">고기 종류를 선택해주세요.</option>
-      <th:blockth:each="type : ${T(com.example.foodcloud.enums.foodmenu.MeatTypes).values()}">
-      <option th:value="${type}" th:text="${type.getName()}"></option>
+      <th:block th:each="type : ${T(com.example.foodcloud.enums.foodmenu.MeatTypes).values()}">
+        <option th:value="${type}" th:text="${type.getName()}"></option>
       </th:block>
     </select>
     <div class="border_clear">야채의 양을 선택해주세요</div>

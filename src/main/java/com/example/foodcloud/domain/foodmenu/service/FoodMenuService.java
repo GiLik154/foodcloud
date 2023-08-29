@@ -32,7 +32,8 @@ public class FoodMenuService implements FoodMenuCreator, FoodMenuUpdater, FoodMe
 
     @Override
     public void create(Long userId, Long restaurantId, FoodMenuCreatorCommend commend, File file) {
-        Restaurant restaurant = restaurantRepository.findByUserIdAndId(userId, restaurantId).orElseThrow(() -> new NotFoundRestaurantException("Not found restaurant"));
+        Restaurant restaurant = restaurantRepository.findByUserIdAndId(userId, restaurantId).orElseThrow(() ->
+                new NotFoundRestaurantException("Not found restaurant"));
 
         FoodMenu foodMenu = new FoodMenu(commend.getName(), commend.getPrice(), commend.getTemperature(),
                 commend.getFoodTypes(), commend.getMeatType(), commend.getVegetables(), restaurant);
