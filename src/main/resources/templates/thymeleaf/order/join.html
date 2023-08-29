@@ -29,11 +29,11 @@
 
     <tbody id="orderListBody">
     <tr>
-        <td th:text="${OrderJoinGroupInfo.id}"></td>
-        <td th:text="${OrderJoinGroupInfo.location}"></td>
-        <td th:text="${OrderJoinGroupInfo.time}"></td>
-        <td th:text="${OrderJoinGroupInfo.result}"></td>
-        <td th:text="${OrderJoinGroupInfo.restaurant.name}"></td>
+        <td th:text="${GroupBuyListInfo.id}"></td>
+        <td th:text="${GroupBuyListInfo.location}"></td>
+        <td th:text="${GroupBuyListInfo.time}"></td>
+        <td th:text="${GroupBuyListInfo.result}"></td>
+        <td th:text="${GroupBuyListInfo.restaurant.name}"></td>
     </tr>
     </tbody>
 </table>
@@ -47,8 +47,7 @@
             <th:block th:each="foodMenu : ${foodMenuList}">
                 <div class="col-md-4">
                     <div class="card mb-3">
-                        <img th:if="${foodMenu.imagePath == null}" th:src="@{'/food-menu-images/default/default.png'}"
-                             th:else th:src="@{${foodMenu.imagePath}}" class="card-img-top" alt="...">
+                        <img th:src="${foodMenu.imagePath != null} ? ${foodMenu.imagePath} : ${'/food-menu-images/default/default.png'}" />
                         <div class="card-body">
                             <h5 class="card-title" th:text="${foodMenu.getName}"></h5>
                             <p class="card-text" th:text="${foodMenu.foodTypes}"></p>
@@ -59,7 +58,7 @@
                             <p class="card-text" th:text="${foodMenu.orderCount}"></p>
                             <div class="row justify-content-center">
                                 <div class="col-md-6">
-                                    <form th:action="@{/order/join(restaurantId=${OrderJoinGroupId})}" method="post">
+                                    <form th:action="@{'/order/join/' + ${GroupBuyListInfo.id}}" method="post">
                                         <input type="hidden" name="id" th:value="${foodMenu.id}" />
                                         <div class="form-group">
                                             <label for="location">주문 장소 </label>

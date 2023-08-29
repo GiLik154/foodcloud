@@ -43,7 +43,7 @@ public class NotFoundExceptionAdvice {
     @ExceptionHandler(NotFoundGroupByListException.class)
     public ModelAndView notFoundOrderJoinGroupException() {
         ModelAndView modelAndView = new ModelAndView(VIEW_PAGE);
-        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.ORDER_MAIN_NOT_FOUND);
+        modelAndView.addObject(MODEL_NAME, KoreanErrorCode.GROUP_BY_LIST_NOT_FOUND);
 
         return modelAndView;
     }

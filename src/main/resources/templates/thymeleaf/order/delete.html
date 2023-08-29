@@ -49,7 +49,9 @@
             </div>
             <div class="row">
                 <div class="col-md-3 border font-weight-bold">결제 종류</div>
-                <div class="col-md-9 border"><span th:text="${orderMenu.payment.getPaymentCode().name()}"></span></div>
+                <div class="col-md-9 border">
+                    <span th:text="${orderMenu.payment != null ? orderMenu.payment.getPaymentCode().name() : '결제 수단 없음'}"></span>
+                </div>
             </div>
             <div class="container">
                 <hr>

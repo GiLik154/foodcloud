@@ -1,8 +1,6 @@
 package com.example.foodcloud.controller.core.order.delete;
 
-import com.example.foodcloud.FoodMenuFixture;
-import com.example.foodcloud.GroupBuyListFixture;
-import com.example.foodcloud.OrderMenuFixture;
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -14,12 +12,15 @@ import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -61,84 +62,41 @@ class OrderDeleteGetControllerTest {
 
     @Test
     void 주문_삭제_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/order/delete")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()))
-                .session(session);
+        MockHttpServletRequestBuilder builder = get("/order/delete/" + orderMenu.getId());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/delete"))
+                .andExpect(view().name("thymeleaf/order/delete"))
                 .andExpect(model().attribute("orderMenu", orderMenu));
     }
 
     @Test
-    void 주문_삭제_세션_없음() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
-        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
-        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
-
-        MockHttpServletRequestBuilder builder = get("/order/delete")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()));
-
-        mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
-    }
-
-    @Test
     void 주문_삭제_오더메뉴_고유번호_다름() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        User user = userRepository.save(UserFixture.fixture().build());
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/order/delete")
-                .param("orderMenuId", String.valueOf(orderMenu.getId() + 1L))
-                .session(session);
+        MockHttpServletRequestBuilder builder = get("/order/delete/" + orderMenu.getId() + 1L);
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(view().name("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND));
     }
 }

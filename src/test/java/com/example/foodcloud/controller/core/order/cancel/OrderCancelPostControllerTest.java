@@ -1,8 +1,6 @@
 package com.example.foodcloud.controller.core.order.cancel;
 
-import com.example.foodcloud.FoodMenuFixture;
-import com.example.foodcloud.GroupBuyListFixture;
-import com.example.foodcloud.OrderMenuFixture;
+import com.example.foodcloud.*;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.groupbuylist.domain.GroupBuyList;
@@ -20,12 +18,15 @@ import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.KoreanErrorCode;
 import com.example.foodcloud.enums.OrderResult;
 import com.example.foodcloud.enums.PaymentCode;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -34,8 +35,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -73,8 +75,7 @@ class OrderCancelPostControllerTest {
 
     @Test
     void 주문_취소_Post_국민_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
         BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
@@ -83,38 +84,30 @@ class OrderCancelPostControllerTest {
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
 
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(kbBank);
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/cancel")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()))
-                .session(session);
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + orderMenu.getId())
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
-                .andExpect(model().attribute("cancelMsg", "25000 price KB Bank refund succeed"));
+                .andExpect(view().name("thymeleaf/order/cancel-check"))
+                .andExpect(model().attribute("cancelMsg", "50000 price KB Bank refund succeed"));
 
         assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
     void 주문_취소_Post_농협_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
         BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
@@ -123,38 +116,30 @@ class OrderCancelPostControllerTest {
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
 
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(nhBank);
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/cancel")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()))
-                .session(session);
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + orderMenu.getId())
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
-                .andExpect(model().attribute("cancelMsg", "25000 price NH bank refund succeed"));
+                .andExpect(view().name("thymeleaf/order/cancel-check"))
+                .andExpect(model().attribute("cancelMsg", "50000 price NH bank refund succeed"));
 
         assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
     void 주문_취소_Post_신한_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
         BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
@@ -163,74 +148,58 @@ class OrderCancelPostControllerTest {
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
 
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(shBank);
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/cancel")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()))
-                .session(session);
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + orderMenu.getId())
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
-                .andExpect(model().attribute("cancelMsg", "25000 price ShinHan bank refund succeed"));
+                .andExpect(view().name("thymeleaf/order/cancel-check"))
+                .andExpect(model().attribute("cancelMsg", "50000 price ShinHan bank refund succeed"));
 
         assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
     void 주문_취소_Post_포인트_정상작동() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         Point point = new Point(user);
         pointRepository.save(point);
 
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(point);
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/cancel")
-                .param("orderMenuId", String.valueOf(orderMenu.getId()))
-                .session(session);
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + orderMenu.getId())
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/order/cancel-check"))
-                .andExpect(model().attribute("cancelMsg", "25000 price Point refund succeed"));
+                .andExpect(view().name("thymeleaf/order/cancel-check"))
+                .andExpect(model().attribute("cancelMsg", "50000 price Point refund succeed"));
 
         assertEquals(OrderResult.CANCELED, orderMenu.getResult());
     }
 
     @Test
     void 주문_취소_Post_계좌_고유번호_다름() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
         BankAccount kbBank = new BankAccount(user, "test", "test", PaymentCode.KB);
         BankAccount nhBank = new BankAccount(user, "test", "test", PaymentCode.NH);
@@ -239,29 +208,22 @@ class OrderCancelPostControllerTest {
         bankAccountRepository.save(nhBank);
         bankAccountRepository.save(shBank);
 
-        Restaurant restaurant = new Restaurant("testRestaurantName", "testLocation", "testHours", user);
-        restaurantRepository.save(restaurant);
-
+        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
         FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
         GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
         OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
         orderMenu.completeOrderWithPayment(shBank);
-        orderMenuRepository.save(orderMenu);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/order/cancel")
-                .param("orderMenuId", String.valueOf(orderMenu.getId() + 1L))
-                .session(session);
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + orderMenu.getId() + 1L)
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/error/error-page"))
+                .andExpect(view().name("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND));
 
         assertNotEquals(OrderResult.CANCELED, orderMenu.getResult());

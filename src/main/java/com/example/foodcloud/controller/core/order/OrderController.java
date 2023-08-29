@@ -36,25 +36,25 @@ public class OrderController {
     private final OrderMenuDeleter orderMenuDeleter;
     private final OrderMenuCreator orderMenuCreator;
 
-    @GetMapping("/join")
-    public String showJoinPage(@RequestParam Long orderJoinGroupId,
+    @GetMapping("/join/{groupByListId}")
+    public String showJoinPage(@PathVariable Long groupByListId,
                                Model model) {
-        GroupBuyList groupBuyList = groupBuyListRepository.findById(orderJoinGroupId).orElseThrow(() ->
+        GroupBuyList groupBuyList = groupBuyListRepository.findById(groupByListId).orElseThrow(() ->
                 new NotFoundGroupByListException("Not found GroupByList"));
 
         List<FoodMenu> foodMenu = foodMenuRepository.findByRestaurantId(groupBuyList.getRestaurant().getId());
 
-        model.addAttribute("OrderJoinGroupInfo", groupBuyList);
+        model.addAttribute("GroupBuyListInfo", groupBuyList);
         model.addAttribute("foodMenuList", foodMenu);
         return "thymeleaf/order/join";
     }
 
-    @PostMapping("/join")
-    public String create(@RequestParam Long orderJoinGroupId,
+    @PostMapping("/join/{groupByListId}")
+    public String create(@PathVariable Long groupByListId,
                          @Valid OrderJoinReq req) {
         Long userId = getCurrentUserId();
 
-        Long orderMenuId = orderMenuCreator.crate(userId, req.convert(orderJoinGroupId));
+        Long orderMenuId = orderMenuCreator.crate(userId, req.convert(groupByListId));
 
         return "redirect:/payment/pay/" + orderMenuId;
     }
@@ -69,14 +69,14 @@ public class OrderController {
 
     @GetMapping("/cancel/{orderMenuId}")
     public String showCancelPage(@PathVariable Long orderMenuId, Model model) {
-        OrderMenu orderMenu = orderMenuRepository.findByIdAndResultNot(orderMenuId, OrderResult.CANCELED).orElseThrow(NotFoundOrderMenuException::new);
+        OrderMenu orderMenu = orderMenuRepository.findByIdAndResultNotFetchJoin(orderMenuId, OrderResult.CANCELED).orElseThrow(NotFoundOrderMenuException::new);
 
-        model.addAttribute("orderMenuInfo", orderMenu);
+        model.addAttribute("orderMenu", orderMenu);
         return "thymeleaf/order/cancel";
     }
 
     @PutMapping("/cancel/{orderMenuId}")
-    public String cancel(@RequestParam Long orderMenuId, Model model) {
+    public String cancel(@PathVariable Long orderMenuId, Model model) {
         Long userId = getCurrentUserId();
 
         model.addAttribute("cancelMsg", orderMenuCanceler.cancel(userId, orderMenuId));
@@ -85,15 +85,15 @@ public class OrderController {
     }
 
     @GetMapping("/delete/{orderMenuId}")
-    public String showDeletePage(Long orderMenuId, Model model) {
-        OrderMenu orderMenu = orderMenuRepository.findByIdAndResultNot(orderMenuId, OrderResult.CANCELED).orElseThrow(NotFoundOrderMenuException::new);
+    public String showDeletePage(@PathVariable Long orderMenuId, Model model) {
+        OrderMenu orderMenu = orderMenuRepository.findByIdAndResultNotFetchJoin(orderMenuId, OrderResult.CANCELED).orElseThrow(NotFoundOrderMenuException::new);
 
         model.addAttribute("orderMenu", orderMenu);
         return "thymeleaf/order/delete";
     }
 
     @DeleteMapping("/{orderMenuId}")
-    public String delete(Long orderMenuId) {
+    public String delete(@PathVariable Long orderMenuId) {
         Long userId = getCurrentUserId();
 
         orderMenuDeleter.delete(userId, orderMenuId);

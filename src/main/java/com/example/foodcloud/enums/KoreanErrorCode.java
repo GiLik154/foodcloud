@@ -7,7 +7,7 @@ import lombok.Getter;
 public enum KoreanErrorCode {
     BANK_NOT_FOUND("BANK_NOT_FOUND", "은행 정보를 확인해주세요."),
     FOOD_MENU_NOT_FOUND("FOOD_MENU_NOT_FOUND", "음식 메뉴 정보를 확인해주세요."),
-    ORDER_MAIN_NOT_FOUND("ORDER_MAIN_NOT_FOUND", "오더 내용을 확인해주세요."),
+    GROUP_BY_LIST_NOT_FOUND("GROUP_BY_LIST_NOT_FOUND", "리스트 내용을 확인해주세요."),
     ORDER_MENU_NOT_FOUND("ORDER_MENU_NOT_FOUND", "주문 내역을 확인해주세요."),
     RESTAURANT_NOT_FOUND("RESTAURANT_NOT_FOUND", "식당 내용을 확인해 주세요."),
     NOT_ENOUGH_POINT("NOT_ENOUGH_POINT", "포인트가 부족합니다."),
