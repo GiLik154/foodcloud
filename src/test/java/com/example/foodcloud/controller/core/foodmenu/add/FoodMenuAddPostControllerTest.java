@@ -3,7 +3,7 @@ package com.example.foodcloud.controller.core.foodmenu.add;
 import com.example.foodcloud.RestaurantFixture;
 import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
+import com.example.foodcloud.controller.core.foodmenu.FoodMenuTypeRestController;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenu;
 import com.example.foodcloud.domain.foodmenu.domain.FoodMenuRepository;
 import com.example.foodcloud.domain.restaurant.domain.Restaurant;
@@ -41,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuAddPostControllerTest {
 
-    private final FoodMenuAddController foodMenuAddController;
+    private final FoodMenuTypeRestController foodMenuTypeRestController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final FoodMenuRepository foodMenuRepository;
     private final RestaurantRepository restaurantRepository;
@@ -49,8 +49,8 @@ class FoodMenuAddPostControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuAddPostControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
-        this.foodMenuAddController = foodMenuAddController;
+    public FoodMenuAddPostControllerTest(FoodMenuTypeRestController foodMenuTypeRestController, UserExceptionAdvice userExceptionAdvice, FoodMenuRepository foodMenuRepository, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+        this.foodMenuTypeRestController = foodMenuTypeRestController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.foodMenuRepository = foodMenuRepository;
         this.restaurantRepository = restaurantRepository;
@@ -59,7 +59,7 @@ class FoodMenuAddPostControllerTest {
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuAddController)
+        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuTypeRestController)
                 .setControllerAdvice(userExceptionAdvice)
                 .build();
 

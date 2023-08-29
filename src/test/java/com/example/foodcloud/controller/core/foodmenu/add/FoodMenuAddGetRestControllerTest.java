@@ -1,7 +1,7 @@
 package com.example.foodcloud.controller.core.foodmenu.add;
 
 import com.example.foodcloud.controller.advice.UserExceptionAdvice;
-import com.example.foodcloud.controller.core.foodmenu.FoodMenuAddController;
+import com.example.foodcloud.controller.core.foodmenu.FoodMenuTypeRestController;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.FoodType;
@@ -24,21 +24,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class FoodMenuAddGetRestControllerTest {
 
-    private final FoodMenuAddController foodMenuAddController;
+    private final FoodMenuTypeRestController foodMenuTypeRestController;
     private final UserExceptionAdvice userExceptionAdvice;
     private final UserRepository userRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public FoodMenuAddGetRestControllerTest(FoodMenuAddController foodMenuAddController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
-        this.foodMenuAddController = foodMenuAddController;
+    public FoodMenuAddGetRestControllerTest(FoodMenuTypeRestController foodMenuTypeRestController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository) {
+        this.foodMenuTypeRestController = foodMenuTypeRestController;
         this.userExceptionAdvice = userExceptionAdvice;
         this.userRepository = userRepository;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuAddController)
+        mockMvc = MockMvcBuilders.standaloneSetup(foodMenuTypeRestController)
                 .setControllerAdvice(userExceptionAdvice)
                 .build();
     }

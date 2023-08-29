@@ -1,6 +1,6 @@
-package com.example.foodcloud.controller.core.foodmenu.dto;
+package com.example.foodcloud.controller.core.foodmenu.req;
 
-import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuCreatorCommend;
+import com.example.foodcloud.domain.foodmenu.service.commend.FoodMenuUpdaterCommend;
 import com.example.foodcloud.enums.foodmenu.FoodTypes;
 import com.example.foodcloud.enums.foodmenu.MeatTypes;
 import com.example.foodcloud.enums.foodmenu.Temperature;
@@ -13,19 +13,23 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
-public class FoodMenuAddControllerDto {
+public class FoodMenuUpdaterReq {
     @NotBlank
     private final String name;
     @NotNull
     @Min(1000)
     @Max(3000000)
     private final int price;
+    @NotNull
     private final Temperature temperature;
+    @NotNull
     private final FoodTypes foodTypes;
+    @NotNull
     private final MeatTypes meatType;
+    @NotNull
     private final Vegetables vegetables;
 
-    public FoodMenuAddControllerDto(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
+    public FoodMenuUpdaterReq(String name, int price, Temperature temperature, FoodTypes foodTypes, MeatTypes meatType, Vegetables vegetables) {
         this.name = name;
         this.price = price;
         this.temperature = temperature;
@@ -34,8 +38,8 @@ public class FoodMenuAddControllerDto {
         this.vegetables = vegetables;
     }
 
-    public FoodMenuCreatorCommend convert() {
-        return new FoodMenuCreatorCommend(this.name,
+    public FoodMenuUpdaterCommend convert(){
+        return new FoodMenuUpdaterCommend(this.name,
                 this.price,
                 this.temperature,
                 this.foodTypes,
