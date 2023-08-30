@@ -1,0 +1,7 @@
+<span th:if="${payment != null}">
+    <script type="text/javascript">
+        const text = "[[${payment}]]";
+        top.alert(text);
+        location.href='/order/list';
+    </script>
+</span>

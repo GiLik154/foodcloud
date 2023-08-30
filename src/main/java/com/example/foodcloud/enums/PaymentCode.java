@@ -26,6 +26,16 @@ public enum PaymentCode {
                 return paymentCode.name;
             }
         }
+
+        throw new NotFoundBankCodeException();
+    }
+
+    public static void validate(PaymentCode code) {
+        for (PaymentCode paymentCode : PaymentCode.values()) {
+            if (paymentCode == code) {
+                return;
+            }
+        }
         throw new NotFoundBankCodeException();
     }
 
