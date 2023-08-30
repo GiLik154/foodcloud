@@ -15,12 +15,16 @@ import com.example.foodcloud.domain.restaurant.domain.Restaurant;
 import com.example.foodcloud.domain.restaurant.domain.RestaurantRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -117,48 +121,17 @@ class PayGetControllerTest {
 
     @Test
     void 결제_Get__결제() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
+        User user = userRepository.save(UserFixture.fixture().build());
         BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
-        bankAccountRepository.save(bankAccount);
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/payment/pay/bank")
-                .session(session);
+        MockHttpServletRequestBuilder builder = get("/payment/pay/bank");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(bankAccount.getId()));
-    }
-
-    @Test
-    void 결제_Get_세션_없음() throws Exception {
-        User user = new User("testUserName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
-        bankAccountRepository.save(bankAccount);
-
-        Restaurant restaurant = restaurantRepository.save(RestaurantFixture.fixture(user).build());
-        restaurantRepository.save(restaurant);
-
-        FoodMenu foodMenu = foodMenuRepository.save(FoodMenuFixture.fixture(restaurant).build());
-        foodMenuRepository.save(foodMenu);
-
-        GroupBuyList groupBuyList = groupBuyListRepository.save(GroupBuyListFixture.fixture(user, restaurant).build());
-        groupBuyListRepository.save(groupBuyList);
-
-        OrderMenu orderMenu = orderMenuRepository.save(OrderMenuFixture.fixture(user, groupBuyList, foodMenu).build());
-        orderMenuRepository.save(orderMenu);
-        Long orderMenuId = orderMenu.getId();
-        MockHttpServletRequestBuilder builder = get("/payment/pay/" + orderMenuId)
-                .param("orderMenuId", String.valueOf(orderMenuId));
-
-        mockMvc.perform(builder)
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
     }
 }

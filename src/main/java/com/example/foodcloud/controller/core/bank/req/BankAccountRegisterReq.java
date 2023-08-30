@@ -1,4 +1,4 @@
-package com.example.foodcloud.controller.core.bank.dto;
+package com.example.foodcloud.controller.core.bank.req;
 
 import com.example.foodcloud.domain.payment.service.bank.commend.BankAccountRegisterCommend;
 import com.example.foodcloud.enums.PaymentCode;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-public class BankAccountAddControllerDto {
+public class BankAccountRegisterReq {
     @NotEmpty
     private final String name;
     @NotEmpty
@@ -15,7 +15,7 @@ public class BankAccountAddControllerDto {
     @NotEmpty
     private final String paymentCode;
 
-    public BankAccountAddControllerDto(String name, String accountNumber, String paymentCode) {
+    public BankAccountRegisterReq(String name, String accountNumber, String paymentCode) {
         this.name = name;
         this.accountNumber = accountNumber;
         this.paymentCode = paymentCode;

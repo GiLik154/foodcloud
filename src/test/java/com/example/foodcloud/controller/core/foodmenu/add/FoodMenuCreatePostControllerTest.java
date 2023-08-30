@@ -26,6 +26,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -208,5 +209,16 @@ class FoodMenuCreatePostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("thymeleaf/error/error-page"))
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.RESTAURANT_NOT_FOUND.getResult()));
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = MockMvcRequestBuilders.multipart("/food-menu/" + 1L)
+                .with(csrf());
+
+        mockMvc.perform(builder)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

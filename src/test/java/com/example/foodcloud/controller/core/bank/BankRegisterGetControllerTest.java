@@ -1,9 +1,6 @@
 package com.example.foodcloud.controller.core.bank;
 
-import com.example.foodcloud.BankAccountFixture;
 import com.example.foodcloud.UserFixture;
-import com.example.foodcloud.domain.payment.domain.BankAccount;
-import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.security.login.UserDetail;
@@ -29,17 +26,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BankDeleteGetControllerTest {
+class BankRegisterGetControllerTest {
     private final WebApplicationContext context;
     private final UserRepository userRepository;
-    private final BankAccountRepository bankAccountRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    public BankDeleteGetControllerTest(WebApplicationContext context, UserRepository userRepository, BankAccountRepository bankAccountRepository) {
+    public BankRegisterGetControllerTest(WebApplicationContext context, UserRepository userRepository) {
         this.context = context;
         this.userRepository = userRepository;
-        this.bankAccountRepository = bankAccountRepository;
     }
 
     @BeforeEach
@@ -50,26 +45,24 @@ class BankDeleteGetControllerTest {
     }
 
     @Test
-    void 계좌_삭제_정상작동() throws Exception {
+    void 계좌_추가_Get_정상작동() throws Exception {
         User user = userRepository.save(UserFixture.fixture().build());
-        BankAccount bankAccount = bankAccountRepository.save(BankAccountFixture.fixture(user).build());
 
         UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = get("/bank/delete/" + bankAccount.getId());
+        MockHttpServletRequestBuilder builder = get("/bank/register");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(view().name("thymeleaf/bank/delete"))
-                .andExpect(model().attribute("bankAccountInfo", bankAccountRepository.findById(bankAccount.getId()).get()));
+                .andExpect(view().name("thymeleaf/bank/register"));
     }
 
     @Test
     @WithAnonymousUser
     void 로그인_안하면_접속_못함() throws Exception {
-        MockHttpServletRequestBuilder builder = get("/bank/delete/" + 1L);
+        MockHttpServletRequestBuilder builder = get("/bank/add");
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())

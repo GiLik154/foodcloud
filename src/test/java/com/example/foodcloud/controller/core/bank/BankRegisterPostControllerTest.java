@@ -1,68 +1,74 @@
 package com.example.foodcloud.controller.core.bank;
 
-import com.example.foodcloud.controller.advice.UserExceptionAdvice;
+import com.example.foodcloud.UserFixture;
 import com.example.foodcloud.domain.payment.domain.BankAccount;
 import com.example.foodcloud.domain.payment.domain.BankAccountRepository;
 import com.example.foodcloud.domain.user.domain.User;
 import com.example.foodcloud.domain.user.domain.UserRepository;
 import com.example.foodcloud.enums.PaymentCode;
+import com.example.foodcloud.security.login.UserDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.mock.web.MockHttpSession;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BankAddPostControllerTest {
-    private final BankAddController bankAddController;
-    private final UserExceptionAdvice userExceptionAdvice;
+class BankRegisterPostControllerTest {
+    private final WebApplicationContext context;
     private final UserRepository userRepository;
     private final BankAccountRepository bankAccountRepository;
     private MockMvc mockMvc;
 
     @Autowired
-    BankAddPostControllerTest(BankAddController bankAddController, UserExceptionAdvice userExceptionAdvice, UserRepository userRepository, BankAccountRepository bankAccountRepository) {
-        this.bankAddController = bankAddController;
-        this.userExceptionAdvice = userExceptionAdvice;
+    public BankRegisterPostControllerTest(WebApplicationContext context, UserRepository userRepository, BankAccountRepository bankAccountRepository) {
+        this.context = context;
         this.userRepository = userRepository;
         this.bankAccountRepository = bankAccountRepository;
     }
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(bankAddController)
-                .setControllerAdvice(userExceptionAdvice)
+        mockMvc = MockMvcBuilders.webAppContextSetup(context)
+                .apply(springSecurity())
                 .build();
     }
 
     @Test
     void Post_계좌_추가_정상작동() throws Exception {
-        User user = new User("testName", "testPassword", "testPhone");
-        userRepository.save(user);
+        User user = userRepository.save(UserFixture.fixture().build());
 
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("userId", user.getId());
+        UserDetail userDetail = new UserDetail(user.getName(), user.getPassword(), user.getUserGrade(), user.getId());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        MockHttpServletRequestBuilder builder = post("/bank/add")
+        MockHttpServletRequestBuilder builder = post("/bank/register")
+                .with(csrf())
                 .param("name", "testName")
                 .param("accountNumber", "testNumber")
-                .param("paymentCode", "004")
-                .session(session);
+                .param("paymentCode", "004");
 
         mockMvc.perform(builder)
                 .andExpect(status().isOk())
-                .andExpect(forwardedUrl("thymeleaf/bank/add"));
+                .andExpect(view().name("thymeleaf/bank/register"));
 
         BankAccount bankAccount = bankAccountRepository.findByUserId(user.getId()).get(0);
 
@@ -74,17 +80,13 @@ class BankAddPostControllerTest {
     }
 
     @Test
-    void Post_계좌_추가_유저아이디_없음() throws Exception {
-        User user = new User("testName", "testPassword", "testPhone");
-        userRepository.save(user);
-
-        MockHttpServletRequestBuilder builder = post("/bank/add")
-                .param("name", "testName")
-                .param("accountNumber", "testNumber")
-                .param("paymentCode", "004");
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = post("/bank/register")
+                .with(csrf());
 
         mockMvc.perform(builder)
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

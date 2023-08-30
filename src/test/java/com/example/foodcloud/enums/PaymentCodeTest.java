@@ -1,9 +1,8 @@
 package com.example.foodcloud.enums;
 
-import com.example.foodcloud.exception.NotFoundBankCodeException;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PaymentCodeTest {
 
@@ -17,23 +16,14 @@ class PaymentCodeTest {
     
     @Test
     void returnName_정상작동() {
-        String point = PaymentCode.returnName("000");
-        String kb = PaymentCode.returnName("004");
-        String nh = PaymentCode.returnName("011");
-        String shinHan = PaymentCode.returnName("088");
+        String point = PaymentCode.returnName(PaymentCode.POINT);
+        String kb = PaymentCode.returnName(PaymentCode.KB);
+        String nh = PaymentCode.returnName(PaymentCode.NH);
+        String shinHan = PaymentCode.returnName(PaymentCode.SHIN_HAN);
 
         assertEquals("포인트", point);
         assertEquals("국민", kb);
         assertEquals("농협", nh);
         assertEquals("신한", shinHan);
-    }
-
-    @Test
-    void returnName_은행_찾지못함() {
-        NotFoundBankCodeException e = assertThrows(NotFoundBankCodeException.class, () ->
-                PaymentCode.returnName("111")
-        );
-
-        assertEquals("Not found BankCode", e.getMessage());
     }
 }

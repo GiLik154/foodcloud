@@ -20,19 +20,10 @@ public enum PaymentCode {
         this.name = name;
     }
 
-    public static String returnName(String code) {
+    public static String returnName(PaymentCode code) {
         for (PaymentCode paymentCode : PaymentCode.values()) {
-            if (paymentCode.code.equals(code)) {
+            if (paymentCode == code) {
                 return paymentCode.name;
-            }
-        }
-        throw new NotFoundBankCodeException();
-    }
-
-    public static void validate(String code) {
-        for (PaymentCode paymentCode : PaymentCode.values()) {
-            if (paymentCode.code.equals(code)) {
-                return;
             }
         }
         throw new NotFoundBankCodeException();

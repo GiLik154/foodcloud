@@ -27,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -227,5 +228,16 @@ class OrderCancelPostControllerTest {
                 .andExpect(model().attribute("errorMsg", KoreanErrorCode.ORDER_MENU_NOT_FOUND.getResult()));
 
         assertNotEquals(OrderResult.CANCELED, orderMenu.getResult());
+    }
+
+    @Test
+    @WithAnonymousUser
+    void 로그인_안하면_접속_못함() throws Exception {
+        MockHttpServletRequestBuilder builder = put("/order/cancel/" + 1L)
+                .with(csrf());
+
+        mockMvc.perform(builder)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("http://localhost/user/login"));
     }
 }

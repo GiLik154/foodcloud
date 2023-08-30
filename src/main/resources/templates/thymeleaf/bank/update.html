@@ -29,17 +29,17 @@
                     <label>은행을 선택해주세요.</label>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="bank" value="004" th:checked="${bankAccountInfo.bank == '004'}">농협
+                            <input type="radio" name="bank" value="004" th:checked="${bankAccountInfo.getPaymentCode() == '004'}">농협
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="bank" value="011" th:checked="${bankAccountInfo.bank == '011'}">국민
+                            <input type="radio" name="bank" value="011" th:checked="${bankAccountInfo.getPaymentCode() == '011'}">국민
                         </label>
                     </div>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="bank" value="088" th:checked="${bankAccountInfo.bank == '088'}">신한
+                            <input type="radio" name="bank" value="088" th:checked="${bankAccountInfo.getPaymentCode() == '088'}">신한
                         </label>
                     </div>
                 </div>
