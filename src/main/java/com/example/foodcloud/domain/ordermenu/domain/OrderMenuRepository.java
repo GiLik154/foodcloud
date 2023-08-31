@@ -19,6 +19,9 @@ public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
     @Query("SELECT o FROM OrderMenu o JOIN FETCH o.user u JOIN FETCH o.payment WHERE u.id = :userId")
     List<OrderMenu> findByUserIdFetchJoin(@Param("userId") Long userId);
 
+    @Query("SELECT o FROM OrderMenu o JOIN FETCH o.user u LEFT JOIN FETCH o.payment WHERE o.id = :orderMenuId")
+    Optional<OrderMenu> findByIdFetchJoin(@Param("orderMenuId") Long orderMenuId);
+
     List<OrderMenu> findByFoodMenuIdAndResult(Long foodMenuId, OrderResult result);
 
     @Query("SELECT o FROM OrderMenu o LEFT JOIN FETCH o.user LEFT JOIN FETCH o.payment WHERE o.id = :orderMenuId AND o.result != :result")

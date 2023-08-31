@@ -36,7 +36,10 @@
             </div>
             <div class="row mb-4">
                 <div class="col-md-3 font-weight-bold">결제 종류</div>
-                <div class="col-md-9"><span th:text="${orderMenu.payment.getPaymentCode().name()}"></span></div>
+                <div class="col-md-9">
+                    <span th:if="${orderMenu.payment != null}" th:text="${orderMenu.payment.getPaymentCode().name()}"></span>
+                    <span th:if="${orderMenu.payment == null}">결제 대기중</span>
+                </div>
             </div>
             <hr>
             <div class="row justify-content-center">
@@ -51,7 +54,7 @@
     <h1 class="text-center mb-5">Payment</h1>
     <form id="paymentForm" method="post">
         <div class="form-check mb-3">
-            <input class="form-check-input" type="radio" name="paymentMethod" id="bankPayment" value=""bank">
+            <input class="form-check-input" type="radio" name="paymentMethod" id="bankPayment" value="bank">
             <label class="form-check-label" for="bankPayment">
                 은행 계좌 이체
             </label>

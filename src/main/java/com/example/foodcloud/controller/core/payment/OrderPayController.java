@@ -33,7 +33,7 @@ public class OrderPayController {
     @GetMapping("/{orderMenuId}")
     public String get(@PathVariable Long orderMenuId,
                       Model model) {
-        OrderMenu orderMenu = orderMenuRepository.findById(orderMenuId).orElseThrow(NotFoundOrderMenuException::new);
+        OrderMenu orderMenu = orderMenuRepository.findByIdFetchJoin(orderMenuId).orElseThrow(NotFoundOrderMenuException::new);
 
         model.addAttribute("orderMenu", orderMenu);
 
